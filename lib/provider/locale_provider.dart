@@ -17,6 +17,7 @@ class LocaleProvider with ChangeNotifier {
     "fa": "فارسی",
     "zh": "中文",
     "tr": "Türkçe",
+    "ru": "Русский"
   };
 
   void setCurrentLocale() {
