@@ -12,6 +12,7 @@ class LocaleProvider with ChangeNotifier {
 
   static const locales = {
     "en": "English",
+    "es": "Español",
     "de": "Deutsch",
     "it": "Italiano",
     "fa": "فارسی",
