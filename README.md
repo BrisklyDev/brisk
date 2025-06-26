@@ -85,9 +85,9 @@ To install the browser extension, please refer to the [brisk-browser-extension r
 Brisk is powered by a custom-built, high-performance engine that delivers the maximum download speed throughout the entire download process. The engine is built entirely from scratch only using Dart's [http](https://github.com/dart-lang/http), without relying on external libraries or download utilities like aria2.
 
 The key features of the engine include:
-- **Dynamic Connection Spawn:** Downloads starts with a single connection and as they progress, new connections are added on the fly. This ensures that a higher number of connections are used only when necessary, significantly improving the download speed of small-to-medium sized files.
-- **Dynamic Connection Reuse:** After a connection completes receiving its designated byte range, it is immediately reassigned to assist another connection. This means that finished connections actively contribute to the overall download process by handling portions of other busy connections' byte ranges. As a result, the engine maintains as many active connections as possible, ensuring that download speeds remain consistently at their peak.
-- **Downloading M3U8 Streams:** Brisk is able to capture and download M3U8 streams from the browser (requires Brisk Browser Extension)
+- **Dynamic Connection Spawn:** Downloads starts with a single connection and as they progress, new connections are added on the fly. This ensures that a higher number of connections are used only when necessary.
+- **Dynamic Connection Reuse:** After a connection completes receiving its designated byte range, it is immediately reassigned to assist another connection. As a result, the engine maintains as many active connections as possible, ensuring that download speeds remain consistently at their peak.
+- **Downloading M3U8 Streams:** Brisk is able to capture and download M3U8 video streams from the browser (requires Brisk Browser Extension)
 - **Automatic connection reset:** Hanging connections will be reset automatically.
 
 ## :globe_with_meridians: Browser Integration
