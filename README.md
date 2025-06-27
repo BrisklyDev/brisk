@@ -1,5 +1,4 @@
 [![license](https://img.shields.io/github/license/AminBhst/brisk?style=flat-square)](https://github.com/AminBhst/brisk/blob/main/LICENSE)
-[![brisk](https://snapcraft.io/brisk/badge.svg)](https://snapcraft.io/brisk)
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/AminBhst/brisk/total?style=flat-square)
 <a href="https://discord.gg/hGBDWNDHG3"><img alt="Discord Chat" src="https://img.shields.io/discord/1298990692000989225?color=5865F2&label=discord&style=flat-square"></a>
 [![Telegram Channel](https://img.shields.io/badge/Channel-Telegram-blue.svg?logo=telegram&style=flat-square)](https://t.me/ryedev)
