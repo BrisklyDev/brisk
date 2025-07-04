@@ -30,32 +30,35 @@ class DropDownSetting extends StatelessWidget {
         Provider.of<ThemeProvider>(context).activeTheme.settingTheme.pageTheme;
     final size = MediaQuery.of(context).size;
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
-          width: textWidth ?? resolveTextWidth(size),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: theme.titleTextColor,
-              fontSize: 14,
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              text,
+              style: TextStyle(
+                color: theme.titleTextColor,
+                fontSize: 14,
+              ),
             ),
-          ),
-        ),
-        tooltipMessage != null
-            ? Padding(
+            if (tooltipMessage != null)
+              Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Tooltip(
-                  child: Icon(Icons.info, color: Colors.grey),
-                  message: tooltipMessage,
+                  message: tooltipMessage!,
+                  child: const Icon(Icons.info, color: Colors.grey),
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(33, 33, 33, 1),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  textStyle: TextStyle(color: Colors.white),
+                  textStyle: const TextStyle(color: Colors.white),
                 ),
-              )
-            : Container(),
-        const Spacer(),
+              ),
+          ],
+        ),
         SizedBox(
           width: dropDownWidth,
           child: DropdownButton<String>(
@@ -81,20 +84,5 @@ class DropDownSetting extends StatelessWidget {
         )
       ],
     );
-  }
-
-  double resolveTextWidth(Size size) {
-    double width = 200;
-    if (size.width < 867) {
-      width = size.width * 0.3;
-    }
-    if (size.width < 800) {
-      width = size.width * 0.25;
-    }
-    if (size.width < 644) {
-      width = size.width * 0.2;
-    }
-    // textWidth ?? MediaQuery.of(context).size.width * 0.6 * 0.5;
-    return width;
   }
 }

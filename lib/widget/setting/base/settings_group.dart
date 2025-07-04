@@ -1,4 +1,5 @@
 import 'package:brisk/provider/theme_provider.dart';
+import 'package:brisk/widget/base/default_tooltip.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +9,7 @@ class SettingsGroup extends StatelessWidget {
   final List<Widget> children;
   final double? containerWidth;
   final double? containerHeight;
+  final String? tooltipMessage;
 
   const SettingsGroup({
     super.key,
@@ -16,6 +18,7 @@ class SettingsGroup extends StatelessWidget {
     this.title = "",
     this.containerWidth,
     this.containerHeight,
+    this.tooltipMessage,
   });
 
   @override
@@ -29,16 +32,28 @@ class SettingsGroup extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (title.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                title,
-                style: TextStyle(
-                  color: theme.groupTitleTextColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      color: theme.groupTitleTextColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
+                if (tooltipMessage != null)
+                  DefaultTooltip(
+                    message: tooltipMessage!,
+                    child: Icon(
+                      Icons.info,
+                      color: Colors.white60,
+                    ),
+                  ),
+              ],
             ),
           Container(
             width: containerWidth,
@@ -68,4 +83,3 @@ class SettingsGroup extends StatelessWidget {
     return width;
   }
 }
-

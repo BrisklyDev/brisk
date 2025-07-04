@@ -12,7 +12,7 @@ class WebExtensionSettingsDownloadGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textWidth = MediaQuery.of(context).size.width * 0.6 * 0.5;
+    // final textWidth = MediaQuery.of(context).size.width * 0.6 * 0.5;
     final theme =
         Provider.of<ThemeProvider>(context).activeTheme.settingTheme.pageTheme;
     final loc = AppLocalizations.of(context)!;
@@ -20,28 +20,27 @@ class WebExtensionSettingsDownloadGroup extends StatelessWidget {
       title: loc.settings_downloadBrowserExtension,
       children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: textWidth,
+            Expanded(
               child: Text(
                 loc.settings_downloadBrowserExtension_installExtension,
                 style: TextStyle(color: theme.titleTextColor, fontSize: 14),
               ),
             ),
-            const Spacer(),
             IconButton(
               onPressed: () => showDialog(
                 context: context,
                 builder: (context) => GetBrowserExtensionDialog(),
               ),
-              icon: Icon(
+              icon: const Icon(
                 Icons.install_desktop_rounded,
                 color: Colors.white70,
                 size: 28,
               ),
-            )
+            ),
           ],
-        )
+        ),
       ],
     );
   }

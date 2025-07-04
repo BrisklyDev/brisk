@@ -32,13 +32,14 @@ class ExternalLinkSetting extends StatelessWidget {
           width: width ?? MediaQuery.of(context).size.width * 0.5 * 0.5,
           child: Row(children: [
             SizedBox(
-              width: titleWidth,
-              child: Text(
-                title,
-                style: TextStyle(
-                  overflow: TextOverflow.clip,
-                  color: theme.titleTextColor,
-                  fontSize: 14,
+              child: Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    overflow: TextOverflow.clip,
+                    color: theme.titleTextColor,
+                    fontSize: 14,
+                  ),
                 ),
               ),
             ),
