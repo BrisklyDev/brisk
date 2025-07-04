@@ -25,8 +25,10 @@ const Map<String, String> userAgentHeader = {
 };
 
 bool checkDownloadPauseSupport(Map<String, String> headers) {
-  var value = headers['Accept-Ranges'] ?? headers['accept-ranges'];
-  return value != null && value == 'bytes';
+  final acceptsRanges = headers['Accept-Ranges'] ?? headers['accept-ranges'];
+  final contentRange = headers['content-range'] ?? headers['Content-Range'];
+  return (acceptsRanges != null && acceptsRanges == 'bytes') ||
+      contentRange.isNotNullOrBlank;
 }
 
 String? extractFilenameFromHeaders(Map<String, String> headers) {
