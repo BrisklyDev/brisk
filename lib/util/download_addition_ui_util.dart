@@ -12,6 +12,7 @@ import 'package:brisk/util/settings_cache.dart';
 import 'package:brisk/widget/base/info_dialog.dart';
 import 'package:brisk/widget/download/download_info_dialog.dart';
 import 'package:brisk/widget/download/ffmpeg_not_found_dialog.dart';
+import 'package:brisk/widget/download/multi_download_addition_dialog.dart';
 import 'package:brisk_download_engine/brisk_download_engine.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
@@ -67,6 +68,10 @@ class DownloadAdditionUiUtil {
   }) {
     final loc = AppLocalizations.of(context)!;
     windowManager.show().then((value) => WindowToFront.activate());
+    if (url.contains('\n')) {
+      _handleMultiUrl(url, context, loc);
+      return;
+    }
     if (!isUrlValid(url)) {
       showDialog(
         context: context,
@@ -111,6 +116,77 @@ class DownloadAdditionUiUtil {
         },
       );
     });
+  }
+
+  static _handleMultiUrl(
+    String url,
+    BuildContext context,
+    AppLocalizations loc,
+  ) {
+    final urls = extractUrls(url);
+    final downloadUrls = urls.toSet().toList()
+      ..removeWhere((url) => !isUrlValid(url));
+    final downloadItems =
+        downloadUrls.map((e) => DownloadItem.fromUrl(e)).toList();
+    _spawnBatchFileInfoRetrieverIsolate(downloadItems).then((rPort) {
+      context.loaderOverlay.show();
+      retrieveFileInfoBatch(rPort).then((fileInfos) {
+        context.loaderOverlay.hide();
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) => MultiDownloadAdditionDialog(fileInfos),
+        );
+        return;
+      }).onError(
+        (e, s) {
+          _cancelRequest(context);
+          showDialog(
+            context: context,
+            builder: (_) => ErrorDialog(
+              textHeight: 0,
+              height: 200,
+              width: 380,
+              title: loc.err_failedToRetrieveFileInfo_title,
+              description: loc.err_failedToRetrieveFileInfo_description,
+              descriptionHint: loc.err_failedToRetrieveFileInfo_descriptionHint,
+            ),
+          );
+        },
+      );
+    });
+  }
+
+  static onFileInfoRetrievalError(context) {
+    Navigator.of(context).pop();
+    final loc = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (_) => ErrorDialog(
+        textHeight: 0,
+        height: 200,
+        width: 380,
+        title: loc.err_failedToRetrieveFileInfo_title,
+        description: loc.err_failedToRetrieveFileInfo_description,
+        descriptionHint: loc.err_failedToRetrieveFileInfo_descriptionHint,
+      ),
+    );
+  }
+
+  static List<String> extractUrls(String input) {
+    final urlPattern = RegExp(
+      r'(https?://[^\s]+)',
+      caseSensitive: false,
+    );
+    final lines = input.split('\n');
+    final urls = <String>[];
+    for (var line in lines) {
+      final match = urlPattern.firstMatch(line);
+      if (match != null) {
+        urls.add(match.group(0)!);
+      }
+    }
+    return urls;
   }
 
   static void handleM3u8Addition(
@@ -270,6 +346,23 @@ class DownloadAdditionUiUtil {
     return receivePort;
   }
 
+  static Future<ReceivePort> _spawnBatchFileInfoRetrieverIsolate(
+    List<DownloadItem> items,
+  ) async {
+    final ReceivePort receivePort = ReceivePort();
+    fileInfoExtractorIsolate = await Isolate.spawn<
+        IsolateArgsPair<List<DownloadItem>, HttpClientSettings>>(
+      requestFileInfoBatchIsolate,
+      IsolateArgsPair(
+          receivePort.sendPort, items, SettingsCache.clientSettings),
+      paused: true,
+    );
+    fileInfoExtractorIsolate?.addErrorListener(receivePort.sendPort);
+    fileInfoExtractorIsolate
+        ?.resume(fileInfoExtractorIsolate!.pauseCapability!);
+    return receivePort;
+  }
+
   static void _cancelRequest(BuildContext? context) {
     fileInfoExtractorIsolate?.kill();
     if (context != null) {
@@ -370,6 +463,20 @@ class DownloadAdditionUiUtil {
     return completer.future;
   }
 
+  static Future<List<FileInfo>> retrieveFileInfoBatch(
+    ReceivePort receivePort,
+  ) async {
+    final Completer<List<FileInfo>> completer = Completer();
+    receivePort.listen((message) {
+      if (message is List<FileInfo>) {
+        completer.complete(message);
+      } else {
+        completer.completeError(message);
+      }
+    });
+    return completer.future;
+  }
+
   static bool checkDownloadDuplication(String fileName) {
     return HiveUtil.instance.downloadItemsBox.values
         .where((dl) => dl.fileName == fileName)
@@ -379,6 +486,12 @@ class DownloadAdditionUiUtil {
 
 Future<void> requestFileInfoIsolate(IsolateArgsPair args) async {
   final result = await requestFileInfo(args.firstObject, args.secondObject);
+  args.sendPort.send(result);
+}
+
+Future<void> requestFileInfoBatchIsolate(IsolateArgsPair args) async {
+  final result =
+      await requestFileInfoBatch(args.firstObject, args.secondObject);
   args.sendPort.send(result);
 }
 

@@ -31,7 +31,7 @@ class _AddUrlDialogState extends State<AddUrlDialog> {
   TextEditingController txtController = TextEditingController();
   bool showAdvancedOptions = false;
   bool saveHeadersForFutureRequests = false;
- Map<TextEditingController, TextEditingController> headerControllers = {
+  Map<TextEditingController, TextEditingController> headerControllers = {
     TextEditingController(): TextEditingController(),
   };
 
@@ -83,7 +83,8 @@ class _AddUrlDialogState extends State<AddUrlDialog> {
                         width: 420,
                         child: OutLinedTextField(
                           controller: txtController,
-                          hintText: "https://...",
+                          hintText:
+                              "https://... or multiple URLs separated by newline",
                           suffixIcon: IconButton(
                             onPressed: () async {
                               String url = await FlutterClipboard.paste();
@@ -262,6 +263,7 @@ class _AddUrlDialogState extends State<AddUrlDialog> {
     txtController.text = '';
     Navigator.of(context).pop();
   }
+
 
   void _onAddPressed(BuildContext context) {
     final url = txtController.text;

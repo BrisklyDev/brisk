@@ -325,7 +325,7 @@ class BrowserExtensionServer {
     _showLoadingDialog(context);
     requestFileInfoBatch(
       downloadItems.toList(),
-      clientSettings: SettingsCache.clientSettings,
+      SettingsCache.clientSettings,
     ).then((fileInfos) {
       if (_cancelClicked) {
         return;
@@ -342,30 +342,14 @@ class BrowserExtensionServer {
         barrierDismissible: false,
         builder: (_) => MultiDownloadAdditionDialog(fileInfos!),
       );
-    }).onError((error, stackTrace) => onFileInfoRetrievalError(context));
+    }).onError((error, stackTrace) =>
+        DownloadAdditionUiUtil.onFileInfoRetrievalError(context));
   }
 
   static void handleWindowToFront() {
     if (_windowToFrontEnabled) {
       windowManager.show().then((_) => WindowToFront.activate());
     }
-  }
-
-  /// TODO add log file
-  static onFileInfoRetrievalError(context) {
-    Navigator.of(context).pop();
-    final loc = AppLocalizations.of(context)!;
-    showDialog(
-      context: context,
-      builder: (_) => ErrorDialog(
-        textHeight: 0,
-        height: 200,
-        width: 380,
-        title: loc.err_failedToRetrieveFileInfo_title,
-        description: loc.err_failedToRetrieveFileInfo_description,
-        descriptionHint: loc.err_failedToRetrieveFileInfo_descriptionHint,
-      ),
-    );
   }
 
   static void _showLoadingDialog(context) {

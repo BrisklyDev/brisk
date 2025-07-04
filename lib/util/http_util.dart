@@ -75,9 +75,9 @@ List<int> calculateByteStartAndByteEnd(
 }
 
 Future<List<FileInfo>?> requestFileInfoBatch(
-  List<DownloadItem> downloadItems, {
-  HttpClientSettings? clientSettings = null,
-}) async {
+  List<DownloadItem> downloadItems,
+  HttpClientSettings? clientSettings,
+) async {
   List<FileInfo> fileInfos = [];
   for (final item in downloadItems) {
     final fileInfo = await requestFileInfo(
