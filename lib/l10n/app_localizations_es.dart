@@ -105,6 +105,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get btn_updateUrl => 'Actualizar URL';
 
   @override
+  String get btn_restart_extension => 'Restart Extension';
+
+  @override
   String get err_invalidUrl_title => 'URL Inválida';
 
   @override
@@ -860,4 +863,11 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get settings_automaticFileSavePathCategorization =>
       'Categorización automática de ruta de guardado de archivos';
+
+  @override
+  String get extension_restart_success =>
+      'Extension server was restarted successfully!';
+
+  @override
+  String get extension_restart_failed => 'Failed to restart extension server!';
 }

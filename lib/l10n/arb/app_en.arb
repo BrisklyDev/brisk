@@ -32,6 +32,7 @@
   "btn_addUrl": "Add URL",
   "btn_add": "Add",
   "btn_updateUrl": "Update URL",
+  "btn_restart_extension": "Restart Extension",
   "err_invalidUrl_title": "Invalid URL",
   "err_invalidUrl_description": "The URL you've entered appears to be invalid.\nPlease check the format and try again.",
   "err_invalidUrl_descriptionHint": "Make sure the URL:\n\t • Starts with https:// or http://\n\t • Contains a valid domain name\n\t • Contains no invalid characters",
@@ -101,7 +102,7 @@
   "settings_paths_tempFilesPath": "Temp Files Path",
   "settings_paths_savePath": "Save Path",
   "settings_rules": "Rules",
-  "settings_rules_extensionSkipCaptureRules": "Extension Skip Capture Rules",
+  "settings_rules_extensionSkipCaptureRules": "Extension skip capture rules",
   "settings_rules_extensionSkipCaptureRules_tooltip": "Defines conditions which determine when a file should not be captures via browser extension",
   "settings_rules_edit": "Edit Rules",
   "settings_rules_fileSavePathRules": "File Save Path Rules",
@@ -280,11 +281,13 @@
   "btn_installLater": "I'll Install Later",
   "btn_installAutomatically": "Install Automatically",
   "settings_engine": "Download Engine",
-  "settings_engine_clientType": "HTTP Client Type",
+  "settings_engine_clientType": "HTTP client type",
   "settings_engine_clientType_tooltip": "The client type used for downloads:\n\nStandard – Balanced and stable\nPerformance – Faster but uses more CPU",
   "settings_engine_clientType_standard": "Standard",
   "settings_engine_clientType_performance": "Performance (Beta)",
   "btn_showAdvancedOptions": "Show Advanced Options",
   "btn_hideAdvancedOptions": "Hide Advanced Options",
-  "settings_automaticFileSavePathCategorization": "Automatic file save path categorization"
+  "settings_automaticFileSavePathCategorization": "Automatic file save path categorization",
+  "extension_restart_success": "Extension server was restarted successfully!",
+  "extension_restart_failed": "Failed to restart extension server!"
 }

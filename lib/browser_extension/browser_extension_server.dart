@@ -28,19 +28,18 @@ import 'package:window_manager/window_manager.dart';
 import 'package:brisk/widget/download/multi_download_addition_dialog.dart';
 
 class BrowserExtensionServer {
-  static bool _isServerRunning = false;
   static bool _cancelClicked = false;
   static const String extensionVersion = "1.3.0";
   static DownloadItem? awaitingUpdateUrlItem;
+  static HttpServer? _server;
 
-  static void setup(BuildContext context) async {
-    if (_isServerRunning) return;
+  static Future<void> setup(BuildContext context) async {
+    if (_server != null) return;
 
     final port = _extensionPort;
     try {
-      _isServerRunning = true;
-      final server = await HttpServer.bind(InternetAddress.loopbackIPv4, port);
-      handleExtensionRequests(server, context);
+      _server = await HttpServer.bind(InternetAddress.loopbackIPv4, port);
+      handleExtensionRequests(context);
     } catch (e) {
       if (e.toString().contains("Invalid port")) {
         _showInvalidPortError(context, port.toString());
@@ -54,11 +53,16 @@ class BrowserExtensionServer {
     }
   }
 
-  static Future<void> handleExtensionRequests(
-    HttpServer server,
-    BuildContext context,
-  ) async {
-    await for (HttpRequest request in server) {
+  static Future<void> restart(BuildContext context) async {
+    Logger.log("Stopping server for restart...");
+    await _server?.close(force: true);
+    _server = null;
+    await Future.delayed(Duration(milliseconds: 300));
+    await setup(context);
+  }
+
+  static Future<void> handleExtensionRequests(BuildContext context) async {
+    await for (HttpRequest request in _server!) {
       runZonedGuarded(() async {
         bool responseClosed = false;
         try {

@@ -105,6 +105,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get btn_updateUrl => 'Update URL';
 
   @override
+  String get btn_restart_extension => 'Restart Extension';
+
+  @override
   String get err_invalidUrl_title => 'Invalid URL';
 
   @override
@@ -328,7 +331,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings_rules_extensionSkipCaptureRules =>
-      'Extension Skip Capture Rules';
+      'Extension skip capture rules';
 
   @override
   String get settings_rules_extensionSkipCaptureRules_tooltip =>
@@ -825,7 +828,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings_engine => 'Download Engine';
 
   @override
-  String get settings_engine_clientType => 'HTTP Client Type';
+  String get settings_engine_clientType => 'HTTP client type';
 
   @override
   String get settings_engine_clientType_tooltip =>
@@ -846,4 +849,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settings_automaticFileSavePathCategorization =>
       'Automatic file save path categorization';
+
+  @override
+  String get extension_restart_success =>
+      'Extension server was restarted successfully!';
+
+  @override
+  String get extension_restart_failed => 'Failed to restart extension server!';
 }

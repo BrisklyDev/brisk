@@ -1,8 +1,11 @@
+import 'package:brisk/browser_extension/browser_extension_server.dart';
 import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/provider/pluto_grid_check_row_provider.dart';
 import 'package:brisk/provider/queue_provider.dart';
 import 'package:brisk/provider/theme_provider.dart';
 import 'package:brisk/util/auto_updater_util.dart';
+import 'package:brisk/widget/base/error_dialog.dart';
+import 'package:brisk/widget/base/info_dialog.dart';
 import 'package:brisk/widget/top_menu/top_menu_util.dart';
 import 'package:brisk/provider/pluto_grid_util.dart';
 import 'package:brisk/util/responsive_util.dart';
@@ -24,6 +27,7 @@ class _TopMenuState extends State<TopMenu> {
   String url = '';
 
   late DownloadRequestProvider provider;
+  late AppLocalizations loc;
 
   TextEditingController txtController = TextEditingController();
 
@@ -34,7 +38,7 @@ class _TopMenuState extends State<TopMenu> {
         Provider.of<ThemeProvider>(context).activeTheme.topMenuTheme;
     Provider.of<PlutoGridCheckRowProvider>(context);
     Provider.of<QueueProvider>(context);
-    final loc = AppLocalizations.of(context)!;
+    loc = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;
     return Container(
       width: resolveWindowWidth(size),
@@ -160,6 +164,17 @@ class _TopMenuState extends State<TopMenu> {
             onHoverColor: topMenuTheme.extensionColor.hoverBackgroundColor,
             textColor: topMenuTheme.extensionColor.textColor,
           ),
+          TopMenuButton(
+            title: loc.btn_restart_extension,
+            fontSize: 11,
+            icon: Icon(
+              Icons.restart_alt_rounded,
+              color: topMenuTheme.extensionColor.iconColor,
+            ),
+            onTap: () => restart_extension(),
+            onHoverColor: topMenuTheme.extensionColor.hoverBackgroundColor,
+            textColor: topMenuTheme.extensionColor.textColor,
+          ),
           // TopMenuButton(
           //   title: 'Discord',
           //   fontSize: 11.5,
@@ -216,6 +231,28 @@ class _TopMenuState extends State<TopMenu> {
     //   item.contentLength,
     // );
     // DownloadAdditionUiUtil.addDownload(item, fileInfo, context, false);
+  }
+
+  void restart_extension() async {
+    try {
+      await BrowserExtensionServer.restart(context);
+      showDialog(
+        context: context,
+        builder: (context) => InfoDialog(
+          titleText: loc.extension_restart_success,
+          titleIcon: Icon(Icons.done),
+          titleIconBackgroundColor: Colors.lightGreen,
+        ),
+      );
+    } catch (_) {
+      showDialog(
+        context: context,
+        builder: (context) => ErrorDialog(
+          width: 450,
+          title: loc.extension_restart_failed,
+        ),
+      );
+    }
   }
 
   void onDownloadPressed() async {

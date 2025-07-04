@@ -105,6 +105,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get btn_updateUrl => 'Обновить URL';
 
   @override
+  String get btn_restart_extension => 'Restart Extension';
+
+  @override
   String get err_invalidUrl_title => 'Недопустимый URL';
 
   @override
@@ -856,4 +859,11 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get settings_automaticFileSavePathCategorization =>
       'Автоматическая категоризация пути сохранения файлов';
+
+  @override
+  String get extension_restart_success =>
+      'Extension server was restarted successfully!';
+
+  @override
+  String get extension_restart_failed => 'Failed to restart extension server!';
 }

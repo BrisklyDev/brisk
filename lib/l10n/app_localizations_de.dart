@@ -105,6 +105,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get btn_updateUrl => 'URL aktualisieren';
 
   @override
+  String get btn_restart_extension => 'Restart Extension';
+
+  @override
   String get err_invalidUrl_title => 'Ungültige URL';
 
   @override
@@ -832,7 +835,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settings_engine => 'Download Engine';
 
   @override
-  String get settings_engine_clientType => 'HTTP Client Type';
+  String get settings_engine_clientType => 'HTTP client type';
 
   @override
   String get settings_engine_clientType_tooltip =>
@@ -853,4 +856,11 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get settings_automaticFileSavePathCategorization =>
       'Automatic file save path categorization';
+
+  @override
+  String get extension_restart_success =>
+      'Extension server was restarted successfully!';
+
+  @override
+  String get extension_restart_failed => 'Failed to restart extension server!';
 }

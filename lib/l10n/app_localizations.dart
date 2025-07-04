@@ -302,6 +302,12 @@ abstract class AppLocalizations {
   /// **'Update URL'**
   String get btn_updateUrl;
 
+  /// No description provided for @btn_restart_extension.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart Extension'**
+  String get btn_restart_extension;
+
   /// No description provided for @err_invalidUrl_title.
   ///
   /// In en, this message translates to:
@@ -719,7 +725,7 @@ abstract class AppLocalizations {
   /// No description provided for @settings_rules_extensionSkipCaptureRules.
   ///
   /// In en, this message translates to:
-  /// **'Extension Skip Capture Rules'**
+  /// **'Extension skip capture rules'**
   String get settings_rules_extensionSkipCaptureRules;
 
   /// No description provided for @settings_rules_extensionSkipCaptureRules_tooltip.
@@ -1613,7 +1619,7 @@ abstract class AppLocalizations {
   /// No description provided for @settings_engine_clientType.
   ///
   /// In en, this message translates to:
-  /// **'HTTP Client Type'**
+  /// **'HTTP client type'**
   String get settings_engine_clientType;
 
   /// No description provided for @settings_engine_clientType_tooltip.
@@ -1651,6 +1657,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Automatic file save path categorization'**
   String get settings_automaticFileSavePathCategorization;
+
+  /// No description provided for @extension_restart_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Extension server was restarted successfully!'**
+  String get extension_restart_success;
+
+  /// No description provided for @extension_restart_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to restart extension server!'**
+  String get extension_restart_failed;
 }
 
 class _AppLocalizationsDelegate
