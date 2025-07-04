@@ -106,39 +106,6 @@ class BrowserExtensionServer {
     }
   }
 
-  // static Future<void> handleExtensionRequests(server, context) async {
-  //   await for (HttpRequest request in server) {
-  //     await for (final body in request) {
-  //       bool responseClosed = false;
-  //       addCORSHeaders(request);
-  //       try {
-  //         final jsonBody = jsonDecode(String.fromCharCodes(body));
-  //         Logger.log(jsonBody);
-  //         final targetVersion = jsonBody["extensionVersion"];
-  //         Logger.log("Target Version: $targetVersion");
-  //         if (targetVersion == null || targetVersion.toString().isNullOrBlank) {
-  //           await request.response.close();
-  //           responseClosed = true;
-  //           continue;
-  //         }
-  //         if (isNewVersionAvailable(extensionVersion, targetVersion)) {
-  //           showNewBrowserExtensionVersion(context);
-  //         }
-  //         final success =
-  //             await _handleDownloadAddition(jsonBody, context, request);
-  //         await flushAndCloseResponse(request, success);
-  //         responseClosed = true;
-  //       } catch (e) {
-  //         print("Error:: $e");
-  //       } finally {
-  //         if (!responseClosed) {
-  //           await flushAndCloseResponse(request, false);
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
-
   static void showNewBrowserExtensionVersion(BuildContext context) async {
     var lastNotify = HiveUtil.getSetting(
       SettingOptions.lastBrowserExtensionUpdateNotification,
