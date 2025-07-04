@@ -84,7 +84,7 @@ class _AddUrlDialogState extends State<AddUrlDialog> {
                         child: OutLinedTextField(
                           controller: txtController,
                           hintText:
-                              "https://... or multiple URLs separated by newline",
+                              "https://... supports multiple URLs separated by newline",
                           suffixIcon: IconButton(
                             onPressed: () async {
                               String url = await FlutterClipboard.paste();
