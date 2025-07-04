@@ -54,20 +54,30 @@ class BrowserExtensionServer {
     }
   }
 
-  static Future<void> handleExtensionRequests(server, context) async {
+  static Future<void> handleExtensionRequests(
+    HttpServer server,
+    BuildContext context,
+  ) async {
     await for (HttpRequest request in server) {
-      await for (final body in request) {
+      runZonedGuarded(() async {
         bool responseClosed = false;
-        addCORSHeaders(request);
         try {
-          final jsonBody = jsonDecode(String.fromCharCodes(body));
-          Logger.log(jsonBody);
+          addCORSHeaders(request);
+          final bodyBytes = await request.fold<List<int>>(
+            [],
+            (previous, element) => previous..addAll(element),
+          );
+          final body = utf8.decode(bodyBytes);
+          if (body.isEmpty) {
+            await flushAndCloseResponse(request, false);
+            return;
+          }
+          final jsonBody = jsonDecode(body);
           final targetVersion = jsonBody["extensionVersion"];
-          Logger.log("Target Version: $targetVersion");
           if (targetVersion == null || targetVersion.toString().isNullOrBlank) {
             await request.response.close();
             responseClosed = true;
-            continue;
+            return;
           }
           if (isNewVersionAvailable(extensionVersion, targetVersion)) {
             showNewBrowserExtensionVersion(context);
@@ -76,16 +86,54 @@ class BrowserExtensionServer {
               await _handleDownloadAddition(jsonBody, context, request);
           await flushAndCloseResponse(request, success);
           responseClosed = true;
-        } catch (e) {
-          print("Error:: $e");
-        } finally {
-          if (!responseClosed) {
-            await flushAndCloseResponse(request, false);
-          }
+        } catch (e, stack) {
+          Logger.log("Request handling error: $e\n$stack");
+          try {
+            Logger.log("responseClosed? $responseClosed");
+            if (!responseClosed) {
+              Logger.log("Closing response...");
+              await flushAndCloseResponse(request, false);
+            }
+          } catch (_) {}
         }
-      }
+      }, (error, stack) {
+        Logger.log("Unhandled error in request zone: $error\n$stack");
+      });
     }
   }
+
+  // static Future<void> handleExtensionRequests(server, context) async {
+  //   await for (HttpRequest request in server) {
+  //     await for (final body in request) {
+  //       bool responseClosed = false;
+  //       addCORSHeaders(request);
+  //       try {
+  //         final jsonBody = jsonDecode(String.fromCharCodes(body));
+  //         Logger.log(jsonBody);
+  //         final targetVersion = jsonBody["extensionVersion"];
+  //         Logger.log("Target Version: $targetVersion");
+  //         if (targetVersion == null || targetVersion.toString().isNullOrBlank) {
+  //           await request.response.close();
+  //           responseClosed = true;
+  //           continue;
+  //         }
+  //         if (isNewVersionAvailable(extensionVersion, targetVersion)) {
+  //           showNewBrowserExtensionVersion(context);
+  //         }
+  //         final success =
+  //             await _handleDownloadAddition(jsonBody, context, request);
+  //         await flushAndCloseResponse(request, success);
+  //         responseClosed = true;
+  //       } catch (e) {
+  //         print("Error:: $e");
+  //       } finally {
+  //         if (!responseClosed) {
+  //           await flushAndCloseResponse(request, false);
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 
   static void showNewBrowserExtensionVersion(BuildContext context) async {
     var lastNotify = HiveUtil.getSetting(
@@ -143,6 +191,7 @@ class BrowserExtensionServer {
   }
 
   static void _handleM3u8DownloadRequest(jsonBody, context, request) async {
+    print(jsonBody);
     final loc = AppLocalizations.of(context)!;
     bool canceled = false;
     showDialog(
@@ -242,9 +291,16 @@ class BrowserExtensionServer {
     HttpRequest request,
     bool success,
   ) async {
-    final body = jsonEncode({"captured": success});
-    request.response.write(body);
-    await request.response.close();
+    try {
+      final body = jsonEncode({"captured": success});
+      request.response.write(body);
+      await request.response.flush();
+      await request.response.close();
+    } catch (_) {
+      try {
+        await request.response.close();
+      } catch (_) {}
+    }
   }
 
   static void addCORSHeaders(HttpRequest httpRequest) {
