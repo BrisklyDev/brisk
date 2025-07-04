@@ -288,6 +288,6 @@
   "btn_showAdvancedOptions": "Show Advanced Options",
   "btn_hideAdvancedOptions": "Hide Advanced Options",
   "settings_automaticFileSavePathCategorization": "Automatic file save path categorization",
-  "extension_restart_success": "Extension server was restarted successfully!",
+  "extension_restart_success": "Extension server restarted successfully!",
   "extension_restart_failed": "Failed to restart extension server!"
 }

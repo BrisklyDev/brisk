@@ -1661,7 +1661,7 @@ abstract class AppLocalizations {
   /// No description provided for @extension_restart_success.
   ///
   /// In en, this message translates to:
-  /// **'Extension server was restarted successfully!'**
+  /// **'Extension server restarted successfully!'**
   String get extension_restart_success;
 
   /// No description provided for @extension_restart_failed.

@@ -856,7 +856,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get extension_restart_success =>
-      'Extension server was restarted successfully!';
+      'Extension server restarted successfully!';
 
   @override
   String get extension_restart_failed => 'Failed to restart extension server!';
