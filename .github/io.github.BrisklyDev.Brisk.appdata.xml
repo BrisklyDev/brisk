@@ -43,13 +43,15 @@
   </screenshots>
 
   <releases>
-    <release version="2.3.2" date="2025-06-13">
+    <release version="2.3.3" date="2025-07-04">
     <description>
       <p><em>🔧 Bug Fixes and Improvements</em></p>
       <ul>
-        <li>Download Engine Optimizations</li>
-        <li>Added Automatic file save path categorization to settings</li>
-        <li>New Dynamic Tray Icons</li>
+        <li>Fixed incorrectly determining some files as pause incapable</li>
+        <li>Added the feature to add multiple download URLs separated by newline</li>
+        <li>Added restart extension button</li>
+        <li>Add Spanish and Russian translations</li>
+        <li>Minor UI fixes</li>
       </ul>
     </description>
     </release>
