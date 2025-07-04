@@ -13,6 +13,10 @@ class PortSettingsGroup extends StatefulWidget {
 }
 
 class _WebExtensionSettingsGroupState extends State<PortSettingsGroup> {
+  final portController = TextEditingController(
+    text: SettingsCache.extensionPort.toString(),
+  );
+
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
@@ -28,8 +32,7 @@ class _WebExtensionSettingsGroupState extends State<PortSettingsGroup> {
           width: 75,
           textWidth: size.width * 0.6 * 0.32,
           text: loc.port,
-          txtController: TextEditingController(
-              text: SettingsCache.extensionPort.toString()),
+          txtController: portController,
         ),
         SwitchSetting(
           text: loc.settings_downloadBrowserExtension_bringWindowToFront,

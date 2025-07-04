@@ -435,8 +435,8 @@ class BrowserExtensionServer {
     showDialog(
         context: context,
         builder: (context) => ErrorDialog(
-            width: 750,
-            height: 130,
+            width: 580,
+            height: 160,
             textHeight: 70,
             title: "Port ${port} is already in use by another process!",
             description:
@@ -448,12 +448,12 @@ class BrowserExtensionServer {
     showDialog(
       context: context,
       builder: (context) => ErrorDialog(
-          width: 750,
-          height: 85,
-          textHeight: 40,
+          width: 400,
+          height: 120,
+          textHeight: 20,
           textSpaceBetween: 18,
           title: "Port $port is invalid!",
-          text:
+          description:
               "Please set a valid port value in app settings, then set the same value for the browser extension"),
     );
   }
