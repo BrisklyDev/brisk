@@ -138,7 +138,7 @@
   "settings_info_discordServer": "Discord Server",
   "settings_info_telegramChannel": "Telegram Channel",
   "settings_developer": "Developer",
-  "settings_howToBugReport": "How To Bug Report",
+  "settings_howToBugReport": "How to report a bug",
   "settings_howToBugReport_clickToOpenIssue": "Click to open an issue",
   "settings_howToBugReport_description": "In order to report a bug or request a feature, open a new issue in the project GitHub repository.",
   "btn_saveChanges": "Save Changes",
