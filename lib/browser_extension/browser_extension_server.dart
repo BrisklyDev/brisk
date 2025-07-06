@@ -101,6 +101,10 @@ class BrowserExtensionServer {
           } catch (_) {}
         }
       }, (error, stack) {
+        if (error == "Failed to get file information") {
+          DownloadAdditionUiUtil.showFileInfoErrorDialog(context);
+          return;
+        }
         Logger.log("Unhandled error in request zone: $error\n$stack");
       });
     }
@@ -331,7 +335,11 @@ class BrowserExtensionServer {
   }
 
   static Future<bool> _handleSingleDownloadRequest(
-      jsonBody, context, request) async {
+    jsonBody,
+    context,
+    request,
+  ) async {
+    final loc = AppLocalizations.of(context)!;
     final url = jsonBody['data']['url'];
     final referer = jsonBody['data']['referer'];
     Completer<bool> completer = Completer();

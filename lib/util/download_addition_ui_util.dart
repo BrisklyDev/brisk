@@ -171,6 +171,21 @@ class DownloadAdditionUiUtil {
     });
   }
 
+  static void showFileInfoErrorDialog(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (_) => ErrorDialog(
+        textHeight: 0,
+        height: 200,
+        width: 380,
+        title: loc.err_failedToRetrieveFileInfo_title,
+        description: loc.err_failedToRetrieveFileInfo_description,
+        descriptionHint: loc.err_failedToRetrieveFileInfo_descriptionHint,
+      ),
+    );
+  }
+
   static onFileInfoRetrievalError(context) {
     Navigator.of(context).pop();
     final loc = AppLocalizations.of(context)!;
