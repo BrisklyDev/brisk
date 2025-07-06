@@ -132,19 +132,17 @@ class FileUtil {
   }
 
   /// Detects the [DLFileType] based on the file extension.
-  /// TODO : Read from setting cache
   static DLFileType detectFileType(String fileName) {
-    final type = extension(fileName.toLowerCase()).replaceAll(".", "");
-    if (FileExtensions.document.contains(type)) {
+    final type = extension(fileName.toLowerCase(), 2).replaceFirst(".", "");
+    if (SettingsCache.documentFormats.any((f) => type.contains(f))) {
       return DLFileType.documents;
-    } else if (FileExtensions.program.contains(type)) {
+    } else if (SettingsCache.programFormats.any((f) => type.contains(f))) {
       return DLFileType.program;
-    } else if (FileExtensions.compressed.contains(type) ||
-        fileName.endsWith("tar.gz")) {
+    } else if (SettingsCache.compressedFormats.any((f) => type.contains(f))) {
       return DLFileType.compressed;
-    } else if (FileExtensions.music.contains(type)) {
+    } else if (SettingsCache.musicFormats.any((f) => type.contains(f))) {
       return DLFileType.music;
-    } else if (FileExtensions.video.contains(type)) {
+    } else if (SettingsCache.videoFormats.any((f) => type.contains(f))) {
       return DLFileType.video;
     } else {
       return DLFileType.other;

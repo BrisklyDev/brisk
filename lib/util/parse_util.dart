@@ -46,6 +46,7 @@ String parseBoolStr(bool val) {
 }
 
 String parseListToCsv(List<String> list) {
+  if (list.isEmpty) return "";
   return const ListToCsvConverter().convert([list, []]);
 }
 
@@ -85,9 +86,7 @@ List<String> parseCsvToList(String csv) {
 
 HotKeyModifier? strToHotkeyModifier(String modifier) {
   if (modifier.isEmpty) return null;
-  return HotKeyModifier.values
-      .where((m) => m.name == modifier)
-      .firstOrNull;
+  return HotKeyModifier.values.where((m) => m.name == modifier).firstOrNull;
 }
 
 HotKeyScope strToHotkeyScope(String scope) {

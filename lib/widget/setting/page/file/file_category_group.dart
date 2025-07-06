@@ -15,6 +15,22 @@ class FileCategoryGroup extends StatefulWidget {
 }
 
 class _FileCategoryGroupState extends State<FileCategoryGroup> {
+  final videoController = TextEditingController(
+    text: parseListToCsv(SettingsCache.videoFormats),
+  );
+  final musicController = TextEditingController(
+    text: parseListToCsv(SettingsCache.musicFormats),
+  );
+  final archiveController = TextEditingController(
+    text: parseListToCsv(SettingsCache.compressedFormats),
+  );
+  final programController = TextEditingController(
+    text: parseListToCsv(SettingsCache.programFormats),
+  );
+  final documentController = TextEditingController(
+    text: parseListToCsv(SettingsCache.documentFormats),
+  );
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -34,8 +50,7 @@ class _FileCategoryGroupState extends State<FileCategoryGroup> {
           text: loc.settings_fileCategory_video,
           width: resolveTextFieldWidth(size),
           textWidth: resolveTextWidth(size),
-          txtController: TextEditingController(
-              text: parseListToCsv(SettingsCache.videoFormats)),
+          txtController: videoController,
           onChanged: (val) => setCachedFormats(
             val,
             (formats) => SettingsCache.videoFormats = formats,
@@ -46,8 +61,7 @@ class _FileCategoryGroupState extends State<FileCategoryGroup> {
           text: loc.settings_fileCategory_music,
           width: resolveTextFieldWidth(size),
           textWidth: resolveTextWidth(size),
-          txtController: TextEditingController(
-              text: parseListToCsv(SettingsCache.musicFormats)),
+          txtController: musicController,
           onChanged: (val) => setCachedFormats(
             val,
             (formats) => SettingsCache.musicFormats = formats,
@@ -58,8 +72,7 @@ class _FileCategoryGroupState extends State<FileCategoryGroup> {
           text: loc.settings_fileCategory_archive,
           width: resolveTextFieldWidth(size),
           textWidth: resolveTextWidth(size),
-          txtController: TextEditingController(
-              text: parseListToCsv(SettingsCache.compressedFormats)),
+          txtController: archiveController,
           onChanged: (val) => setCachedFormats(
             val,
             (formats) => SettingsCache.compressedFormats = formats,
@@ -70,8 +83,7 @@ class _FileCategoryGroupState extends State<FileCategoryGroup> {
           text: loc.settings_fileCategory_program,
           width: resolveTextFieldWidth(size),
           textWidth: resolveTextWidth(size),
-          txtController: TextEditingController(
-              text: parseListToCsv(SettingsCache.programFormats)),
+          txtController: programController,
           onChanged: (val) => setCachedFormats(
             val,
             (formats) => SettingsCache.programFormats = formats,
@@ -82,8 +94,7 @@ class _FileCategoryGroupState extends State<FileCategoryGroup> {
           text: loc.settings_fileCategory_document,
           width: resolveTextFieldWidth(size),
           textWidth: resolveTextWidth(size),
-          txtController: TextEditingController(
-              text: parseListToCsv(SettingsCache.documentFormats)),
+          txtController: documentController,
           onChanged: (val) => setCachedFormats(
             val,
             (formats) => SettingsCache.documentFormats = formats,
@@ -119,8 +130,24 @@ class _FileCategoryGroupState extends State<FileCategoryGroup> {
   }
 
   void setCachedFormats(
-      String value, Function(List<String> formats) setCache) async {
-    if (value.isEmpty) return;
+    String value,
+    Function(List<String> formats) setCache,
+  ) async {
+    if (value.isEmpty) {
+      setCache([]);
+      return;
+    }
+    if (value.endsWith(",")) {
+      return;
+    }
+
+    value = value
+        .replaceAll('\n', '')
+        .replaceAll('\t', '')
+        .replaceAll('\r', '')
+        .replaceAll(' ', '')
+        .replaceAll('\u2009', '');
+
     setCache(parseCsvToList(value));
   }
 
