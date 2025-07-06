@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:brisk/util/parse_util.dart';
+import 'package:brisk/util/app_logger.dart';
 import 'package:brisk/util/settings_cache.dart';
 import 'package:brisk/util/tray_handler.dart';
 import 'package:clipboard/clipboard.dart';
@@ -73,13 +73,17 @@ class HotKeyUtil {
       modifiers: [...modifiers.map((e) => e!)],
       scope: SettingsCache.downloadAdditionHotkeyScope,
     );
-    hotKeyManager.register(
-      downloadAdditionHotkey!,
-      keyDownHandler: (hotKey) async {
-        String url = await FlutterClipboard.paste();
-        DownloadAdditionUiUtil.handleDownloadAddition(context, url);
-      },
-    );
+    try {
+      hotKeyManager.register(
+        downloadAdditionHotkey!,
+        keyDownHandler: (hotKey) async {
+          String url = await FlutterClipboard.paste();
+          DownloadAdditionUiUtil.handleDownloadAddition(context, url);
+        },
+      );
+    } catch (e) {
+      Logger.log(e);
+    }
     _isDownloadHotkeyRegistered = true;
   }
 }

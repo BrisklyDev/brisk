@@ -93,26 +93,63 @@ HotKeyScope strToHotkeyScope(String scope) {
   return HotKeyScope.values.where((m) => m.name == scope).first;
 }
 
-LogicalKeyboardKey? strToLogicalKey(String keyLabel) {
-  if (keyLabel.isEmpty || keyLabel.length != 1) return null;
-
-  final upper = keyLabel.toUpperCase();
-
-  // Letters A-Z
-  final codeUnit = upper.codeUnitAt(0);
-  if (codeUnit >= 0x41 && codeUnit <= 0x5A) {
-    return LogicalKeyboardKey(
-      0x00000000061 + (codeUnit - 0x41),
-    );
+LogicalKeyboardKey? strToLogicalKey(String input) {
+  switch (input.toUpperCase()) {
+    case 'A':
+      return LogicalKeyboardKey.keyA;
+    case 'B':
+      return LogicalKeyboardKey.keyB;
+    case 'C':
+      return LogicalKeyboardKey.keyC;
+    case 'D':
+      return LogicalKeyboardKey.keyD;
+    case 'E':
+      return LogicalKeyboardKey.keyE;
+    case 'F':
+      return LogicalKeyboardKey.keyF;
+    case 'G':
+      return LogicalKeyboardKey.keyG;
+    case 'H':
+      return LogicalKeyboardKey.keyH;
+    case 'I':
+      return LogicalKeyboardKey.keyI;
+    case 'J':
+      return LogicalKeyboardKey.keyJ;
+    case 'K':
+      return LogicalKeyboardKey.keyK;
+    case 'L':
+      return LogicalKeyboardKey.keyL;
+    case 'M':
+      return LogicalKeyboardKey.keyM;
+    case 'N':
+      return LogicalKeyboardKey.keyN;
+    case 'O':
+      return LogicalKeyboardKey.keyO;
+    case 'P':
+      return LogicalKeyboardKey.keyP;
+    case 'Q':
+      return LogicalKeyboardKey.keyQ;
+    case 'R':
+      return LogicalKeyboardKey.keyR;
+    case 'S':
+      return LogicalKeyboardKey.keyS;
+    case 'T':
+      return LogicalKeyboardKey.keyT;
+    case 'U':
+      return LogicalKeyboardKey.keyU;
+    case 'V':
+      return LogicalKeyboardKey.keyV;
+    case 'W':
+      return LogicalKeyboardKey.keyW;
+    case 'X':
+      return LogicalKeyboardKey.keyX;
+    case 'Y':
+      return LogicalKeyboardKey.keyY;
+    case 'Z':
+      return LogicalKeyboardKey.keyZ;
+    default:
+      return null;
   }
-
-  // Digits 0-9
-  if (codeUnit >= 0x30 && codeUnit <= 0x39) {
-    return LogicalKeyboardKey(
-      0x00000000030 + (codeUnit - 0x30),
-    );
-  }
-  return null;
 }
 
 String logicalKeyToStr(LogicalKeyboardKey? key) {
