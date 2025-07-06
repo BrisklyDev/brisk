@@ -941,7 +941,7 @@ abstract class AppLocalizations {
   /// No description provided for @settings_howToBugReport.
   ///
   /// In en, this message translates to:
-  /// **'How To Bug Report'**
+  /// **'How to report a bug'**
   String get settings_howToBugReport;
 
   /// No description provided for @settings_howToBugReport_clickToOpenIssue.

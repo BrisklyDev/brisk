@@ -447,7 +447,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings_developer => 'Developer';
 
   @override
-  String get settings_howToBugReport => 'How To Bug Report';
+  String get settings_howToBugReport => 'How to report a bug';
 
   @override
   String get settings_howToBugReport_clickToOpenIssue =>
