@@ -1,6 +1,6 @@
 #define MyAppName        "Brisk"
 #define MyAppVersion     "BRISK_VERSION"
-#define MyAppSupportLink "https://github.com/AminBhst/brisk"
+#define MyAppSupportLink "https://github.com/BrisklyDev/brisk"
 #define MyAppAuthor      "Amin Beheshti"
 #define CurrentYear      GetDateTimeString('yyyy','','')
 

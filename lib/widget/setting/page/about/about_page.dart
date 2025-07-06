@@ -160,10 +160,10 @@ class _AboutPageState extends State<AboutPage> {
                   const SizedBox(width: 30),
                   InkWell(
                     onTap: () =>
-                        launchUrlString("https://github.com/AminBhst/Brisk"),
+                        launchUrlString("https://github.com/BrisklyDev/Brisk"),
                     onHover: (val) => setState(() => githubHover = val),
                     child: Text(
-                      "AminBhst/Brisk",
+                      "BrisklyDev/Brisk",
                       style: TextStyle(
                           color:
                               githubHover ? Colors.blue : theme.titleTextColor),
