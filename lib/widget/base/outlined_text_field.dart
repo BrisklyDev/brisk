@@ -17,6 +17,8 @@ class OutLinedTextField extends StatelessWidget {
   final String? hintText;
   final EdgeInsetsGeometry? contentPadding;
   final Widget? suffixIcon;
+  final int? maxLines;
+  final int? minLines;
 
   const OutLinedTextField({
     super.key,
@@ -33,6 +35,8 @@ class OutLinedTextField extends StatelessWidget {
     this.hintText,
     this.contentPadding,
     this.suffixIcon,
+    this.maxLines = 1,
+    this.minLines,
   });
 
   @override
@@ -49,6 +53,8 @@ class OutLinedTextField extends StatelessWidget {
       obscureText: obscureText,
       readOnly: readOnly,
       keyboardType: keyboardType,
+      maxLines: maxLines,
+      minLines: minLines,
       inputFormatters: inputFormatters,
       cursorColor: Colors.white,
       controller: controller,

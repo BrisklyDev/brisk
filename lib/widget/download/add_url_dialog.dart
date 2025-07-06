@@ -34,6 +34,7 @@ class _AddUrlDialogState extends State<AddUrlDialog> {
   Map<TextEditingController, TextEditingController> headerControllers = {
     TextEditingController(): TextEditingController(),
   };
+  int minLines = 1;
 
   @override
   void initState() {
@@ -83,8 +84,13 @@ class _AddUrlDialogState extends State<AddUrlDialog> {
                         width: 420,
                         child: OutLinedTextField(
                           controller: txtController,
-                          hintText:
-                              "https://... supports multiple URLs separated by newline",
+                          onChanged: _handleTextFieldExpansion,
+                          hintText: widget.updateDialog
+                              ? "https://..."
+                              : "https://... supports multiple URLs separated by newline",
+                          maxLines: widget.updateDialog ? 1 : null,
+                          // Allow multiple lines
+                          minLines: minLines,
                           suffixIcon: IconButton(
                             onPressed: () async {
                               String url = await FlutterClipboard.paste();
@@ -100,6 +106,7 @@ class _AddUrlDialogState extends State<AddUrlDialog> {
                     ],
                   ),
                 ),
+                const SizedBox(height: 5),
                 RoundedOutlinedButton(
                   onPressed: () {
                     setState(() {
@@ -208,6 +215,16 @@ class _AddUrlDialogState extends State<AddUrlDialog> {
     );
   }
 
+  void _handleTextFieldExpansion(String value) {
+    print(widget.updateDialog);
+    if (widget.updateDialog) return;
+    if (value.contains("\n")) {
+      setState(() => minLines = 3);
+    } else {
+      setState(() => minLines = 1);
+    }
+  }
+
   Widget headerTextField(TextEditingController keyController) {
     final valueController = headerControllers[keyController]!;
     return SizedBox(
@@ -263,7 +280,6 @@ class _AddUrlDialogState extends State<AddUrlDialog> {
     txtController.text = '';
     Navigator.of(context).pop();
   }
-
 
   void _onAddPressed(BuildContext context) {
     final url = txtController.text;
