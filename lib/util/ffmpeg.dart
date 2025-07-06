@@ -18,13 +18,13 @@ import 'package:provider/provider.dart';
 class FFmpeg {
   /// TODO url has latest tag
   static const String linux_x64_InstallationUrl =
-      "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2025-05-28-14-06/ffmpeg-n7.1.1-20-g9373b442a6-linux64-gpl-7.1.tar.xz";
+      "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linux64-gpl-7.1.tar.xz";
 
   static const String linux_arm64_InstallationUrl =
       "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-linuxarm64-gpl-7.1.tar.xz";
 
   static const String windowsInstallationUrl =
-      "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2025-05-28-14-06/ffmpeg-n7.1.1-20-g9373b442a6-win64-gpl-7.1.zip";
+      "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-win64-gpl-7.1.zip";
 
   static Future<String> get downloadedFFmpegPath async =>
       '${await ffmpegBaseInstallationPath}'
@@ -60,7 +60,7 @@ class FFmpeg {
       await _ensureExecutable();
       final result = await Process.run(ffmpegPath, ['-version']);
       return result.exitCode == 0;
-    } catch(_) {
+    } catch (_) {
       return false;
     }
   }
