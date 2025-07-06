@@ -126,6 +126,20 @@ class DownloadAdditionUiUtil {
     final urls = extractUrls(url);
     final downloadUrls = urls.toSet().toList()
       ..removeWhere((url) => !isUrlValid(url));
+    if (downloadUrls.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (_) => ErrorDialog(
+          width: 400,
+          height: 210,
+          textHeight: 15,
+          title: loc.err_invalidUrl_title,
+          description: loc.err_invalidUrl_description,
+          descriptionHint: loc.err_invalidUrl_descriptionHint,
+        ),
+      );
+      return;
+    }
     final downloadItems =
         downloadUrls.map((e) => DownloadItem.fromUrl(e)).toList();
     _spawnBatchFileInfoRetrieverIsolate(downloadItems).then((rPort) {
