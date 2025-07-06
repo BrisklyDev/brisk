@@ -218,17 +218,7 @@ class BrowserExtensionServer {
         return;
       }
       Navigator.of(context).pop();
-      showDialog(
-        context: context,
-        builder: (_) => ErrorDialog(
-          textHeight: 0,
-          height: 200,
-          width: 380,
-          title: loc.err_failedToRetrieveFileInfo_title,
-          description: loc.err_failedToRetrieveFileInfo_description,
-          descriptionHint: loc.err_failedToRetrieveFileInfo_descriptionHint,
-        ),
-      );
+      DownloadAdditionUiUtil.showFileInfoErrorDialog(context);
       return;
     }
     if (canceled) {

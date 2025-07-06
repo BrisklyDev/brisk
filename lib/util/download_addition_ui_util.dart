@@ -102,17 +102,7 @@ class DownloadAdditionUiUtil {
         (e, s) {
           /// TODO Add log files
           _cancelRequest(context);
-          showDialog(
-            context: context,
-            builder: (_) => ErrorDialog(
-              textHeight: 0,
-              height: 200,
-              width: 380,
-              title: loc.err_failedToRetrieveFileInfo_title,
-              description: loc.err_failedToRetrieveFileInfo_description,
-              descriptionHint: loc.err_failedToRetrieveFileInfo_descriptionHint,
-            ),
-          );
+          showFileInfoErrorDialog(context);
         },
       );
     });
@@ -155,17 +145,7 @@ class DownloadAdditionUiUtil {
       }).onError(
         (e, s) {
           _cancelRequest(context);
-          showDialog(
-            context: context,
-            builder: (_) => ErrorDialog(
-              textHeight: 0,
-              height: 200,
-              width: 380,
-              title: loc.err_failedToRetrieveFileInfo_title,
-              description: loc.err_failedToRetrieveFileInfo_description,
-              descriptionHint: loc.err_failedToRetrieveFileInfo_descriptionHint,
-            ),
-          );
+          showFileInfoErrorDialog(context);
         },
       );
     });
@@ -189,17 +169,7 @@ class DownloadAdditionUiUtil {
   static onFileInfoRetrievalError(context) {
     Navigator.of(context).pop();
     final loc = AppLocalizations.of(context)!;
-    showDialog(
-      context: context,
-      builder: (_) => ErrorDialog(
-        textHeight: 0,
-        height: 200,
-        width: 380,
-        title: loc.err_failedToRetrieveFileInfo_title,
-        description: loc.err_failedToRetrieveFileInfo_description,
-        descriptionHint: loc.err_failedToRetrieveFileInfo_descriptionHint,
-      ),
-    );
+    showFileInfoErrorDialog(context);
   }
 
   static List<String> extractUrls(String input) {
