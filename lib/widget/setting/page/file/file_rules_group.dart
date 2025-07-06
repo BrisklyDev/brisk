@@ -6,8 +6,7 @@ import 'package:brisk/util/settings_cache.dart';
 import 'package:brisk/widget/base/default_tooltip.dart';
 
 import 'package:brisk/widget/setting/base/external_link_setting.dart';
-import 'package:brisk/widget/setting/base/rule/file_save_rule_item_editor.dart';
-import 'package:brisk/widget/setting/base/rule/rule_editor_window.dart';
+import 'package:brisk/widget/setting/base/rule/file_save_path_rule_editor_dialog.dart';
 import 'package:brisk/widget/setting/base/settings_group.dart';
 import 'package:flutter/material.dart';
 
@@ -27,100 +26,7 @@ class FileRulesGroup extends StatelessWidget {
           linkText: loc.settings_rules_edit,
           customIcon: Icon(Icons.edit_note_rounded, color: Colors.white70),
           onLinkPressed: () => showDialog(
-            builder: (context) => RuleEditorWindow<FileSavePathRule>(
-              ruleType: loc.settings_rules_fileSavePathRules,
-              rules: [...SettingsCache.fileSavePathRules],
-              buildItemTitle: (FileSavePathRule rule) {
-                return SizedBox(
-                  height: 40,
-                  width: 230,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            rule.condition.toReadable(),
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                            rule.readableValue,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 180,
-                        child: rule.savePath.length > 22
-                            ? DefaultTooltip(
-                                message: rule.savePath,
-                                child: Text(
-                                  overflow: TextOverflow.ellipsis,
-                                  rule.savePath,
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              )
-                            : Text(
-                                rule.savePath,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                      )
-                    ],
-                  ),
-                );
-              },
-              onSavePressed: (List<FileSavePathRule> rules) {
-                SettingsCache.fileSavePathRules = rules;
-              },
-              onEditPressed: (
-                FileSavePathRule rule,
-                Function(FileSavePathRule oldRule, FileSavePathRule newRule)
-                    update,
-              ) {
-                showDialog(
-                  builder: (_) => FileSaveRuleItemEditor(
-                    condition: rule.condition,
-                    value: rule.valueWithTypeConsidered,
-                    ruleValueType: RuleValueType.fromRule(rule),
-                    onSaveClicked: (FileCondition condition, String value,
-                        String savePath) {
-                      final newRule = FileSavePathRule(
-                        condition: condition,
-                        value: value,
-                        savePath: savePath,
-                      );
-                      update(rule, newRule);
-                    },
-                    savePath: rule.savePath,
-                  ),
-                  context: context,
-                );
-              },
-              onAddPressed: (Function(FileSavePathRule) addRule) {
-                showDialog(
-                  context: context,
-                  builder: (context) => FileSaveRuleItemEditor(
-                    condition: FileCondition.fileNameContains,
-                    value: "",
-                    ruleValueType: RuleValueType.Text,
-                    onSaveClicked: (condition, value, savePath) {
-                      final rule = FileSavePathRule(
-                        condition: condition,
-                        value: value,
-                        savePath: savePath,
-                      );
-                      addRule(rule);
-                      // addRule(rule);
-                    },
-                    savePath: '',
-                  ),
-                );
-              },
-            ),
+            builder: (context) => FileSavePathRuleEditorDialog(),
             context: context,
           ),
           tooltipMessage: loc.settings_rules_fileSavePathRules_tooltip,

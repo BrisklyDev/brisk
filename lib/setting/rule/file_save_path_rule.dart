@@ -2,7 +2,7 @@ import 'package:brisk/setting/rule/file_condition.dart';
 import 'package:brisk/setting/rule/file_rule.dart';
 
 class FileSavePathRule extends FileRule {
-  final String savePath;
+  String savePath;
 
   FileSavePathRule({
     required this.savePath,

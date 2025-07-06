@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 class OutLinedTextField extends StatelessWidget {
   final TextEditingController controller;
-  final Color fillColor;
+  final Color? fillColor;
   final Color textColor;
   final bool readOnly;
   final Function(String value)? onChanged;
@@ -21,7 +21,7 @@ class OutLinedTextField extends StatelessWidget {
   const OutLinedTextField({
     super.key,
     required this.controller,
-    this.fillColor = Colors.black12,
+    this.fillColor,
     this.textColor = Colors.white,
     this.readOnly = false,
     this.keyboardType = TextInputType.text,
@@ -37,8 +37,7 @@ class OutLinedTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Provider
-        .of<ThemeProvider>(context)
+    final theme = Provider.of<ThemeProvider>(context)
         .activeTheme
         .settingTheme
         .pageTheme
@@ -58,15 +57,17 @@ class OutLinedTextField extends StatelessWidget {
       textDirection: TextDirection.ltr,
       style: TextStyle(color: theme.textColor, fontSize: 13),
       decoration: InputDecoration(
-        suffixIcon: suffixIcon != null ? ClipOval(
-          child: Material(
-            color: Colors.transparent,
-            child: suffixIcon,
-          ),
-        ) : null,
+        suffixIcon: suffixIcon != null
+            ? ClipOval(
+                child: Material(
+                  color: Colors.transparent,
+                  child: suffixIcon,
+                ),
+              )
+            : null,
         contentPadding: contentPadding,
         focusColor: Colors.white38,
-        fillColor: theme.fillColor,
+        fillColor: fillColor ?? theme.fillColor,
         hoverColor: theme.hoverColor,
         hintText: hintText,
         border: OutlineInputBorder(

@@ -1,11 +1,7 @@
 import 'package:brisk/l10n/app_localizations.dart';
-import 'package:brisk/setting/rule/file_condition.dart';
 import 'package:brisk/setting/rule/file_rule.dart';
-import 'package:brisk/setting/rule/rule_value_type.dart';
-import 'package:brisk/util/settings_cache.dart';
 import 'package:brisk/widget/setting/base/external_link_setting.dart';
-import 'package:brisk/widget/setting/base/rule/file_rule_item_editor.dart';
-import 'package:brisk/widget/setting/base/rule/rule_editor_window.dart';
+import 'package:brisk/widget/setting/base/rule/extension_skip_capture_rule_editor_dialog.dart';
 import 'package:brisk/widget/setting/base/settings_group.dart';
 import 'package:flutter/material.dart';
 
@@ -26,48 +22,7 @@ class BrowserExtensionRulesGroup extends StatelessWidget {
           linkText: loc.settings_rules_edit,
           customIcon: Icon(Icons.edit_note_rounded),
           onLinkPressed: () => showDialog(
-            builder: (context) => RuleEditorWindow<FileRule>(
-              ruleType: loc.settings_rules_extensionSkipCaptureRules,
-              rules: [...SettingsCache.extensionSkipCaptureRules],
-              onSavePressed: (List<FileRule> rules) {
-                SettingsCache.extensionSkipCaptureRules = rules;
-              },
-              buildItemTitle: buildRuleRow,
-              onEditPressed: (
-                FileRule rule,
-                Function(FileRule oldRule, FileRule newRule) update,
-              ) {
-                showDialog(
-                  builder: (_) => FileRuleItemEditor(
-                    condition: rule.condition,
-                    value: rule.valueWithTypeConsidered,
-                    ruleValueType: RuleValueType.fromRule(rule),
-                    onSaveClicked: (FileCondition condition, String value) {
-                      final newRule = FileRule(
-                        condition: condition,
-                        value: value,
-                      );
-                      update(rule, newRule);
-                    },
-                  ),
-                  context: context,
-                );
-              },
-              onAddPressed: (Function(FileRule) addRule) {
-                showDialog(
-                  context: context,
-                  builder: (context) => FileRuleItemEditor(
-                    condition: FileCondition.fileNameContains,
-                    value: "",
-                    ruleValueType: RuleValueType.Text,
-                    onSaveClicked: (condition, value) {
-                      final rule = FileRule(condition: condition, value: value);
-                      addRule(rule);
-                    },
-                  ),
-                );
-              },
-            ),
+            builder: (context) => ExtensionSkipCaptureRuleEditorDialog(),
             context: context,
           ),
           tooltipMessage: loc.settings_rules_extensionSkipCaptureRules_tooltip,

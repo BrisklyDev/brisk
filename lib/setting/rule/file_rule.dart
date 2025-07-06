@@ -4,8 +4,8 @@ import 'package:brisk/setting/rule/file_condition.dart';
 import 'package:path/path.dart';
 
 class FileRule {
-  final FileCondition condition;
-  final String value;
+  FileCondition condition;
+  String value;
 
   FileRule({required this.condition, required this.value});
 
