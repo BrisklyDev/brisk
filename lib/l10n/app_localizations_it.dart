@@ -460,7 +460,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get settings_howToBugReport_description =>
-      'Al fine di segnalare un bug o richiedere una funzione, apri una segnalazione nel repository del progetto su GitHub e aggiungi le etichette adeguate.';
+      'Al fine di segnalare un bug o richiedere una funzione, apri una segnalazione nel repository del progetto su GitHub.';
 
   @override
   String get btn_saveChanges => 'Salva modifiche';

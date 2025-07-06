@@ -140,7 +140,7 @@
   "settings_developer": "Developer",
   "settings_howToBugReport": "How To Bug Report",
   "settings_howToBugReport_clickToOpenIssue": "Click to open an issue",
-  "settings_howToBugReport_description": "In order to report a bug or request a feature, open a new issue in the project GitHub repo and add the proper labels.",
+  "settings_howToBugReport_description": "In order to report a bug or request a feature, open a new issue in the project GitHub repository.",
   "btn_saveChanges": "Save Changes",
   "btn_resetDefaults": "Reset to Defaults",
   "btn_save": "Save",

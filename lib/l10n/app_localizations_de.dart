@@ -459,7 +459,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settings_howToBugReport_description =>
-      'Um einen Fehler zu melden oder eine Funktion anzufordern, öffnen Sie ein neues Issue im GitHub-Repository und fügen Sie die entsprechenden Labels hinzu.';
+      'Um einen Fehler zu melden oder eine Funktion anzufordern, öffnen Sie ein neues Issue im GitHub-Repository.';
 
   @override
   String get btn_saveChanges => 'Änderungen speichern';

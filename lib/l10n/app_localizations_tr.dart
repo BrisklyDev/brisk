@@ -457,7 +457,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get settings_howToBugReport_description =>
-      'Hata bildirmek veya özellik talebinde bulunmak için proje GitHub deposunda yeni bir sorun açın ve uygun etiketleri ekleyin.';
+      'Hata bildirmek veya özellik talebinde bulunmak için proje GitHub deposunda yeni bir sorun açın.';
 
   @override
   String get btn_saveChanges => 'Değişiklikleri Kaydet';

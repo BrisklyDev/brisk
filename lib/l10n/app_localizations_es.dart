@@ -462,7 +462,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get settings_howToBugReport_description =>
-      'Para reportar un error o solicitar una función, abre un nuevo issue en el repositorio de GitHub del proyecto y agrega las etiquetas apropiadas.';
+      'Para reportar un error o solicitar una función, abre un nuevo issue en el repositorio de GitHub del proyecto.';
 
   @override
   String get btn_saveChanges => 'Guardar Cambios';

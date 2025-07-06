@@ -137,7 +137,7 @@
   "settings_developer": "Entwickler",
   "settings_howToBugReport": "Fehler melden",
   "settings_howToBugReport_clickToOpenIssue": "Klicken, um ein Issue zu öffnen",
-  "settings_howToBugReport_description": "Um einen Fehler zu melden oder eine Funktion anzufordern, öffnen Sie ein neues Issue im GitHub-Repository und fügen Sie die entsprechenden Labels hinzu.",
+  "settings_howToBugReport_description": "Um einen Fehler zu melden oder eine Funktion anzufordern, öffnen Sie ein neues Issue im GitHub-Repository.",
   "btn_saveChanges": "Änderungen speichern",
   "btn_resetDefaults": "Auf Standard zurücksetzen",
   "btn_save": "Speichern",

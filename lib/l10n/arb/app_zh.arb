@@ -138,7 +138,7 @@
   "settings_developer": "开发者",
   "settings_howToBugReport": "如何报告错误",
   "settings_howToBugReport_clickToOpenIssue": "点击打开 issue",
-  "settings_howToBugReport_description": "要报告错误或请求功能，请在项目 GitHub 仓库中打开一个新的 issue 并添加适当的标签。",
+  "settings_howToBugReport_description": "要报告错误或请求功能，请在项目 GitHub 仓库中打开一个新的 issue。",
   "btn_saveChanges": "保存更改",
   "btn_resetDefaults": "重置为默认值",
   "btn_save": "保存",

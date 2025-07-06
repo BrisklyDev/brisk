@@ -455,7 +455,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings_howToBugReport_description =>
-      'In order to report a bug or request a feature, open a new issue in the project GitHub repo and add the proper labels.';
+      'In order to report a bug or request a feature, open a new issue in the project GitHub repository.';
 
   @override
   String get btn_saveChanges => 'Save Changes';

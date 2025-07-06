@@ -139,7 +139,7 @@
   "settings_developer": "Desarrollador",
   "settings_howToBugReport": "Cómo Reportar un Error",
   "settings_howToBugReport_clickToOpenIssue": "Haz clic para abrir un issue",
-  "settings_howToBugReport_description": "Para reportar un error o solicitar una función, abre un nuevo issue en el repositorio de GitHub del proyecto y agrega las etiquetas apropiadas.",
+  "settings_howToBugReport_description": "Para reportar un error o solicitar una función, abre un nuevo issue en el repositorio de GitHub del proyecto.",
   "btn_saveChanges": "Guardar Cambios",
   "btn_resetDefaults": "Restablecer Valores Predeterminados",
   "btn_save": "Guardar",

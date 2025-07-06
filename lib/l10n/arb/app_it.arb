@@ -139,7 +139,7 @@
   "settings_developer": "Sviluppatore",
   "settings_howToBugReport": "Come segnalare un bug",
   "settings_howToBugReport_clickToOpenIssue": "Clic per aprire una richiesta",
-  "settings_howToBugReport_description": "Al fine di segnalare un bug o richiedere una funzione, apri una segnalazione nel repository del progetto su GitHub e aggiungi le etichette adeguate.",
+  "settings_howToBugReport_description": "Al fine di segnalare un bug o richiedere una funzione, apri una segnalazione nel repository del progetto su GitHub.",
   "btn_saveChanges": "Salva modifiche",
   "btn_resetDefaults": "Ripristina predefiniti",
   "btn_save": "Salva",

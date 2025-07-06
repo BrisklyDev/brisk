@@ -138,7 +138,7 @@
   "settings_developer": "Geliştirici",
   "settings_howToBugReport": "Hata Raporu Nasıl Bildirilir",
   "settings_howToBugReport_clickToOpenIssue": "Sorun açmak için tıklayın",
-  "settings_howToBugReport_description": "Hata bildirmek veya özellik talebinde bulunmak için proje GitHub deposunda yeni bir sorun açın ve uygun etiketleri ekleyin.",
+  "settings_howToBugReport_description": "Hata bildirmek veya özellik talebinde bulunmak için proje GitHub deposunda yeni bir sorun açın.",
   "btn_saveChanges": "Değişiklikleri Kaydet",
   "btn_resetDefaults": "Varsayılanlara Sıfırla",
   "btn_save": "Kaydet",

@@ -953,7 +953,7 @@ abstract class AppLocalizations {
   /// No description provided for @settings_howToBugReport_description.
   ///
   /// In en, this message translates to:
-  /// **'In order to report a bug or request a feature, open a new issue in the project GitHub repo and add the proper labels.'**
+  /// **'In order to report a bug or request a feature, open a new issue in the project GitHub repository.'**
   String get settings_howToBugReport_description;
 
   /// No description provided for @btn_saveChanges.

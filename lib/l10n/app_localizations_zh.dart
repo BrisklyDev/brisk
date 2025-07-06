@@ -434,7 +434,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get settings_howToBugReport_description =>
-      '要报告错误或请求功能，请在项目 GitHub 仓库中打开一个新的 issue 并添加适当的标签。';
+      '要报告错误或请求功能，请在项目 GitHub 仓库中打开一个新的 issue。';
 
   @override
   String get btn_saveChanges => '保存更改';
