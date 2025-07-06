@@ -1,5 +1,6 @@
 import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/util/parse_util.dart';
+import 'package:brisk/util/platform.dart';
 import 'package:brisk/util/settings_cache.dart';
 import 'package:brisk/widget/setting/base/drop_down_setting.dart';
 import 'package:brisk/widget/setting/base/settings_group.dart';
@@ -17,6 +18,18 @@ class DownloadHotkeySettingsGroup extends StatefulWidget {
 
 class _DownloadHotkeySettingsGroupState
     extends State<DownloadHotkeySettingsGroup> {
+  late final validScopes;
+
+  @override
+  void initState() {
+    final scopes = [...HotKeyScope.values];
+    if (!isWindows) {
+      scopes.remove(HotKeyScope.system);
+    }
+    validScopes = scopes.map((s) => s.name).toList();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -84,7 +97,7 @@ class _DownloadHotkeySettingsGroupState
                   strToHotkeyScope(val!);
             });
           },
-          items: [...HotKeyScope.values.map((s) => s.name).toList()],
+          items: validScopes,
         ),
         const SizedBox(height: 10),
         Center(
