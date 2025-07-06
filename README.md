@@ -76,7 +76,7 @@ To install the browser extension, please refer to the [brisk-browser-extension r
 
 - [Powerful Download Engine](#gear-brisks-download-engine)
 - [Browser Integration](#globe_with_meridians-browser-integration)
-- Downloading video streams from the browser with soft-subbing suport
+- Downloading video streams from the browser with soft-subbing support
 - Download Queues and Scheduling
 - Custom Hotkey to add a download URL from the clipboard
 
