@@ -18,6 +18,12 @@ class _WebExtensionSettingsGroupState extends State<PortSettingsGroup> {
   );
 
   @override
+  void dispose() {
+    portController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;

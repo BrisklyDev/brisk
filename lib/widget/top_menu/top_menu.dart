@@ -32,6 +32,12 @@ class _TopMenuState extends State<TopMenu> {
   TextEditingController txtController = TextEditingController();
 
   @override
+  void dispose() {
+    txtController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     provider = Provider.of<DownloadRequestProvider>(context, listen: false);
     final topMenuTheme =

@@ -32,6 +32,16 @@ class _FileCategoryGroupState extends State<FileCategoryGroup> {
   );
 
   @override
+  void dispose() {
+    videoController.dispose();
+    musicController.dispose();
+    archiveController.dispose();
+    programController.dispose();
+    documentController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final loc = AppLocalizations.of(context)!;

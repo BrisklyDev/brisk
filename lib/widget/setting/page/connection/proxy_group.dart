@@ -25,6 +25,16 @@ class _ProxyGroupState extends State<ProxyGroup> {
   TextEditingController passwordController =
       TextEditingController(text: SettingsCache.proxyPassword);
 
+
+  @override
+  void dispose() {
+    addressController.dispose();
+    portController.dispose();
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

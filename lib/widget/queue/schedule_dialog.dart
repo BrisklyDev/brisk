@@ -46,6 +46,14 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
   final FocusNode _endDateFocusNode = FocusNode();
 
   @override
+  void dispose() {
+    startDateController.dispose();
+    endDateController.dispose();
+    simultaneousDownloadController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     startDateController = TextEditingController(

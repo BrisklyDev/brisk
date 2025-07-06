@@ -21,6 +21,12 @@ class _CreateQueueWindowState extends State<CreateQueueWindow> {
   TextEditingController txtController = TextEditingController();
 
   @override
+  void dispose() {
+    txtController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     final theme =

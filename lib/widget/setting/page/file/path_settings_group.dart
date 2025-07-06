@@ -22,10 +22,19 @@ class PathSettingsGroup extends StatefulWidget {
 class _PathSettingsGroupState extends State<PathSettingsGroup> {
   String tempPath = SettingsCache.temporaryDir.path;
   String savePath = SettingsCache.saveDir.path;
-  TextEditingController tempPathController =
-      TextEditingController(text: SettingsCache.temporaryDir.path);
-  TextEditingController savePathController =
-      TextEditingController(text: SettingsCache.saveDir.path);
+  TextEditingController tempPathController = TextEditingController(
+    text: SettingsCache.temporaryDir.path,
+  );
+  TextEditingController savePathController = TextEditingController(
+    text: SettingsCache.saveDir.path,
+  );
+
+  @override
+  void dispose() {
+    tempPathController.dispose();
+    savePathController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

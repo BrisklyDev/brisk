@@ -28,7 +28,6 @@ import '../../util/file_util.dart';
 class MultiDownloadAdditionDialog extends StatefulWidget {
   List<FileInfo> fileInfos = [];
   late DownloadRequestProvider provider;
-  TextEditingController txtController = TextEditingController();
   bool checkboxEnabled = false;
 
   MultiDownloadAdditionDialog(this.fileInfos);
@@ -41,6 +40,13 @@ class MultiDownloadAdditionDialog extends StatefulWidget {
 class _MultiDownloadAdditionDialogState
     extends State<MultiDownloadAdditionDialog> {
   late AppLocalizations loc;
+  TextEditingController savePathController = TextEditingController();
+
+  @override
+  void dispose() {
+    savePathController.dispose();
+    super.dispose();
+  }
 
   Widget build(BuildContext context) {
     widget.provider =
@@ -124,7 +130,7 @@ class _MultiDownloadAdditionDialogState
                               horizontal: 12,
                             ),
                             enabled: widget.checkboxEnabled,
-                            controller: widget.txtController,
+                            controller: savePathController,
                           ),
                         ),
                       ),
@@ -199,12 +205,12 @@ class _MultiDownloadAdditionDialogState
       initialDirectory: SettingsCache.saveDir.path,
     );
     if (customSavePath != null) {
-      setState(() => widget.txtController.text = customSavePath);
+      setState(() => savePathController.text = customSavePath);
     }
   }
 
   void onAddPressed() async {
-    if (savePathExists && !Directory(widget.txtController.text).existsSync()) {
+    if (savePathExists && !Directory(savePathController.text).existsSync()) {
       showDialog(
         context: context,
         builder: (context) => ErrorDialog(
@@ -225,7 +231,7 @@ class _MultiDownloadAdditionDialogState
         (rule) => rule.isSatisfiedByDownloadItem(item),
       );
       if (savePathExists) {
-        item.filePath = path.join(widget.txtController.text, item.fileName);
+        item.filePath = path.join(savePathController.text, item.fileName);
       } else if (rule != null) {
         item.filePath = FileUtil.getFilePath(
           item.fileName,
@@ -262,7 +268,7 @@ class _MultiDownloadAdditionDialogState
   }
 
   bool get savePathExists =>
-      widget.checkboxEnabled && widget.txtController.text.isNotNullOrBlank;
+      widget.checkboxEnabled && savePathController.text.isNotNullOrBlank;
 
   bool checkDownloadDuplication(DownloadItem item) {
     return DownloadAdditionUiUtil.checkDownloadDuplication(item.fileName);

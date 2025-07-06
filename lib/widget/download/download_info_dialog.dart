@@ -46,25 +46,39 @@ class DownloadInfoDialog extends StatefulWidget {
 
 class _DownloadInfoDialogState extends State<DownloadInfoDialog>
     with SingleTickerProviderStateMixin {
-  late TextEditingController txtController;
+  late TextEditingController filePathController;
   late DownloadRequestProvider provider;
-  late AnimationController controller;
+  late AnimationController animationController;
   late Animation<double> scaleAnimation;
   late AppLocalizations loc;
+  late TextEditingController downloadUrlController;
+
+  @override
+  void dispose() {
+    filePathController.dispose();
+    animationController.dispose();
+    downloadUrlController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
-    controller = AnimationController(
+    animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 150),
     );
     scaleAnimation = CurvedAnimation(
-      parent: controller,
+      parent: animationController,
       curve: Curves.easeInOut,
     );
-    txtController = TextEditingController(text: widget.downloadItem.filePath);
-    controller.addListener(() => setState(() {}));
-    controller.forward();
+    filePathController = TextEditingController(
+      text: widget.downloadItem.filePath,
+    );
+    downloadUrlController = TextEditingController(
+      text: widget.downloadItem.downloadUrl,
+    );
+    animationController.addListener(() => setState(() {}));
+    animationController.forward();
     super.initState();
   }
 
@@ -205,9 +219,7 @@ class _DownloadInfoDialogState extends State<DownloadInfoDialog>
                     TextFieldWidget(
                       title: loc.url,
                       size: size,
-                      controller: TextEditingController(
-                        text: widget.downloadItem.downloadUrl,
-                      ),
+                      controller: downloadUrlController,
                       readonly: true,
                     ),
                     const SizedBox(height: 15),
@@ -230,7 +242,7 @@ class _DownloadInfoDialogState extends State<DownloadInfoDialog>
                                   vertical: 10,
                                   horizontal: 12,
                                 ),
-                                controller: txtController,
+                                controller: filePathController,
                                 readOnly: !widget.showActionButtons,
                               ),
                             ),
@@ -429,13 +441,13 @@ class _DownloadInfoDialogState extends State<DownloadInfoDialog>
     if (location != null) {
       setState(() {
         widget.downloadItem.filePath = location;
-        txtController.text = location;
+        filePathController.text = location;
       });
     }
   }
 
   void setDownloadItemFileName(BuildContext context) {
-    final savePath = txtController.text;
+    final savePath = filePathController.text;
     if (FileUtil.isFilePathInvalid(savePath)) {
       showDialog(
         context: context,
@@ -458,7 +470,7 @@ class _DownloadInfoDialogState extends State<DownloadInfoDialog>
     }
     widget.downloadItem.fileName = fileName;
     widget.downloadItem.filePath = path.join(
-      File(txtController.text).parent.path,
+      File(filePathController.text).parent.path,
       fileName,
     );
   }

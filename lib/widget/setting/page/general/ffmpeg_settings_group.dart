@@ -19,9 +19,16 @@ class FFmpegSettingsGroup extends StatefulWidget {
 }
 
 class _FFmpegSettingsGroupState extends State<FFmpegSettingsGroup> {
-  TextEditingController ffmpegPathController =
-      TextEditingController(text: SettingsCache.ffmpegPath);
+  TextEditingController ffmpegPathController = TextEditingController(
+    text: SettingsCache.ffmpegPath,
+  );
   late AppLocalizations loc;
+
+  @override
+  void dispose() {
+    ffmpegPathController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -37,6 +37,16 @@ class _AddUrlDialogState extends State<AddUrlDialog> {
   int minLines = 1;
 
   @override
+  void dispose() {
+    headerControllers.forEach((key, value) {
+      key.dispose();
+      value.dispose();
+    });
+    txtController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     if (DownloadAdditionUiUtil.savedHeaderControllers.isNotEmpty) {
       headerControllers = DownloadAdditionUiUtil.savedHeaderControllers;

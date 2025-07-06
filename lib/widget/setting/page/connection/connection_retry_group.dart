@@ -15,6 +15,16 @@ class ConnectionRetryGroup extends StatefulWidget {
 }
 
 class _ConnectionRetryGroupState extends State<ConnectionRetryGroup> {
+  final connRetryCountController = TextEditingController(
+    text: SettingsCache.connectionRetryCount.toString(),
+  );
+
+  @override
+  void dispose() {
+    connRetryCountController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme =
@@ -40,8 +50,7 @@ class _ConnectionRetryGroupState extends State<ConnectionRetryGroup> {
             signed: true,
             decimal: false,
           ),
-          txtController: TextEditingController(
-              text: SettingsCache.connectionRetryCount.toString()),
+          txtController: connRetryCountController,
         ),
         const SizedBox(height: 10),
         TextFieldSetting(
