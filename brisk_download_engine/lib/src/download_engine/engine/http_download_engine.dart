@@ -39,7 +39,7 @@ import 'package:path/path.dart';
 class HttpDownloadEngine {
   static const int minimumDownloadSegmentLength = 500000;
 
-  static const _connectionReuseTimerDurationSec = 2;
+  static const _connectionReuseTimerDurationSec = 1;
 
   static const _connectionSpawnerTimerDurationSec = 2;
 
