@@ -43,9 +43,15 @@ class DownloadAdditionUiUtil {
     context.loaderOverlay.hide();
   }
 
-  static Future<FileInfo> requestFileInfo(String url) async {
+  static Future<FileInfo> requestFileInfo(
+    String url, {
+    Map<String, String>? headers,
+  }) async {
     final Completer<FileInfo> completer = Completer();
     var item = DownloadItem.fromUrl(url);
+    if (headers != null) {
+      item.requestHeaders = headers;
+    }
     _spawnFileInfoRetrieverIsolate(item).then((rPort) {
       retrieveFileInfo(rPort).then((fileInfo) {
         completer.complete(fileInfo);
@@ -95,7 +101,12 @@ class DownloadAdditionUiUtil {
         fileInfo.url = url;
         context.loaderOverlay.hide();
         if (updateDialog) {
-          handleUpdateDownloadUrl(fileInfo, context, downloadId!);
+          handleUpdateDownloadUrl(
+            fileInfo,
+            context,
+            downloadId!,
+            requestHeaders: item.requestHeaders,
+          );
         } else {
           addDownload(item, fileInfo, context, additionalPop);
         }
@@ -250,7 +261,8 @@ class DownloadAdditionUiUtil {
     }
   }
 
-  static List<Map<String, String>> _removeDuplicateSubtitles(List<Map<String, String>> input) {
+  static List<Map<String, String>> _removeDuplicateSubtitles(
+      List<Map<String, String>> input) {
     final seenUrls = <String>{};
     final result = <Map<String, String>>[];
 
@@ -307,7 +319,11 @@ class DownloadAdditionUiUtil {
   }
 
   static void handleUpdateDownloadUrl(
-      FileInfo fileInfo, BuildContext context, int downloadId) {
+    FileInfo fileInfo,
+    BuildContext context,
+    int downloadId, {
+    Map<String, String>? requestHeaders,
+  }) {
     final dl = HiveUtil.instance.downloadItemsBox.get(downloadId)!;
     if (dl.contentLength != fileInfo.contentLength) {
       showDialog(
@@ -320,17 +336,32 @@ class DownloadAdditionUiUtil {
         ),
       );
     } else {
-      updateUrl(context, fileInfo.url, dl, downloadId);
+      updateUrl(
+        context,
+        fileInfo.url,
+        dl,
+        downloadId,
+        requestHeaders: requestHeaders,
+      );
       BrowserExtensionServer.awaitingUpdateUrlItem = null;
     }
   }
 
   static void updateUrl(
-      BuildContext context, String url, DownloadItem dl, int downloadId) {
+    BuildContext context,
+    String url,
+    DownloadItem dl,
+    int downloadId, {
+    Map<String, String>? requestHeaders,
+  }) {
     final downloadProgress =
         Provider.of<DownloadRequestProvider>(context, listen: false)
             .downloads[downloadId];
     downloadProgress?.downloadItem.downloadUrl = url;
+    if (requestHeaders != null) {
+      downloadProgress?.downloadItem.requestHeaders = requestHeaders;
+      dl.requestHeaders = requestHeaders;
+    }
     dl.downloadUrl = url;
     HiveUtil.instance.downloadItemsBox.put(dl.key, dl);
     safePop(context);

@@ -528,6 +528,7 @@ class BrowserExtensionServer {
     final loc = AppLocalizations.of(context)!;
     final url = jsonBody['data']['url'];
     final referer = jsonBody['data']['referer'];
+    final cookie = jsonBody['data']['cookie'];
     Completer<bool> completer = Completer();
     if (awaitingUpdateUrlItem != null) {
       final id = awaitingUpdateUrlItem!.key;
@@ -537,16 +538,23 @@ class BrowserExtensionServer {
         url,
         updateDialog: true,
         additionalPop: true,
+        headers: cookie != null ? {'Cookie': cookie} : {},
       );
       completer.complete(true);
       return completer.future;
     }
     final downloadItem = DownloadItem.fromUrl(url);
     downloadItem.referer = referer;
+    if (cookie != null) {
+      downloadItem.requestHeaders = {'Cookie': cookie};
+    }
     if (!isUrlValid(url)) {
       completer.complete(false);
     }
-    final fileInfoResponse = DownloadAdditionUiUtil.requestFileInfo(url);
+    final fileInfoResponse = DownloadAdditionUiUtil.requestFileInfo(
+      url,
+      headers: downloadItem.requestHeaders,
+    );
     fileInfoResponse.then((fileInfo) {
       final satisfied = SettingsCache.extensionSkipCaptureRules.any(
         (rule) => rule.isSatisfiedByFileInfo(fileInfo),
