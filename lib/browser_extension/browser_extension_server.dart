@@ -620,7 +620,7 @@ class BrowserExtensionServer {
         textHeight: 40,
         textSpaceBetween: 10,
         title: "Failed to listen to port $port! ${e.runtimeType}",
-        text: e.toString(),
+        description: e.toString(),
       ),
     );
   }
