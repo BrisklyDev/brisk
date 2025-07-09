@@ -228,7 +228,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'In some cases, retrying a few times may solve the issue. Otherwise, make sure the resource you\'re to reach is valid.';
 
   @override
-  String get retrievingFileInformation => 'Retrieving file information...';
+  String get retrievingFileInformation => 'Fetching file information...';
+
+  @override
+  String get fetchingSubtitles => 'Fetching subtitles...';
 
   @override
   String get settings_title => 'Settings';

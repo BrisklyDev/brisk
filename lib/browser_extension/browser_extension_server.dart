@@ -15,11 +15,13 @@ import 'package:brisk/util/file_util.dart';
 import 'package:brisk/util/http_util.dart';
 import 'package:brisk/util/parse_util.dart';
 import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/util/ui_util.dart';
 import 'package:brisk/widget/base/error_dialog.dart';
 import 'package:brisk/widget/download/m3u8_master_playlist_dialog.dart';
 import 'package:brisk/widget/download/update_available_dialog.dart';
 import 'package:brisk/widget/loader/file_info_loader.dart';
 import 'package:brisk_download_engine/brisk_download_engine.dart';
+import 'package:brisk_download_engine/src/download_engine/client/custom_base_client.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -33,8 +35,23 @@ class BrowserExtensionServer {
   static DownloadItem? awaitingUpdateUrlItem;
   static HttpServer? _server;
 
+  /// A map of prefetch vtt and m3u8 data by tabId coming form the extension
+  static Map<int, List<M3U8>> _m3u8PrefetchCache = {};
+  static Map<int, Map<String, String>> vttPrefetchCache = {};
+  static Map<int, List<Pair<String, String>>> _fetchedVtts = {};
+  static Timer? _m3u8PrefetchCacheClearTimer;
+
+  /// To be able to reuse the http client, cached vtts will try be fetched every
+  /// 3 seconds and the first pair argument determines how many times the timer
+  /// should run in total.
+  static Map<int, Pair<int, Timer?>> _vttFetcherTimers = {};
+
   static Future<void> setup(BuildContext context) async {
     if (_server != null) return;
+    _m3u8PrefetchCacheClearTimer = Timer.periodic(
+      Duration(minutes: 5),
+      (_) => _m3u8PrefetchCache.clear(),
+    );
 
     final port = _extensionPort;
     try {
@@ -54,7 +71,12 @@ class BrowserExtensionServer {
   }
 
   static Future<void> restart(BuildContext context) async {
-    Logger.log("Stopping server for restart...");
+    _vttFetcherTimers.clear();
+    vttPrefetchCache.clear();
+    _m3u8PrefetchCache.clear();
+    _m3u8PrefetchCacheClearTimer?.cancel();
+    _m3u8PrefetchCacheClearTimer = null;
+    _vttFetcherTimers.forEach((_, value) => value.second?.cancel());
     await _server?.close(force: true);
     _server = null;
     await Future.delayed(Duration(milliseconds: 300));
@@ -67,16 +89,11 @@ class BrowserExtensionServer {
         bool responseClosed = false;
         try {
           addCORSHeaders(request);
-          final bodyBytes = await request.fold<List<int>>(
-            [],
-            (previous, element) => previous..addAll(element),
-          );
-          final body = utf8.decode(bodyBytes);
-          if (body.isEmpty) {
+          final jsonBody = await _jsonifyBody(request);
+          if (jsonBody == null) {
             await flushAndCloseResponse(request, false);
             return;
           }
-          final jsonBody = jsonDecode(body);
           final targetVersion = jsonBody["extensionVersion"];
           if (targetVersion == null || targetVersion.toString().isNullOrBlank) {
             await request.response.close();
@@ -86,8 +103,19 @@ class BrowserExtensionServer {
           if (isNewVersionAvailable(extensionVersion, targetVersion)) {
             showNewBrowserExtensionVersion(context);
           }
-          final success =
-              await _handleDownloadAddition(jsonBody, context, request);
+          if (request.uri.path == '/fetch-m3u8') {
+            _fetchAndCacheM3u8(request, jsonBody);
+            return;
+          }
+          if (request.uri.path == '/fetch-vtt') {
+            _fetchAndCacheVtt(request, jsonBody);
+            return;
+          }
+          final success = await _handleDownloadAddition(
+            jsonBody,
+            context,
+            request,
+          );
           await flushAndCloseResponse(request, success);
           responseClosed = true;
         } catch (e, stack) {
@@ -103,11 +131,121 @@ class BrowserExtensionServer {
       }, (error, stack) {
         if (error == "Failed to get file information") {
           DownloadAdditionUiUtil.showFileInfoErrorDialog(context);
+          flushAndCloseResponse(request, false);
           return;
         }
         Logger.log("Unhandled error in request zone: $error\n$stack");
       });
     }
+  }
+
+  static dynamic _jsonifyBody(HttpRequest request) async {
+    final bodyBytes = await request.fold<List<int>>(
+      [],
+      (previous, element) => previous..addAll(element),
+    );
+    final body = utf8.decode(bodyBytes);
+    if (body.isEmpty) {
+      return null;
+    }
+    return jsonDecode(body);
+  }
+
+  static void _fetchAndCacheVtt(HttpRequest request, jsonBody) async {
+    final tabId = jsonBody['tabId'];
+    vttPrefetchCache[tabId] ??= {};
+    _fetchedVtts[tabId] ??= [];
+    vttPrefetchCache[tabId]!.addAll(
+      {jsonBody['url']: jsonBody['referer']},
+    );
+    if (_vttFetcherTimers[tabId] == null) {
+      final client = await HttpClientBuilder.buildClient(
+        SettingsCache.clientSettings,
+      );
+      _vttFetcherTimers[tabId] ??= Pair(
+        1,
+        Timer.periodic(
+          Duration(seconds: 3),
+          (timer) => _fetchAndCacheVttSubtitles(tabId, timer, client),
+        ),
+      );
+    }
+    await flushAndCloseResponse(request, true);
+  }
+
+  static void _fetchAndCacheVttSubtitles(
+    tabId,
+    Timer timer,
+    CustomBaseClient client,
+  ) {
+    if (_vttFetcherTimers[tabId]!.first > 2) {
+      timer.cancel();
+    }
+    vttPrefetchCache.forEach((tabId, vtts) {
+      vtts.forEach((url, referer) {
+        final alreadyFetched =
+            _fetchedVtts[tabId]!.any((pair) => pair.first == url);
+        if (alreadyFetched) {
+          return;
+        }
+        final uri = Uri.parse(url);
+        final headers = {
+          'referer': referer ?? '',
+          'User-Agent': userAgentHeader.values.first
+        };
+        client.get(uri, headers: headers).then((response) {
+          if (response.statusCode == 200) {
+            _fetchedVtts[tabId]!.add(Pair(url, response.body));
+          }
+        });
+      });
+    });
+    _vttFetcherTimers[tabId] = Pair(_vttFetcherTimers[tabId]!.first + 1, timer);
+  }
+
+  static void _fetchAndCacheM3u8(request, jsonBody) async {
+    final url = jsonBody['url'];
+    final referer = jsonBody['referer'];
+    final suggestedName = jsonBody['suggestedName'];
+    final tabId = jsonBody['tabId'];
+    M3U8 m3u8;
+    try {
+      m3u8 = await _downloadAndParseM3u8Meta(
+        url,
+        refererHeader: referer,
+        suggestedName: suggestedName,
+      );
+    } catch (e) {
+      flushAndCloseResponse(request, false);
+      return;
+    }
+    final responseBody = {};
+    _m3u8PrefetchCache[tabId] = [];
+    _m3u8PrefetchCache[tabId]!.add(m3u8);
+    if (m3u8.isMasterPlaylist) {
+      m3u8.setStreamInfsResolutionFileName();
+      for (final streamInf in m3u8.streamInfos) {
+        if (streamInf.m3u8 != null) {
+          _m3u8PrefetchCache[tabId]!.add(streamInf.m3u8!);
+        }
+      }
+      final streamInfs = m3u8.streamInfos
+          .map(
+            (s) => {
+              'url': s.m3u8!.url,
+              'resolution': s.resolution,
+              'fileName': s.m3u8!.fileName,
+            },
+          )
+          .toList();
+      responseBody['streamInfs'] = streamInfs;
+    }
+    responseBody['referer'] = referer;
+    responseBody['isMasterPlaylist'] = m3u8.isMasterPlaylist;
+    responseBody['fileName'] = m3u8.fileName;
+    responseBody['url'] = m3u8.url;
+    responseBody['captured'] = true;
+    await sendResponse(request, responseBody);
   }
 
   static void showNewBrowserExtensionVersion(BuildContext context) async {
@@ -166,66 +304,14 @@ class BrowserExtensionServer {
   }
 
   static void _handleM3u8DownloadRequest(jsonBody, context, request) async {
-    print(jsonBody);
-    final loc = AppLocalizations.of(context)!;
-    bool canceled = false;
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => FileInfoLoader(
-        onCancelPressed: () {
-          canceled = true;
-          Navigator.of(context).pop();
-        },
-      ),
-    );
-    final List<Map<String, String>> vttUrls = (jsonBody['vttUrls'] as List)
-        .map((item) => (item as Map).map<String, String>(
-              (key, value) => MapEntry(key.toString(), value?.toString() ?? ""),
-            ))
-        .toList();
-    final subtitles = await fetchSubtitlesIsolate(
-      vttUrls,
-      SettingsCache.clientSettings,
-    );
-    final url = jsonBody["m3u8Url"] as String;
-    var suggestedName = jsonBody["suggestedName"] as String?;
-    if (FileUtil.isFileNameInvalid(suggestedName) ||
-        suggestedName != null && suggestedName.isEmpty) {
-      suggestedName = null;
-    }
-    final refererHeader = jsonBody["refererHeader"] as String?;
-    M3U8 m3u8;
-    try {
-      String m3u8Content = await fetchBodyString(
-        url,
-        clientSettings: SettingsCache.clientSettings,
-        headers: refererHeader != null
-            ? {
-                HttpHeaders.refererHeader: refererHeader,
-              }
-            : {},
-      );
-      m3u8 = (await M3U8.fromString(
-        m3u8Content,
-        url,
-        clientSettings: SettingsCache.clientSettings,
-        refererHeader: refererHeader,
-        suggestedFileName: suggestedName,
-      ))!;
-    } catch (e) {
-      if (canceled) {
-        return;
-      }
-      Navigator.of(context).pop();
+    handleWindowToFront();
+    final subtitles = await _fetchVttSubtitles(jsonBody, context);
+    final m3u8 = await _fetchM3u8(jsonBody, context);
+    if (m3u8 == null) {
+      safePop(context);
       DownloadAdditionUiUtil.showFileInfoErrorDialog(context);
       return;
     }
-    if (canceled) {
-      return;
-    }
-    Navigator.of(context).pop();
-    handleWindowToFront();
     if (m3u8.isMasterPlaylist) {
       _handleMasterPlaylist(m3u8, context, subtitles);
       return;
@@ -235,6 +321,110 @@ class BrowserExtensionServer {
       context,
       subtitles,
     );
+  }
+
+  static Future<M3U8?> _fetchM3u8(jsonBody, context) async {
+    final tabId = jsonBody['tabId'];
+    final url = jsonBody['m3u8Url'] as String;
+    M3U8? m3u8 =
+        _m3u8PrefetchCache[tabId]?.where((m3u8) => m3u8.url == url).firstOrNull;
+    if (m3u8 != null) {
+      return m3u8;
+    }
+    bool canceled = false;
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => FileInfoLoader(
+        onCancelPressed: () {
+          canceled = true;
+          safePop(context);
+        },
+      ),
+    );
+    var suggestedName = jsonBody["suggestedName"] as String?;
+    if (FileUtil.isFileNameInvalid(suggestedName) ||
+        suggestedName != null && suggestedName.isEmpty) {
+      suggestedName = null;
+    }
+    final refererHeader = jsonBody["refererHeader"] as String?;
+    try {
+      m3u8 = await _downloadAndParseM3u8Meta(
+        url,
+        refererHeader: refererHeader,
+        suggestedName: suggestedName,
+      );
+    } catch (e) {
+      if (canceled) {
+        return null;
+      }
+    }
+    if (m3u8 != null) {
+      safePop(context);
+    }
+    return m3u8;
+  }
+
+  /// Fetches the subtitles from the prefetched cache and if empty, downloads them
+  static Future<List<Map<String, String>>> _fetchVttSubtitles(
+    jsonBody,
+    context,
+  ) async {
+    final tabId = jsonBody['tabId'];
+    List<Pair<String, String>>? subtitles = _fetchedVtts[tabId];
+    bool foundInCache = true;
+    if (_fetchedVtts[tabId] == null || _fetchedVtts[tabId]!.isEmpty) {
+      foundInCache = false;
+      final List<Map<String, String>> vttUrls = (jsonBody['vttUrls'] as List?)
+              ?.map((item) => (item as Map).map<String, String>(
+                    (key, value) =>
+                        MapEntry(key.toString(), value?.toString() ?? ""),
+                  ))
+              .toList() ??
+          [];
+      try {
+        _showLoadingDialog(
+          context,
+          customMessage: AppLocalizations.of(context)!.fetchingSubtitles,
+        );
+        subtitles = await fetchSubtitlesIsolate(
+          vttUrls,
+          SettingsCache.clientSettings,
+        );
+      } catch (e) {
+        Logger.log("Failed to fetch subs ${e}");
+      }
+    }
+    if (!foundInCache) {
+      safePop(context);
+    }
+    return subtitles
+            ?.map((p) => {'url': p.first, 'content': p.second})
+            .toList() ??
+        [];
+  }
+
+  static Future<M3U8> _downloadAndParseM3u8Meta(
+    String url, {
+    String? refererHeader,
+    String? suggestedName,
+  }) async {
+    String m3u8Content = await fetchBodyString(
+      url,
+      clientSettings: SettingsCache.clientSettings,
+      headers: refererHeader != null
+          ? {
+              HttpHeaders.refererHeader: refererHeader,
+            }
+          : {},
+    );
+    return (await M3U8.fromString(
+      m3u8Content,
+      url,
+      clientSettings: SettingsCache.clientSettings,
+      refererHeader: refererHeader,
+      suggestedFileName: suggestedName,
+    ))!;
   }
 
   static void _handleMasterPlaylist(
@@ -252,13 +442,10 @@ class BrowserExtensionServer {
     );
   }
 
-  static Future<void> flushAndCloseResponse(
-    HttpRequest request,
-    bool success,
-  ) async {
+  static Future<void> sendResponse(HttpRequest request, body) async {
     try {
-      final body = jsonEncode({"captured": success});
-      request.response.write(body);
+      final responseBody = jsonEncode(body);
+      request.response.write(responseBody);
       await request.response.flush();
       await request.response.close();
     } catch (_) {
@@ -266,6 +453,13 @@ class BrowserExtensionServer {
         await request.response.close();
       } catch (_) {}
     }
+  }
+
+  static Future<void> flushAndCloseResponse(
+    HttpRequest request,
+    bool success,
+  ) async {
+    return await sendResponse(request, {"captured": success});
   }
 
   static void addCORSHeaders(HttpRequest httpRequest) {
@@ -297,7 +491,7 @@ class BrowserExtensionServer {
         ),
       );
       handleWindowToFront();
-      Navigator.of(context).pop();
+      safePop(context);
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -313,14 +507,16 @@ class BrowserExtensionServer {
     }
   }
 
-  static void _showLoadingDialog(context) {
+  static void _showLoadingDialog(context, {String? customMessage}) {
     showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (_) => FileInfoLoader(onCancelPressed: () {
-        _cancelClicked = true;
-        Navigator.of(context).pop();
-      }),
+      builder: (_) => FileInfoLoader(
+          message: customMessage,
+          onCancelPressed: () {
+            _cancelClicked = true;
+            safePop(context);
+          }),
     );
   }
 

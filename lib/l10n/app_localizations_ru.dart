@@ -231,6 +231,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get retrievingFileInformation => 'Сбор данных о файле...';
 
   @override
+  String get fetchingSubtitles => 'Fetching subtitles...';
+
+  @override
   String get settings_title => 'Настройки';
 
   @override

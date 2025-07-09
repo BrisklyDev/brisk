@@ -232,6 +232,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get retrievingFileInformation => 'Recupero info sul file...';
 
   @override
+  String get fetchingSubtitles => 'Fetching subtitles...';
+
+  @override
   String get settings_title => 'Impostazioni';
 
   @override

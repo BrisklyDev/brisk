@@ -7,8 +7,13 @@ import 'package:provider/provider.dart';
 
 class FileInfoLoader extends StatelessWidget {
   final VoidCallback onCancelPressed;
+  final String? message;
 
-  const FileInfoLoader({super.key, required this.onCancelPressed});
+  const FileInfoLoader({
+    super.key,
+    required this.onCancelPressed,
+    this.message,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +34,7 @@ class FileInfoLoader extends StatelessWidget {
             SpinKitRing(color: Colors.blueAccent, size: 30),
             const SizedBox(height: 10),
             Text(
-              loc.retrievingFileInformation,
+              message ?? loc.retrievingFileInformation,
               style: TextStyle(color: theme.textColor, fontSize: 15),
             ),
           ],

@@ -227,6 +227,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get retrievingFileInformation => '正在获取文件信息...';
 
   @override
+  String get fetchingSubtitles => 'Fetching subtitles...';
+
+  @override
   String get settings_title => '设置';
 
   @override

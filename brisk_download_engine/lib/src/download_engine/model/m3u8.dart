@@ -33,6 +33,24 @@ class M3U8 {
 
   bool get isMasterPlaylist => segments.isEmpty && streamInfos.isNotEmpty;
 
+  void setStreamInfsResolutionFileName() {
+    for (final streamInf in streamInfos) {
+      if (streamInf.m3u8 != null && streamInf.m3u8!.fileName.contains(".ts")) {
+        final rawName = streamInf.m3u8?.fileName.substring(
+          0,
+          streamInf.m3u8?.fileName.lastIndexOf(".ts"),
+        );
+        if (streamInf.resolution == '1920x1080') {
+          streamInf.m3u8?.fileName = '$rawName.1080p.ts';
+        } else if (streamInf.resolution == '1280x720') {
+          streamInf.m3u8?.fileName = '$rawName.720p.ts';
+        } else {
+          streamInf.m3u8?.fileName = '$rawName.${streamInf.resolution}.ts';
+        }
+      }
+    }
+  }
+
   static Future<M3U8?> fromUrl(
     String url, {
     HttpClientSettings? clientSettings,

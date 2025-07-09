@@ -9,6 +9,7 @@ import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/model/isolate/isolate_args.dart';
 import 'package:brisk/util/ffmpeg.dart';
 import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/util/ui_util.dart';
 import 'package:brisk/widget/base/info_dialog.dart';
 import 'package:brisk/widget/download/download_info_dialog.dart';
 import 'package:brisk/widget/download/ffmpeg_not_found_dialog.dart';
@@ -167,7 +168,7 @@ class DownloadAdditionUiUtil {
   }
 
   static onFileInfoRetrievalError(context) {
-    Navigator.of(context).pop();
+    safePop(context);
     final loc = AppLocalizations.of(context)!;
     showFileInfoErrorDialog(context);
   }
@@ -227,7 +228,7 @@ class DownloadAdditionUiUtil {
         "m3u8Content": m3u8.stringContent,
         "refererHeader": m3u8.refererHeader,
       },
-      subtitles: subtitles,
+      subtitles: _removeDuplicateSubtitles(subtitles),
     );
     showDialog(
       context: context,
@@ -247,6 +248,20 @@ class DownloadAdditionUiUtil {
         builder: (context) => FFmpegNotFoundDialog(),
       );
     }
+  }
+
+  static List<Map<String, String>> _removeDuplicateSubtitles(List<Map<String, String>> input) {
+    final seenUrls = <String>{};
+    final result = <Map<String, String>>[];
+
+    for (final item in input) {
+      final url = item['url'];
+      if (url != null && seenUrls.add(url)) {
+        result.add(item);
+      }
+    }
+
+    return result;
   }
 
   static void addDownload(
@@ -286,7 +301,7 @@ class DownloadAdditionUiUtil {
 
   static void _skipDownload(BuildContext context, bool additionalPop) {
     if (additionalPop) {
-      Navigator.of(context).pop();
+      safePop(context);
     }
     _showSnackBar(context, "Download already exists!");
   }
@@ -318,7 +333,7 @@ class DownloadAdditionUiUtil {
     downloadProgress?.downloadItem.downloadUrl = url;
     dl.downloadUrl = url;
     HiveUtil.instance.downloadItemsBox.put(dl.key, dl);
-    Navigator.of(context).pop();
+    safePop(context);
     showDialog(
       context: context,
       builder: (context) => InfoDialog(
@@ -376,7 +391,7 @@ class DownloadAdditionUiUtil {
       builder: (context) => AskDuplicationAction(
         fileDuplication: false,
         onCreateNewPressed: () {
-          Navigator.of(context).pop();
+          safePop(context);
           showDownloadInfoDialog(context, item, additionalPop);
         },
         onSkipPressed: () => _onSkipPressed(context, additionalPop),
@@ -389,7 +404,7 @@ class DownloadAdditionUiUtil {
   static void _onUpdateUrlPressed(bool pop, context, FileInfo fileInfo,
       {bool showUpdatedSnackbar = false}) async {
     if (pop) {
-      Navigator.of(context).pop();
+      safePop(context);
     }
     final downloadItem_boxValue = HiveUtil.instance.downloadItemsBox.values
         .where((item) =>
@@ -415,19 +430,16 @@ class DownloadAdditionUiUtil {
   }
 
   static void _onSkipPressed(BuildContext context, bool additionalPop) {
+    safePop(context);
     if (additionalPop) {
-      Navigator.of(context)
-        ..pop()
-        ..pop();
-    } else {
-      Navigator.of(context).pop();
+      safePop(context);
     }
   }
 
   static void showDownloadInfoDialog(
       BuildContext context, DownloadItem item, bool additionalPop) {
     if (additionalPop) {
-      Navigator.of(context).pop();
+      safePop(context);
     }
     final rule = SettingsCache.fileSavePathRules.firstOrNullWhere(
       (rule) => rule.isSatisfiedByDownloadItem(item),
@@ -504,7 +516,7 @@ Future<void> _fetchUrlsIsolate(SendPort initialSendPort) async {
       continue;
     }
     if (message is List<Map<String, String>>) {
-      final results = <Map<String, String>>[];
+      List<Pair<String, String>> results = [];
       for (final urlMap in message) {
         try {
           final client = await HttpClientBuilder.buildClient(clientSettings);
@@ -514,7 +526,7 @@ Future<void> _fetchUrlsIsolate(SendPort initialSendPort) async {
               ..addAll(userAgentHeader),
           );
           if (response.statusCode == 200) {
-            results.add({'url': urlMap['url']!, 'content': response.body});
+            results.add(Pair(urlMap['url']!, response.body));
           }
         } catch (e) {
           print(e);
@@ -526,20 +538,20 @@ Future<void> _fetchUrlsIsolate(SendPort initialSendPort) async {
   }
 }
 
-Future<List<Map<String, String>>> fetchSubtitlesIsolate(
+Future<List<Pair<String, String>>> fetchSubtitlesIsolate(
   List<Map<String, String>> urls,
   HttpClientSettings? clientSettings,
 ) async {
   final receivePort = ReceivePort();
   await Isolate.spawn(_fetchUrlsIsolate, receivePort.sendPort);
-  final completer = Completer<List<Map<String, String>>>();
+  final completer = Completer<List<Pair<String, String>>>();
   late SendPort isolateSendPort;
   receivePort.listen((message) {
     if (message is SendPort) {
       isolateSendPort = message;
       isolateSendPort.send(clientSettings);
       isolateSendPort.send(urls);
-    } else if (message is List<Map<String, String>>) {
+    } else if (message is List<Pair<String, String>>) {
       completer.complete(message);
       receivePort.close();
     }

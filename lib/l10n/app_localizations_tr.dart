@@ -230,6 +230,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get retrievingFileInformation => 'Dosya bilgileri alınıyor...';
 
   @override
+  String get fetchingSubtitles => 'Fetching subtitles...';
+
+  @override
   String get settings_title => 'Ayarlar';
 
   @override

@@ -230,6 +230,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get retrievingFileInformation => 'در حال دریافت اطلاعات فایل...';
 
   @override
+  String get fetchingSubtitles => 'Fetching subtitles...';
+
+  @override
   String get settings_title => 'تنظیمات';
 
   @override

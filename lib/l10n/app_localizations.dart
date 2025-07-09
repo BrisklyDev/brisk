@@ -539,8 +539,14 @@ abstract class AppLocalizations {
   /// No description provided for @retrievingFileInformation.
   ///
   /// In en, this message translates to:
-  /// **'Retrieving file information...'**
+  /// **'Fetching file information...'**
   String get retrievingFileInformation;
+
+  /// No description provided for @fetchingSubtitles.
+  ///
+  /// In en, this message translates to:
+  /// **'Fetching subtitles...'**
+  String get fetchingSubtitles;
 
   /// No description provided for @settings_title.
   ///

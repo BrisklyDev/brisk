@@ -232,6 +232,9 @@ class AppLocalizationsDe extends AppLocalizations {
       'Dateiinformationen werden abgerufen...';
 
   @override
+  String get fetchingSubtitles => 'Fetching subtitles...';
+
+  @override
   String get settings_title => 'Einstellungen';
 
   @override
