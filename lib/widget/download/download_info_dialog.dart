@@ -8,7 +8,7 @@ import 'package:brisk/provider/theme_provider.dart';
 import 'package:brisk/util/download_engine_util.dart';
 import 'package:brisk/util/file_util.dart';
 import 'package:brisk/util/readability_util.dart';
-import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/setting/settings_cache.dart';
 import 'package:brisk/widget/base/default_tooltip.dart';
 import 'package:brisk/widget/base/error_dialog.dart';
 import 'package:brisk/widget/base/outlined_text_field.dart';

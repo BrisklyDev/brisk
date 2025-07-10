@@ -1,4 +1,4 @@
-import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/setting/settings_cache.dart';
 import 'package:flutter/cupertino.dart';
 
 class LocaleProvider with ChangeNotifier {

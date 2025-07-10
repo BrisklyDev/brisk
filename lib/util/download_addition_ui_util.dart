@@ -8,7 +8,7 @@ import 'package:brisk/constants/file_type.dart';
 import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/model/isolate/isolate_args.dart';
 import 'package:brisk/util/ffmpeg.dart';
-import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/setting/settings_cache.dart';
 import 'package:brisk/util/ui_util.dart';
 import 'package:brisk/widget/base/info_dialog.dart';
 import 'package:brisk/widget/download/download_info_dialog.dart';

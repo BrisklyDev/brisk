@@ -2,7 +2,7 @@ import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/setting/rule/file_condition.dart';
 import 'package:brisk/setting/rule/file_save_path_rule.dart';
 import 'package:brisk/setting/rule/rule_value_type.dart';
-import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/setting/settings_cache.dart';
 import 'package:brisk/widget/base/default_tooltip.dart';
 
 import 'package:brisk/widget/setting/base/external_link_setting.dart';

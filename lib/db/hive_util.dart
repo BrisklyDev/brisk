@@ -3,7 +3,7 @@ import 'package:brisk/model/download_queue.dart';
 import 'package:brisk/model/general_data.dart';
 import 'package:brisk/model/migration.dart';
 import 'package:brisk/model/setting.dart';
-import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/setting/settings_cache.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:brisk/model/download_item.dart';

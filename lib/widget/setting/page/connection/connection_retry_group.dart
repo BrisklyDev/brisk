@@ -5,7 +5,7 @@ import 'package:brisk/widget/setting/base/text_field_setting.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../util/settings_cache.dart';
+import '../../../../setting/settings_cache.dart';
 
 class ConnectionRetryGroup extends StatefulWidget {
   const ConnectionRetryGroup({super.key});

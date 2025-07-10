@@ -18,7 +18,7 @@ import 'package:flutter/services.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:rhttp/rhttp.dart';
-import 'file_util.dart';
+import '../util/file_util.dart';
 
 class SettingsCache {
   static late String currentVersion;

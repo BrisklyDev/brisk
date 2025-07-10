@@ -1,7 +1,7 @@
 import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/util/parse_util.dart';
 import 'package:brisk/util/platform.dart';
-import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/setting/settings_cache.dart';
 import 'package:brisk/widget/setting/base/drop_down_setting.dart';
 import 'package:brisk/widget/setting/base/settings_group.dart';
 import 'package:flutter/material.dart';

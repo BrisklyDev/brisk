@@ -13,7 +13,7 @@ import 'package:path/path.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../constants/file_type.dart';
-import 'settings_cache.dart';
+import '../setting/settings_cache.dart';
 
 class FileUtil {
   static final versionedFileRegex = RegExp('.*_\d*');

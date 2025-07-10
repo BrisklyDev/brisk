@@ -3,7 +3,7 @@ import 'package:archive/archive.dart';
 import 'package:brisk/util/download_engine_util.dart';
 import 'package:brisk/util/http_util.dart';
 import 'package:brisk/util/platform.dart';
-import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/setting/settings_cache.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:brisk/model/download_item.dart';

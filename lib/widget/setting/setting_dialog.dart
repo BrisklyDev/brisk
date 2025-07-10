@@ -13,7 +13,7 @@ import 'package:brisk/widget/setting/side_menu/settings_side_menu_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../util/settings_cache.dart';
+import '../../setting/settings_cache.dart';
 
 class SettingsDialog extends StatefulWidget {
   const SettingsDialog({super.key});

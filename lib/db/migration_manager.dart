@@ -3,7 +3,7 @@ import 'package:brisk/db/hive_util.dart';
 import 'package:brisk/model/general_data.dart';
 import 'package:brisk/model/migration.dart';
 import 'package:brisk/model/setting.dart';
-import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/setting/settings_cache.dart';
 
 class MigrationManager {
   static List<Migration> migrations = [

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:brisk/util/app_logger.dart';
-import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/setting/settings_cache.dart';
 import 'package:brisk/util/tray_handler.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/cupertino.dart';

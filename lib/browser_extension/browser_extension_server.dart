@@ -14,7 +14,7 @@ import 'package:brisk/util/download_addition_ui_util.dart';
 import 'package:brisk/util/file_util.dart';
 import 'package:brisk/util/http_util.dart';
 import 'package:brisk/util/parse_util.dart';
-import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/setting/settings_cache.dart';
 import 'package:brisk/util/ui_util.dart';
 import 'package:brisk/widget/base/error_dialog.dart';
 import 'package:brisk/widget/download/m3u8_master_playlist_dialog.dart';

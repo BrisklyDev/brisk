@@ -6,7 +6,7 @@ import 'package:brisk/model/download_item.dart';
 import 'package:brisk/provider/ffmpeg_installation_provider.dart';
 import 'package:brisk/util/app_logger.dart';
 import 'package:brisk/util/platform.dart';
-import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/setting/settings_cache.dart';
 import 'package:brisk/widget/base/error_dialog.dart';
 import 'package:path/path.dart';
 import 'package:brisk/widget/base/info_dialog.dart';

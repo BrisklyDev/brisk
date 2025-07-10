@@ -5,7 +5,7 @@ import 'package:brisk/widget/setting/base/switch_setting.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../constants/file_duplication_behaviour.dart';
-import '../../../../util/settings_cache.dart';
+import '../../../../setting/settings_cache.dart';
 import '../../base/drop_down_setting.dart';
 
 class BehaviourSettingsGroup extends StatefulWidget {

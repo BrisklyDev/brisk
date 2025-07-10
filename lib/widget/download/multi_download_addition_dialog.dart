@@ -8,7 +8,7 @@ import 'package:brisk/provider/pluto_grid_util.dart';
 import 'package:brisk/provider/theme_provider.dart';
 import 'package:brisk/util/download_addition_ui_util.dart';
 import 'package:brisk/util/download_engine_util.dart';
-import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/setting/settings_cache.dart';
 import 'package:brisk/widget/base/error_dialog.dart';
 import 'package:brisk/widget/base/outlined_text_field.dart';
 import 'package:brisk/widget/base/rounded_outlined_button.dart';

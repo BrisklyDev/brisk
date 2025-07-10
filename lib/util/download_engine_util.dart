@@ -1,5 +1,5 @@
 import 'package:brisk/model/download_item.dart';
-import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/setting/settings_cache.dart';
 import 'package:brisk_download_engine/brisk_download_engine.dart';
 
 DownloadSettings downloadSettingsFromCache() {

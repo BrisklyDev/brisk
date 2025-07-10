@@ -7,7 +7,7 @@ import 'package:brisk/setting/rule/file_rule.dart';
 import 'package:brisk/setting/rule/file_save_path_rule.dart';
 import 'package:brisk/setting/rule/rule_value_type.dart';
 import 'package:brisk/theme/application_theme.dart';
-import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/setting/settings_cache.dart';
 import 'package:brisk/widget/base/error_dialog.dart';
 import 'package:brisk/widget/base/outlined_text_field.dart';
 import 'package:brisk/widget/base/rounded_outlined_button.dart';

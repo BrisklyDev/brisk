@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../util/settings_cache.dart';
+import '../setting/settings_cache.dart';
 
 class SettingsProvider with ChangeNotifier {
   static final SettingsProvider instance = SettingsProvider._internal();

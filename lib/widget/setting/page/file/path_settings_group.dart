@@ -10,7 +10,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../util/settings_cache.dart';
+import '../../../../setting/settings_cache.dart';
 
 class PathSettingsGroup extends StatefulWidget {
   const PathSettingsGroup({super.key});

@@ -40,7 +40,7 @@ import 'package:tray_manager/tray_manager.dart';
 import 'package:window_manager/window_manager.dart';
 import 'l10n/app_localizations.dart';
 import 'util/file_util.dart';
-import 'util/settings_cache.dart';
+import 'setting/settings_cache.dart';
 
 // TODO Fix resizing the window when a row is selected
 Future<void> main(List<String> args) async {

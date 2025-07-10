@@ -1,5 +1,5 @@
 import 'package:brisk/theme/application_theme.dart';
-import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/setting/settings_cache.dart';
 import 'package:flutter/material.dart';
 
 class ApplicationThemeHolder {

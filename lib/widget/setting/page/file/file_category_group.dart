@@ -5,7 +5,7 @@ import 'package:brisk/widget/setting/base/switch_setting.dart';
 import 'package:brisk/widget/setting/base/text_field_setting.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../util/settings_cache.dart';
+import '../../../../setting/settings_cache.dart';
 
 class FileCategoryGroup extends StatefulWidget {
   const FileCategoryGroup({super.key});

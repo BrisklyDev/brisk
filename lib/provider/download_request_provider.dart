@@ -16,7 +16,7 @@ import 'package:pluto_grid/pluto_grid.dart';
 import 'package:brisk/util/download_engine_util.dart';
 import 'package:stream_channel/stream_channel.dart';
 import 'package:brisk/util/readability_util.dart';
-import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/setting/settings_cache.dart';
 
 class DownloadRequestProvider with ChangeNotifier {
   Map<int, DownloadProgressMessage> downloads = {};

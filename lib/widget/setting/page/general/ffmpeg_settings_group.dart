@@ -1,7 +1,7 @@
 import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/provider/settings_provider.dart';
 import 'package:brisk/util/ffmpeg.dart';
-import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/setting/settings_cache.dart';
 import 'package:brisk/widget/base/error_dialog.dart';
 import 'package:brisk/widget/base/info_dialog.dart';
 import 'package:brisk/widget/setting/base/external_link_setting.dart';

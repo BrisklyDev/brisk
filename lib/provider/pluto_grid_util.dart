@@ -9,7 +9,7 @@ import 'package:brisk/provider/pluto_grid_check_row_provider.dart';
 import 'package:brisk/provider/queue_provider.dart';
 import 'package:brisk/util/file_util.dart';
 import 'package:brisk/util/readability_util.dart';
-import 'package:brisk/util/settings_cache.dart';
+import 'package:brisk/setting/settings_cache.dart';
 import 'package:brisk/widget/base/checkbox_confirmation_dialog.dart';
 import 'package:brisk/widget/base/delete_confirmation_dialog.dart';
 import 'package:brisk/widget/download/queue_schedule_handler.dart';
