@@ -133,7 +133,7 @@ class FileUtil {
 
   /// Detects the [DLFileType] based on the file extension.
   static DLFileType detectFileType(String fileName) {
-    final type = extension(fileName.toLowerCase(), 2).replaceFirst(".", "");
+    final type = extension(fileName.toLowerCase()).replaceFirst(".", "");
     if (SettingsCache.documentFormats.any((f) => type.contains(f))) {
       return DLFileType.documents;
     } else if (SettingsCache.programFormats.any((f) => type.contains(f))) {
