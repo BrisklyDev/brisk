@@ -4,6 +4,7 @@ import 'package:brisk/provider/pluto_grid_check_row_provider.dart';
 import 'package:brisk/provider/queue_provider.dart';
 import 'package:brisk/provider/theme_provider.dart';
 import 'package:brisk/util/auto_updater_util.dart';
+import 'package:brisk/util/ui_util.dart';
 import 'package:brisk/widget/base/error_dialog.dart';
 import 'package:brisk/widget/base/info_dialog.dart';
 import 'package:brisk/widget/top_menu/top_menu_util.dart';
@@ -48,7 +49,7 @@ class _TopMenuState extends State<TopMenu> {
     final size = MediaQuery.of(context).size;
     return Container(
       width: resolveWindowWidth(size),
-      height: 70,
+      height: topMenuHeight,
       color: topMenuTheme.backgroundColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -63,7 +64,9 @@ class _TopMenuState extends State<TopMenu> {
                 barrierDismissible: false,
               ),
               title: loc.addUrl,
+              fontSize: 14,
               icon: Icon(
+                size: 28,
                 Icons.add_rounded,
                 color: topMenuTheme.addUrlColor.iconColor,
               ),
@@ -71,17 +74,12 @@ class _TopMenuState extends State<TopMenu> {
               textColor: topMenuTheme.addUrlColor.textColor,
             ),
           ),
-          // TopMenuButton(
-          //   /// TODO comment in production
-          //   onTap: () => onMockDownloadPressed(context),
-          //   title: 'Mock',
-          //   icon: const Icon(Icons.not_started_outlined, color: Colors.red),
-          //   onHoverColor: Colors.red,
-          // ),
           TopMenuButton(
             onTap: isDownloadButtonEnabled(provider) ? onDownloadPressed : null,
             title: loc.download,
+            fontSize: 14,
             icon: Icon(
+              size: 28,
               Icons.download_rounded,
               color: isDownloadButtonEnabled(provider)
                   ? topMenuTheme.downloadColor.iconColor
@@ -95,7 +93,9 @@ class _TopMenuState extends State<TopMenu> {
           TopMenuButton(
             onTap: isPauseButtonEnabled(provider) ? onStopPressed : null,
             title: loc.stop,
+            fontSize: 14,
             icon: Icon(
+              size: 28,
               Icons.stop_rounded,
               color: isPauseButtonEnabled(provider)
                   ? topMenuTheme.stopColor.iconColor
@@ -111,7 +111,9 @@ class _TopMenuState extends State<TopMenu> {
                 ? () => PlutoGridUtil.onRemovePressed(context)
                 : null,
             title: loc.remove,
+            fontSize: 14,
             icon: Icon(
+              size: 28,
               Icons.delete,
               color: PlutoGridUtil.selectedRowExists
                   ? topMenuTheme.removeColor.iconColor
@@ -128,38 +130,25 @@ class _TopMenuState extends State<TopMenu> {
                 : null,
             title: loc.addToQueue,
             icon: Icon(
+              size: 26,
               Icons.queue,
               color: PlutoGridUtil.selectedRowExists
                   ? topMenuTheme.addToQueueColor.iconColor
                   : disabledButtonColor,
             ),
-            fontSize: 10.5,
+            fontSize: 13,
             onHoverColor: topMenuTheme.addToQueueColor.hoverBackgroundColor,
             textColor: PlutoGridUtil.selectedRowExists
                 ? topMenuTheme.addToQueueColor.textColor
                 : disabledButtonTextColor,
           ),
-          TopMenuButton(
-            onTap: () => handleBriskUpdateCheck(
-              context,
-              showUpdateNotAvailableDialog: true,
-              ignoreLastUpdateCheck: true,
-            ),
-            title: loc.checkForUpdate,
-            icon: Icon(
-              Icons.update,
-              color: topMenuTheme.checkForUpdateColor.iconColor,
-            ),
-            fontSize: 10.5,
-            onHoverColor: topMenuTheme.addToQueueColor.hoverBackgroundColor,
-            textColor: topMenuTheme.checkForUpdateColor.textColor,
-          ),
           SizedBox(width: 5),
           // Container(color: Colors.white, width: 1, height: 40),
           TopMenuButton(
             title: loc.getExtension,
-            fontSize: 11,
+            fontSize: 13,
             icon: Icon(
+              size: 28,
               Icons.extension,
               color: topMenuTheme.extensionColor.iconColor,
             ),
@@ -171,9 +160,26 @@ class _TopMenuState extends State<TopMenu> {
             textColor: topMenuTheme.extensionColor.textColor,
           ),
           TopMenuButton(
-            title: loc.btn_restart_extension,
-            fontSize: 11,
+            onTap: () => handleBriskUpdateCheck(
+              context,
+              showUpdateNotAvailableDialog: true,
+              ignoreLastUpdateCheck: true,
+            ),
+            title: loc.checkForUpdate,
             icon: Icon(
+              size: 26,
+              Icons.update,
+              color: topMenuTheme.checkForUpdateColor.iconColor,
+            ),
+            fontSize: 12.5,
+            onHoverColor: topMenuTheme.addToQueueColor.hoverBackgroundColor,
+            textColor: topMenuTheme.checkForUpdateColor.textColor,
+          ),
+          TopMenuButton(
+            title: loc.btn_restart_extension,
+            fontSize: 14,
+            icon: Icon(
+              size: 28,
               Icons.restart_alt_rounded,
               color: topMenuTheme.extensionColor.iconColor,
             ),

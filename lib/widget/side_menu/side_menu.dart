@@ -54,7 +54,7 @@ class _SideMenuState extends State<SideMenu> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 26),
             SideMenuExpansionTile(
               title: 'Downloads',
               active: selectedTab == 0,

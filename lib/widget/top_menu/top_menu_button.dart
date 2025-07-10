@@ -38,6 +38,8 @@ class TopMenuButton extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(5),
                   child: Text(
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     title,
                     style: TextStyle(fontSize: fontSize, color: textColor),
                     textAlign: TextAlign.center,

@@ -5,3 +5,5 @@ void safePop(BuildContext context) {
     Navigator.of(context).pop();
   }
 }
+
+const double topMenuHeight = 80;

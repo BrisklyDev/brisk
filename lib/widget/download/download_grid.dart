@@ -8,6 +8,7 @@ import 'package:brisk/provider/queue_provider.dart';
 import 'package:brisk/provider/theme_provider.dart';
 import 'package:brisk/util/file_util.dart';
 import 'package:brisk/util/responsive_util.dart';
+import 'package:brisk/util/ui_util.dart';
 import 'package:brisk/widget/download/add_url_dialog.dart';
 import 'package:brisk/widget/download/download_info_dialog.dart';
 import 'package:brisk/widget/download/download_progress_dialog.dart';
@@ -181,7 +182,7 @@ class _DownloadGridState extends State<DownloadGrid> {
     return Material(
       type: MaterialType.transparency,
       child: Container(
-        height: size.height - 70,
+        height: size.height - topMenuHeight,
         width: resolveWindowWidth(size),
         decoration: const BoxDecoration(color: Colors.black26),
         child: PlutoGrid(

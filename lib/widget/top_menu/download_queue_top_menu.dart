@@ -3,6 +3,7 @@ import 'package:brisk/provider/pluto_grid_check_row_provider.dart';
 import 'package:brisk/provider/queue_provider.dart';
 import 'package:brisk/provider/theme_provider.dart';
 import 'package:brisk/util/responsive_util.dart';
+import 'package:brisk/util/ui_util.dart';
 import 'package:brisk/widget/download/queue_schedule_handler.dart';
 import 'package:brisk/widget/queue/schedule_dialog.dart';
 import 'package:brisk/widget/top_menu/top_menu_button.dart';
@@ -35,7 +36,7 @@ class DownloadQueueTopMenu extends StatelessWidget {
     final loc = AppLocalizations.of(context)!;
     return Container(
       width: resolveWindowWidth(size),
-      height: 70,
+      height: topMenuHeight,
       color: topMenuTheme.backgroundColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -46,8 +47,9 @@ class DownloadQueueTopMenu extends StatelessWidget {
             child: TopMenuButton(
               onTap: () => onSchedulePressed(context),
               title: loc.btn_schedule,
-              fontSize: 12,
+              fontSize: 14,
               icon: Icon(
+                size: 28,
                 Icons.schedule_rounded,
                 color: topMenuTheme.startQueueColor.iconColor,
               ),
@@ -57,8 +59,9 @@ class DownloadQueueTopMenu extends StatelessWidget {
           TopMenuButton(
             onTap: onStopAllPressed,
             title: loc.btn_stopQueue,
-            fontSize: 12,
+            fontSize: 14,
             icon: Icon(
+              size: 28,
               Icons.stop_circle_rounded,
               color: topMenuTheme.stopQueueColor.iconColor,
             ),
@@ -67,7 +70,9 @@ class DownloadQueueTopMenu extends StatelessWidget {
           TopMenuButton(
             onTap: isDownloadButtonEnabled(provider) ? onDownloadPressed : null,
             title: loc.download,
+            fontSize: 14,
             icon: Icon(
+              size: 28,
               Icons.download_rounded,
               color: isDownloadButtonEnabled(provider)
                   ? topMenuTheme.downloadColor.iconColor
@@ -81,7 +86,9 @@ class DownloadQueueTopMenu extends StatelessWidget {
           TopMenuButton(
             onTap: isPauseButtonEnabled(provider) ? onStopPressed : null,
             title: loc.stop,
+            fontSize: 14,
             icon: Icon(
+              size: 28,
               Icons.stop_rounded,
               color: isPauseButtonEnabled(provider)
                   ? topMenuTheme.stopColor.iconColor
@@ -94,8 +101,10 @@ class DownloadQueueTopMenu extends StatelessWidget {
           ),
           TopMenuButton(
             onTap: () => onRemovePressed(context),
+            fontSize: 14,
             title: loc.remove,
             icon: Icon(
+              size: 28,
               Icons.delete,
               color: topMenuTheme.removeColor.iconColor,
             ),
