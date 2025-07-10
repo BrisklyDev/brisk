@@ -43,7 +43,9 @@ jobs:
       - name: Clone flatpak-flutter
         run: |
           git clone https://github.com/TheAppgineer/flatpak-flutter.git
-          mkdir flatpak-flutter/brisk
+          cd flatpak-flutter
+          git checkout de96937f47903685fcb54b17ce55c609c8496f12
+          mkdir brisk
 
       - name: Set up Python
         uses: actions/setup-python@v5
