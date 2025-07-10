@@ -38,7 +38,7 @@ class _FFmpegSettingsGroupState extends State<FFmpegSettingsGroup> {
     return SettingsGroup(
       title: "FFmpeg",
       tooltipMessage:
-          "When downloading a video stream, FFmpeg is used to soft-sub the available subtitles to the video file",
+          "FFmpeg is used to soft-sub the available subtitles to the downloaded video stream file",
       children: [
         TextFieldSetting(
           text: loc.settings_ffmpegPath,
