@@ -43,15 +43,18 @@
   </screenshots>
 
   <releases>
-    <release version="2.3.4" date="2025-07-05">
+    <release version="2.3.5" date="2025-07-10">
     <description>
       <p><em>🔧 Bug Fixes and Improvements</em></p>
       <ul>
-        <li>Fixed incorrectly determining some files as pause incapable</li>
-        <li>Added the feature to add multiple download URLs separated by newline</li>
-        <li>Added restart extension button</li>
-        <li>Add Spanish and Russian translations</li>
-        <li>Minor UI fixes</li>
+        <li>Fixed download addition hotkey issues</li>
+        <li>Added support for capturing cookies from the browser extension to allow for downloading files that require it</li>
+        <li>Added compatibility for video button injection into video stream iframes (requires browser extension v1.4.0)</li>
+        <li>Added caching and prefetching of video stream metadata to skip the waiting for retrieving file information for downloading video streams</li>
+        <li>Minor memory optimizations</li>
+        <li>Fixed automatic ffmpeg installation not working</li>
+        <li>Fixed editing category issues in settings</li>
+        <li>Minor UI fixes and improvements</li>
       </ul>
     </description>
     </release>
