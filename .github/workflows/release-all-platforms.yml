@@ -460,7 +460,7 @@ jobs:
     steps:
 
       - name: Wait
-        run: sleep 60
+        run: sleep 10
 
       - name: Checkout the code
         uses: actions/checkout@v4.1.5
@@ -468,8 +468,8 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - name: Fetch all tags
-        run: git fetch --tags
+      - name: Force fetch tags from origin
+        run: git fetch origin "+refs/tags/*:refs/tags/*"
 
       - name: Get commit of tag
         id: get_commit
@@ -482,7 +482,9 @@ jobs:
       - name: Clone flatpak-flutter
         run: |
           git clone https://github.com/TheAppgineer/flatpak-flutter.git
-          mkdir flatpak-flutter/brisk
+          cd flatpak-flutter
+          git checkout de96937f47903685fcb54b17ce55c609c8496f12
+          mkdir brisk
 
       - name: Set up Python
         uses: actions/setup-python@v5

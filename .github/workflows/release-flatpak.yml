@@ -31,6 +31,8 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Fetch all tags
+        run: git fetch --tags
 
       - name: Get commit of tag
         id: get_commit
