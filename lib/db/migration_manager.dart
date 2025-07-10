@@ -4,6 +4,8 @@ import 'package:brisk/model/general_data.dart';
 import 'package:brisk/model/migration.dart';
 import 'package:brisk/model/setting.dart';
 import 'package:brisk/setting/settings_cache.dart';
+import 'package:brisk/util/platform.dart';
+import 'package:hotkey_manager/hotkey_manager.dart';
 
 class MigrationManager {
   static List<Migration> migrations = [
@@ -16,6 +18,7 @@ class MigrationManager {
     Migration(6, "Add FFmpeg warning ignore"),
     Migration(7, "Add http client type"),
     Migration(8, "Add automaticFileSavePathCategorization"),
+    Migration(9, "Change hotkey scope to inapp for linux"),
   ];
 
   static runMigrations() async {
@@ -57,6 +60,9 @@ class MigrationManager {
         break;
       case 8:
         await runMigrationV8();
+        break;
+      case 9:
+        await runMigrationV9();
         break;
       default:
         break;
@@ -207,5 +213,15 @@ class MigrationManager {
           SettingOptions.automaticFileSavePathCategorization.name]![0],
     );
     await HiveUtil.instance.settingBox.add(savePathCategorization);
+  }
+
+  static Future<void> runMigrationV9() async {
+    final scope = HiveUtil.instance.settingBox.values
+        .where((setting) =>
+            setting.name == SettingOptions.downloadAdditionHotkeyScope)
+        .firstOrNull;
+    if (scope == null || isWindows) return;
+    scope.value = HotKeyScope.inapp.name;
+    await scope.save();
   }
 }
