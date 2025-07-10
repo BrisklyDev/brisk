@@ -31,7 +31,7 @@ import 'package:brisk/widget/download/multi_download_addition_dialog.dart';
 
 class BrowserExtensionServer {
   static bool _cancelClicked = false;
-  static const String extensionVersion = "1.3.0";
+  static const String extensionVersion = "1.4.0";
   static DownloadItem? awaitingUpdateUrlItem;
   static HttpServer? _server;
 
