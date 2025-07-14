@@ -1,6 +1,5 @@
 import 'package:brisk/db/hive_util.dart';
 import 'package:brisk/provider/theme_provider.dart';
-import 'package:brisk/util/responsive_util.dart';
 import 'package:brisk/util/ui_util.dart';
 import 'package:brisk/widget/queue/queue_list_item.dart';
 import 'package:flutter/material.dart';

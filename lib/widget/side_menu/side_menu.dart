@@ -3,7 +3,7 @@ import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/provider/pluto_grid_util.dart';
 import 'package:brisk/provider/settings_provider.dart';
 import 'package:brisk/provider/theme_provider.dart';
-import 'package:brisk/util/responsive_util.dart';
+import 'package:brisk/util/ui_util.dart';
 import 'package:brisk/widget/base/default_tooltip.dart';
 import 'package:brisk/widget/setting/setting_dialog.dart';
 import 'package:brisk/widget/side_menu/side_menu_expansion_tile.dart';
@@ -35,7 +35,7 @@ class _SideMenuState extends State<SideMenu> {
     final size = MediaQuery.of(context).size;
     final loc = AppLocalizations.of(context)!;
     return Container(
-      width: resolveSideMenuWidth(size),
+      width: minimizedSideMenuWidth,
       height: double.infinity,
       color: sideMenuTheme.backgroundColor,
       child: Material(

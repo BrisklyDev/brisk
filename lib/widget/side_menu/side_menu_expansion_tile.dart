@@ -7,7 +7,7 @@ class SideMenuExpansionTile extends StatefulWidget {
   final String title;
   final Widget icon;
   final VoidCallback? onTap;
-  final active;
+  final bool active;
 
   const SideMenuExpansionTile({
     super.key,
@@ -23,67 +23,36 @@ class SideMenuExpansionTile extends StatefulWidget {
 }
 
 class _SideMenuExpansionTileState extends State<SideMenuExpansionTile> {
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final sideMenuTheme =
         Provider.of<ThemeProvider>(context).activeTheme.sideMenuTheme;
     return Container(
-      width: 150,
-      color:
-          widget.active ? sideMenuTheme.activeTabBackgroundColor : Colors.transparent,
+      width: 110,
+      color: widget.active
+          ? sideMenuTheme.activeTabBackgroundColor
+          : Colors.transparent,
       child: ExpansionTile(
+        tilePadding: EdgeInsetsDirectional.only(end: 5),
+        showTrailingIcon: true,
         shape: Border.all(color: Colors.transparent),
         backgroundColor: sideMenuTheme.expansionTileExpandedColor,
-        // title: ListTile(
-        //   onTap: onTap,
-        //   leading: Padding(
-        //     padding: EdgeInsets.only(left: minimizedSideMenu(size) ? 83.0 : 4),
-        //     child: SizedBox(
-        //       width: 20,
-        //       height: 20,
-        //       child: icon,
-        //     ),
-        //   ),
-        //   title: minimizedSideMenu(size)
-        //       ? null
-        //       : Text(
-        //           title,
-        //           style: const TextStyle(
-        //             color: Colors.white,
-        //             fontSize: 18,
-        //           ),
-        //         ),
-        // ),
         title: InkWell(
           onTap: widget.onTap,
           child: SizedBox(
             height: 50,
             child: Row(
-              mainAxisAlignment: minimizedSideMenu(size)
-                  ? MainAxisAlignment.center
-                  : MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding:
-                      EdgeInsetsDirectional.only(start: minimizedSideMenu(size) ? 35 : 20),
+                  padding: EdgeInsetsDirectional.only(start: 38),
                   child: SizedBox(
                     width: 20,
                     height: 20,
                     child: widget.icon,
                   ),
                 ),
-                minimizedSideMenu(size)
-                    ? Container()
-                    : Padding(
-                        padding: const EdgeInsetsDirectional.only(start: 30.0),
-                        child: Text(
-                          widget.title,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 18),
-                        ),
-                      )
               ],
             ),
           ),
@@ -92,7 +61,4 @@ class _SideMenuExpansionTileState extends State<SideMenuExpansionTile> {
       ),
     );
   }
-
-  bool minimizedSideMenu(Size size) => true;
-  // bool minimizedSideMenu(Size size) => size.width < 1300;
 }

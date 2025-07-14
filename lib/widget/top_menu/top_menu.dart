@@ -9,7 +9,6 @@ import 'package:brisk/widget/base/error_dialog.dart';
 import 'package:brisk/widget/base/info_dialog.dart';
 import 'package:brisk/widget/top_menu/top_menu_util.dart';
 import 'package:brisk/provider/pluto_grid_util.dart';
-import 'package:brisk/util/responsive_util.dart';
 import 'package:brisk/widget/download/add_url_dialog.dart';
 import 'package:brisk/widget/top_menu/top_menu_button.dart';
 import 'package:flutter/material.dart';
