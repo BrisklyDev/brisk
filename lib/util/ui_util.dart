@@ -6,7 +6,7 @@ void safePop(BuildContext context) {
   }
 }
 
-const double topMenuHeight = 80;
+const double topMenuHeight = 62;
 
 double minimizedSideMenuWidth = 110;
 

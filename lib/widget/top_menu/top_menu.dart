@@ -84,7 +84,9 @@ class _TopMenuState extends State<TopMenu> {
                   ? topMenuTheme.downloadColor.iconColor
                   : Color.fromRGBO(79, 79, 79, 0.5),
             ),
-            onHoverColor: topMenuTheme.downloadColor.hoverBackgroundColor,
+            onHoverColor: isDownloadButtonEnabled(provider)
+                ? topMenuTheme.downloadColor.hoverBackgroundColor
+                : Colors.white10,
             textColor: isDownloadButtonEnabled(provider)
                 ? topMenuTheme.downloadColor.textColor
                 : Color.fromRGBO(79, 79, 79, 1),
@@ -100,7 +102,9 @@ class _TopMenuState extends State<TopMenu> {
                   ? topMenuTheme.stopColor.iconColor
                   : Color.fromRGBO(79, 79, 79, 0.5),
             ),
-            onHoverColor: topMenuTheme.stopColor.hoverBackgroundColor,
+            onHoverColor: isPauseButtonEnabled(provider)
+                ? topMenuTheme.stopColor.hoverBackgroundColor
+                : Colors.white10,
             textColor: isPauseButtonEnabled(provider)
                 ? topMenuTheme.stopColor.textColor
                 : Color.fromRGBO(79, 79, 79, 1),
@@ -118,7 +122,9 @@ class _TopMenuState extends State<TopMenu> {
                   ? topMenuTheme.removeColor.iconColor
                   : disabledButtonColor,
             ),
-            onHoverColor: topMenuTheme.removeColor.hoverBackgroundColor,
+            onHoverColor: PlutoGridUtil.selectedRowExists
+                ? topMenuTheme.removeColor.hoverBackgroundColor
+                : Colors.white10,
             textColor: PlutoGridUtil.selectedRowExists
                 ? topMenuTheme.removeColor.textColor
                 : disabledButtonTextColor,
@@ -136,7 +142,9 @@ class _TopMenuState extends State<TopMenu> {
                   : disabledButtonColor,
             ),
             fontSize: 13,
-            onHoverColor: topMenuTheme.addToQueueColor.hoverBackgroundColor,
+            onHoverColor: PlutoGridUtil.selectedRowExists
+                ? topMenuTheme.addToQueueColor.hoverBackgroundColor
+                : Colors.white10,
             textColor: PlutoGridUtil.selectedRowExists
                 ? topMenuTheme.addToQueueColor.textColor
                 : disabledButtonTextColor,

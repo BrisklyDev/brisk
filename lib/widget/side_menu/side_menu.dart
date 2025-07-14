@@ -43,7 +43,7 @@ class _SideMenuState extends State<SideMenu> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsetsDirectional.only(start: 10, top: 30),
+              padding: const EdgeInsetsDirectional.only(start: 10, top: 20, bottom: 10),
               child: SvgPicture.asset(
                 "assets/icons/logo-basic.svg",
                 height: 25,
@@ -54,7 +54,7 @@ class _SideMenuState extends State<SideMenu> {
                 ),
               ),
             ),
-            const SizedBox(height: 26),
+            const SizedBox(height: 8),
             SideMenuExpansionTile(
               title: 'Downloads',
               active: selectedTab == 0,
