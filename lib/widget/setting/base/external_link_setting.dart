@@ -48,6 +48,7 @@ class ExternalLinkSetting extends StatelessWidget {
                     message: tooltipMessage!,
                     child: Icon(
                       Icons.info,
+                      size: 19,
                       color: theme.widgetTheme.tooltipIconColor,
                     ),
                     decoration: BoxDecoration(

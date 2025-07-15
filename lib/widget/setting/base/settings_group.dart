@@ -48,6 +48,7 @@ class SettingsGroup extends StatelessWidget {
                   DefaultTooltip(
                     message: tooltipMessage!,
                     child: Icon(
+                      size: 19,
                       Icons.info,
                       color: theme.widgetTheme.tooltipIconColor,
                     ),

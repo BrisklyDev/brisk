@@ -49,7 +49,11 @@ class DropDownSetting extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Tooltip(
                   message: tooltipMessage!,
-                  child: Icon(Icons.info, color: theme.widgetTheme.iconColor),
+                  child: Icon(
+                    Icons.info,
+                    color: theme.widgetTheme.iconColor,
+                    size: 19,
+                  ),
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(33, 33, 33, 1),
                     borderRadius: BorderRadius.circular(10),
