@@ -46,7 +46,6 @@ jobs:
         run: |
           git clone https://github.com/TheAppgineer/flatpak-flutter.git
           cd flatpak-flutter
-          git checkout de96937f47903685fcb54b17ce55c609c8496f12
           mkdir brisk
 
       - name: Set up Python
@@ -64,7 +63,7 @@ jobs:
           cat linux/packaging/flatpak/flatpak-flutter.yml
 
       - name: Install dependencies
-        run: pip install aiohttp pyyaml toml
+        run: pip install aiohttp pyyaml toml packaging
 
       - name: Install flatpak
         run: |
@@ -77,9 +76,8 @@ jobs:
       - name: Run flatpak-flutter
         run: |
           cp linux/packaging/flatpak/flatpak-flutter.yml flatpak-flutter/brisk/
-          cp linux/packaging/flatpak/run_build_tool.sh.offline.patch flatpak-flutter/brisk/
           cd flatpak-flutter/brisk/
-          ../flatpak-flutter.py --extra-pubspecs=.pub-cache/hosted/pub.dev/rhttp-0.12.0/cargokit/build_tool --cargo-locks=.pub-cache/hosted/pub.dev/rhttp-0.12.0/rust flatpak-flutter.yml
+          ../flatpak-flutter.py flatpak-flutter.yml
           ls -la
 
       - name: Set up Git
