@@ -7,9 +7,9 @@ import 'application_themes/signature_blue_theme.dart';
 
 class ApplicationThemeHolder {
   static final List<ApplicationTheme> themes = [
-    light,
     celestialDark,
-    signatureBlue
+    signatureBlue,
+    light,
   ];
 
   static late ApplicationTheme activeTheme = celestialDark;
