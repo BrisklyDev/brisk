@@ -43,7 +43,11 @@ class _SideMenuState extends State<SideMenu> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsetsDirectional.only(start: 10, top: 20, bottom: 10),
+              padding: const EdgeInsetsDirectional.only(
+                start: 5,
+                top: 20,
+                bottom: 10,
+              ),
               child: SvgPicture.asset(
                 "assets/icons/logo-basic.svg",
                 height: 25,
@@ -60,9 +64,9 @@ class _SideMenuState extends State<SideMenu> {
               active: selectedTab == 0,
               icon: DefaultTooltip(
                 message: loc.allDownloads,
-                child: const Icon(
+                child: Icon(
                   Icons.download_rounded,
-                  color: Colors.white,
+                  color: sideMenuTheme.tabIconColor,
                 ),
               ),
               onTap: () => onDownloadsPressed(queueProvider),
@@ -72,7 +76,7 @@ class _SideMenuState extends State<SideMenu> {
                   icon: SvgPicture.asset(
                     'assets/icons/archive.svg',
                     colorFilter:
-                    ColorFilter.mode(Colors.lightBlue, BlendMode.srcIn),
+                        ColorFilter.mode(Colors.lightBlue, BlendMode.srcIn),
                   ),
                   size: 32,
                   onTap: () => setGridFileTypeFilter(DLFileType.compressed),
@@ -84,7 +88,7 @@ class _SideMenuState extends State<SideMenu> {
                   icon: SvgPicture.asset(
                     'assets/icons/video_2.svg',
                     colorFilter:
-                    ColorFilter.mode(Colors.pinkAccent, BlendMode.srcIn),
+                        ColorFilter.mode(Colors.pinkAccent, BlendMode.srcIn),
                   ),
                   onTap: () => setGridFileTypeFilter(DLFileType.video),
                   active: selectedExpansionTileItemTab == 1,
@@ -93,8 +97,8 @@ class _SideMenuState extends State<SideMenu> {
                   text: 'Programs',
                   icon: SvgPicture.asset(
                     'assets/icons/program.svg',
-                    colorFilter: ColorFilter.mode(
-                        Colors.indigoAccent, BlendMode.srcIn),
+                    colorFilter:
+                        ColorFilter.mode(Colors.indigoAccent, BlendMode.srcIn),
                   ),
                   size: 30,
                   onTap: () => setGridFileTypeFilter(DLFileType.program),
@@ -104,8 +108,8 @@ class _SideMenuState extends State<SideMenu> {
                   text: 'Documents',
                   icon: SvgPicture.asset(
                     'assets/icons/document.svg',
-                    colorFilter:
-                        ColorFilter.mode(const Color(0xFF4CAF50), BlendMode.srcIn),
+                    colorFilter: ColorFilter.mode(
+                        const Color(0xFF4CAF50), BlendMode.srcIn),
                   ),
                   onTap: () => setGridFileTypeFilter(DLFileType.documents),
                   active: selectedExpansionTileItemTab == 2,
@@ -115,7 +119,7 @@ class _SideMenuState extends State<SideMenu> {
                   icon: SvgPicture.asset(
                     'assets/icons/music.svg',
                     colorFilter:
-                    ColorFilter.mode(Colors.cyanAccent, BlendMode.srcIn),
+                        ColorFilter.mode(Colors.cyanAccent, BlendMode.srcIn),
                   ),
                   onTap: () => setGridFileTypeFilter(DLFileType.music),
                   active: selectedExpansionTileItemTab == 0,
@@ -128,7 +132,8 @@ class _SideMenuState extends State<SideMenu> {
                 message: loc.unfinishedDownloads,
                 child: SvgPicture.asset(
                   'assets/icons/unfinished.svg',
-                  colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                  colorFilter: ColorFilter.mode(
+                      sideMenuTheme.tabIconColor, BlendMode.srcIn),
                 ),
               ),
               title: "Unfinished",
@@ -138,9 +143,9 @@ class _SideMenuState extends State<SideMenu> {
               onTap: () => setFinishedFilter(queueProvider),
               leading: DefaultTooltip(
                 message: loc.finishedDownloads,
-                child: const Icon(
+                child: Icon(
                   Icons.download_done_rounded,
-                  color: Colors.white,
+                  color: sideMenuTheme.tabIconColor,
                 ),
               ),
               title: "Finished",
@@ -152,7 +157,7 @@ class _SideMenuState extends State<SideMenu> {
                 message: loc.downloadQueues,
                 child: Icon(
                   Icons.queue,
-                  color: Colors.white,
+                  color: sideMenuTheme.tabIconColor,
                 ),
               ),
               title: "Queues",
@@ -162,12 +167,13 @@ class _SideMenuState extends State<SideMenu> {
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: IconButton(
-                  iconSize: 30,
-                  onPressed: () => onSettingPressed(context),
-                  icon: const Icon(
-                    Icons.settings,
-                    color: Colors.white,
-                  )),
+                iconSize: 30,
+                onPressed: () => onSettingPressed(context),
+                icon: Icon(
+                  Icons.settings,
+                  color: sideMenuTheme.settingIconColor,
+                ),
+              ),
             ),
           ],
         ),

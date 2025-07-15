@@ -1,5 +1,6 @@
 import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/provider/theme_provider.dart';
+import 'package:brisk/theme/application_theme.dart';
 import 'package:brisk/util/http_util.dart';
 import 'package:brisk/widget/base/scrollable_dialog.dart';
 import 'package:dartx/dartx.dart';
@@ -11,11 +12,13 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'browser_extension_installation_guide_dialog.dart';
 
 class GetBrowserExtensionDialog extends StatelessWidget {
-  const GetBrowserExtensionDialog({super.key});
+  GetBrowserExtensionDialog({super.key});
+
+  late ApplicationTheme theme;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Provider.of<ThemeProvider>(context).activeTheme;
+    theme = Provider.of<ThemeProvider>(context).activeTheme;
     final loc = AppLocalizations.of(context)!;
     return ScrollableDialog(
       width: 500,
@@ -28,7 +31,7 @@ class GetBrowserExtensionDialog extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         child: Row(
           children: [
-            Icon(Icons.extension, color: Colors.white70),
+            Icon(Icons.extension, color: theme.widgetTheme.iconColor),
             const SizedBox(width: 10),
             Text(
               loc.installBrowserExtension_title,
@@ -47,12 +50,19 @@ class GetBrowserExtensionDialog extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(loc.installTheBrowserExtension_description),
+            Text(
+              loc.installTheBrowserExtension_description,
+              style: TextStyle(
+                color: theme.textColor,
+                fontWeight: theme.fontWeight,
+              ),
+            ),
             const SizedBox(height: 5),
             Text(
               loc.installTheBrowserExtension_description_subtitle,
               style: TextStyle(
-                color: Colors.white60,
+                color: theme.textColor,
+                // fontWeight: theme.fontWeight
               ),
             ),
             const SizedBox(height: 20),
@@ -118,7 +128,11 @@ class GetBrowserExtensionDialog extends StatelessWidget {
         ),
         Text(
           browserName.capitalize(),
-          style: TextStyle(fontSize: 14),
+          style: TextStyle(
+            fontSize: 14,
+            color: theme.textColor,
+            fontWeight: theme.fontWeight,
+          ),
         ),
       ],
     );

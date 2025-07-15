@@ -23,8 +23,7 @@ class SettingsGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme =
-        Provider.of<ThemeProvider>(context).activeTheme.settingTheme.pageTheme;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     final size = MediaQuery.of(context).size;
     return SizedBox(
       width: resolveWidth(size),
@@ -39,7 +38,7 @@ class SettingsGroup extends StatelessWidget {
                   child: Text(
                     title,
                     style: TextStyle(
-                      color: theme.groupTitleTextColor,
+                      color: theme.settingTheme.pageTheme.groupTitleTextColor,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -50,7 +49,7 @@ class SettingsGroup extends StatelessWidget {
                     message: tooltipMessage!,
                     child: Icon(
                       Icons.info,
-                      color: Colors.white60,
+                      color: theme.widgetTheme.tooltipIconColor,
                     ),
                   ),
               ],
@@ -60,7 +59,7 @@ class SettingsGroup extends StatelessWidget {
             // Don't set height unless explicitly passed
             height: containerHeight,
             decoration: BoxDecoration(
-              color: theme.groupBackgroundColor,
+              color: theme.settingTheme.pageTheme.groupBackgroundColor,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Padding(

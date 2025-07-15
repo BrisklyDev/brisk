@@ -6,6 +6,8 @@ import 'package:brisk/provider/pluto_grid_check_row_provider.dart';
 import 'package:brisk/provider/pluto_grid_util.dart';
 import 'package:brisk/provider/queue_provider.dart';
 import 'package:brisk/provider/theme_provider.dart';
+import 'package:brisk/theme/application_theme.dart';
+import 'package:brisk/theme/application_theme_holder.dart';
 import 'package:brisk/util/file_util.dart';
 import 'package:brisk/util/ui_util.dart';
 import 'package:brisk/widget/download/add_url_dialog.dart';
@@ -31,11 +33,13 @@ class _DownloadGridState extends State<DownloadGrid> {
   QueueProvider? queueProvider;
   PlutoGridCheckRowProvider? plutoProvider;
   late AppLocalizations loc;
+  late ApplicationTheme theme;
 
   @override
   void didChangeDependencies() {
     loc = AppLocalizations.of(context)!;
     initColumns(context);
+    theme = Provider.of<ThemeProvider>(context).activeTheme;
     super.didChangeDependencies();
   }
 
@@ -63,53 +67,44 @@ class _DownloadGridState extends State<DownloadGrid> {
         title: loc.fileName,
         field: 'file_name',
         type: PlutoColumnType.text(),
-        renderer: (rendererContext) {
-          final fileName = rendererContext.row.cells["file_name"]!.value;
-          final fileType = FileUtil.detectFileType(fileName);
-          return Padding(
-            padding: const EdgeInsets.only(left: 5.0),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: resolveIconSize(fileType),
-                  height: resolveIconSize(fileType),
-                  child: SvgPicture.asset(
-                    FileUtil.resolveFileTypeIconPath(fileType.name),
-                    colorFilter: ColorFilter.mode(
-                      FileUtil.resolveFileTypeIconColor(fileType.name),
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 5),
-                Expanded(
-                  child: Text(
-                    rendererContext
-                        .row.cells[rendererContext.column.field]!.value
-                        .toString(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
+        renderer: (ctx) => PlutoGridUtil.fileNameColumnRenderer(ctx, theme),
       ),
       PlutoColumn(
-        readOnly: true,
-        width: 85,
-        title: loc.size,
-        field: 'size',
-        type: PlutoColumnType.text(),
-      ),
+          readOnly: true,
+          width: 90,
+          title: loc.size,
+          field: 'size',
+          type: PlutoColumnType.text(),
+          renderer: (rendererContext) {
+            return Text(
+              rendererContext.row.cells[rendererContext.column.field]!.value
+                  .toString(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: theme.downloadGridTheme.rowTextColor,
+                fontWeight: theme.fontWeight,
+              ),
+            );
+          }),
       PlutoColumn(
         readOnly: true,
         width: 100,
         title: loc.progress,
         field: 'progress',
         type: PlutoColumnType.text(),
+        renderer: (rendererContext) {
+          return Text(
+            rendererContext.row.cells[rendererContext.column.field]!.value
+                .toString(),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: theme.downloadGridTheme.rowTextColor,
+              fontWeight: theme.fontWeight,
+            ),
+          );
+        },
       ),
       PlutoColumn(
         readOnly: true,
@@ -117,6 +112,18 @@ class _DownloadGridState extends State<DownloadGrid> {
         title: loc.status,
         field: "status",
         type: PlutoColumnType.text(),
+        renderer: (rendererContext) {
+          return Text(
+            rendererContext.row.cells[rendererContext.column.field]!.value
+                .toString(),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: theme.downloadGridTheme.rowTextColor,
+              fontWeight: theme.fontWeight,
+            ),
+          );
+        },
       ),
       PlutoColumn(
         readOnly: true,
@@ -125,6 +132,7 @@ class _DownloadGridState extends State<DownloadGrid> {
         title: loc.speed,
         field: 'transfer_rate',
         type: PlutoColumnType.text(),
+        renderer: rowText,
       ),
       PlutoColumn(
         readOnly: true,
@@ -132,6 +140,7 @@ class _DownloadGridState extends State<DownloadGrid> {
         title: loc.timeLeft,
         field: 'time_left',
         type: PlutoColumnType.text(),
+        renderer: rowText,
       ),
       PlutoColumn(
         readOnly: true,
@@ -139,6 +148,7 @@ class _DownloadGridState extends State<DownloadGrid> {
         title: loc.startDate,
         field: 'start_date',
         type: PlutoColumnType.date(),
+        renderer: rowText,
       ),
       PlutoColumn(
         readOnly: true,
@@ -146,6 +156,7 @@ class _DownloadGridState extends State<DownloadGrid> {
         title: loc.finishDate,
         field: 'finish_date',
         type: PlutoColumnType.date(),
+        renderer: rowText,
       ),
       PlutoColumn(
         readOnly: true,
@@ -154,8 +165,21 @@ class _DownloadGridState extends State<DownloadGrid> {
         title: 'File Type',
         field: 'file_type',
         type: PlutoColumnType.text(),
+        renderer: rowText,
       )
     ];
+  }
+
+  Text rowText(rendererContext) {
+    return Text(
+      rendererContext.row.cells[rendererContext.column.field]!.value.toString(),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+        color: theme.downloadGridTheme.rowTextColor,
+        fontWeight: theme.fontWeight,
+      ),
+    );
   }
 
   double resolveIconSize(DLFileType fileType) {
@@ -178,6 +202,7 @@ class _DownloadGridState extends State<DownloadGrid> {
     );
     queueProvider = Provider.of<QueueProvider>(context);
     final size = MediaQuery.of(context).size;
+    theme = Provider.of<ThemeProvider>(context).activeTheme;
     return Material(
       type: MaterialType.transparency,
       child: Container(
@@ -187,17 +212,7 @@ class _DownloadGridState extends State<DownloadGrid> {
         child: PlutoGrid(
           key: ValueKey(queueProvider?.selectedQueueId ?? 'download-grid'),
           mode: PlutoGridMode.selectWithOneTap,
-          configuration: PlutoGridConfiguration(
-            style: PlutoGridStyleConfig.dark(
-              activatedBorderColor: Colors.transparent,
-              borderColor: downloadGridTheme.borderColor,
-              gridBorderColor: downloadGridTheme.borderColor,
-              activatedColor: downloadGridTheme.activeRowColor,
-              gridBackgroundColor: downloadGridTheme.backgroundColor,
-              rowColor: downloadGridTheme.rowColor,
-              checkedColor: downloadGridTheme.checkedRowColor,
-            ),
-          ),
+          configuration: PlutoGridUtil.config(downloadGridTheme),
           columns: columns,
           rows: [],
           onSelected: (event) => PlutoGridUtil.handleRowSelection(
@@ -222,7 +237,8 @@ class _DownloadGridState extends State<DownloadGrid> {
         Provider.of<DownloadRequestProvider>(context, listen: false);
     final size = MediaQuery.of(context).size;
     final loc = AppLocalizations.of(context)!;
-    final theme = Provider.of<ThemeProvider>(context, listen: false);
+    final theme =
+        Provider.of<ThemeProvider>(context, listen: false).activeTheme;
     final id = event.row.cells["id"]!.value;
     final status = event.row.cells["status"]!.value;
     final downloadProgress = provider.downloads[id];
@@ -238,7 +254,7 @@ class _DownloadGridState extends State<DownloadGrid> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
       ),
-      color: theme.activeTheme.rightClickMenuBackgroundColor,
+      color: theme.contextMenuBackgroundColor,
       popUpAnimationStyle: AnimationStyle(
         curve: Easing.emphasizedAccelerate,
         duration: Durations.short2,
@@ -261,35 +277,59 @@ class _DownloadGridState extends State<DownloadGrid> {
       items: [
         PopupMenuItem(
           value: "Show Progress",
-          child: Text(loc.popupMenu_showProgress),
+          child: Text(
+            loc.popupMenu_showProgress,
+            style: contextMenuItemTextStyle(downloadExists),
+          ),
           enabled: downloadExists,
         ),
         PopupMenuItem(
           value: "Open File",
-          child: Text(loc.btn_openFile),
+          child: Text(
+            loc.btn_openFile,
+            style: contextMenuItemTextStyle(downloadComplete),
+          ),
           enabled: downloadComplete,
         ),
         PopupMenuItem(
           value: "Open File Location",
-          child: Text(loc.btn_openFileLocation),
+          child: Text(
+            loc.btn_openFileLocation,
+            style: contextMenuItemTextStyle(downloadComplete),
+          ),
           enabled: downloadComplete,
         ),
         PopupMenuItem(
           value: "Update URL",
-          child: Text(loc.btn_updateUrl),
+          child: Text(
+            loc.btn_updateUrl,
+            style: contextMenuItemTextStyle(updateUrlEnabled),
+          ),
           enabled: updateUrlEnabled,
         ),
         PopupMenuItem(
           value: "Automatic URL Update",
-          child: Text(loc.automaticUrlUpdate),
+          child: Text(
+            loc.automaticUrlUpdate,
+            style: contextMenuItemTextStyle(automaticUrlUpdateEnabled),
+          ),
           enabled: automaticUrlUpdateEnabled,
         ),
         PopupMenuItem(
           value: "Properties",
-          child: Text(loc.popupMenu_properties),
+          child: Text(
+            loc.popupMenu_properties,
+            style: contextMenuItemTextStyle(true),
+          ),
         ),
       ],
     ).then((value) => onMenuItemClicked(value, event));
+  }
+
+  TextStyle contextMenuItemTextStyle(bool enabled) {
+    return TextStyle(
+      color: enabled ? theme.textColor : theme.contextMenuItemDisabledTextColor,
+    );
   }
 
   void onMenuItemClicked(String? value, PlutoGridOnRowSecondaryTapEvent event) {

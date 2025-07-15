@@ -38,6 +38,7 @@ class QueueTopMenu extends StatelessWidget {
                 color: topMenuTheme.createQueueColor.iconColor,
               ),
               onHoverColor: topMenuTheme.createQueueColor.hoverBackgroundColor,
+              isEnabled: true,
             ),
           ),
         ],

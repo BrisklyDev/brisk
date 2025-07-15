@@ -51,8 +51,7 @@ class _MultiDownloadAdditionDialogState
   Widget build(BuildContext context) {
     widget.provider =
         Provider.of<DownloadRequestProvider>(context, listen: false);
-    final theme =
-        Provider.of<ThemeProvider>(context).activeTheme.alertDialogTheme;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     final size = MediaQuery.of(context).size;
     loc = AppLocalizations.of(context)!;
     return ScrollableDialog(
@@ -60,7 +59,11 @@ class _MultiDownloadAdditionDialogState
         padding: const EdgeInsets.all(15),
         child: Text(
           loc.addDownload,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            color: theme.textColor,
+          ),
         ),
       ),
       width: 600,
@@ -68,7 +71,7 @@ class _MultiDownloadAdditionDialogState
       scrollButtonVisible: true,
       scrollviewHeight: 500,
       scrollViewWidth: 600,
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.alertDialogTheme.backgroundColor,
       content: Container(
         height: 500,
         width: 600,
@@ -114,7 +117,10 @@ class _MultiDownloadAdditionDialogState
                       ),
                       Text(
                         loc.customSavePath,
-                        style: TextStyle(color: Colors.white60),
+                        style: TextStyle(
+                          color: theme.textColor,
+                          fontWeight: theme.fontWeight,
+                        ),
                       ),
                     ],
                   ),
@@ -140,14 +146,19 @@ class _MultiDownloadAdditionDialogState
                         text: null,
                         height: 40,
                         width: 56,
-                        icon: SvgPicture.asset(
+                        customIcon: SvgPicture.asset(
                           'assets/icons/folder-open.svg',
-                          colorFilter:
-                              ColorFilter.mode(Colors.white54, BlendMode.srcIn),
+                          colorFilter: ColorFilter.mode(
+                            theme.widgetTheme.iconColor,
+                            BlendMode.srcIn,
+                          ),
                         ),
-                        textColor: Colors.white,
+                        textColor: Colors.transparent,
                         borderColor: Colors.transparent,
-                        backgroundColor: theme.itemContainerBackgroundColor,
+                        hoverBackgroundColor: theme
+                            .widgetTheme.iconButtonColor.hoverBackgroundColor,
+                        backgroundColor:
+                            theme.widgetTheme.iconButtonColor.backgroundColor,
                         onPressed: widget.checkboxEnabled
                             ? onSelectSavePathPressed
                             : null,
@@ -162,13 +173,13 @@ class _MultiDownloadAdditionDialogState
       ),
       buttons: [
         RoundedOutlinedButton.fromButtonColor(
-          theme.cancelButtonColor,
+          theme.alertDialogTheme.declineButtonColor,
           onPressed: () => Navigator.of(context).pop(),
           text: loc.btn_cancel,
         ),
         const SizedBox(width: 10),
         RoundedOutlinedButton.fromButtonColor(
-          theme.addButtonColor,
+          theme.alertDialogTheme.acceptButtonColor,
           onPressed: onAddPressed,
           text: loc.btn_add,
         ),

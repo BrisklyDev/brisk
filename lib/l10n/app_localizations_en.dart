@@ -530,7 +530,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get installationGuide => 'Installation Guide';
 
   @override
-  String get installBrowserExtension_title => 'Install Browser Extension';
+  String get installBrowserExtension_title => 'Install the browser extension';
 
   @override
   String get installTheBrowserExtension_description =>

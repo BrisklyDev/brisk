@@ -25,21 +25,19 @@ class _SettingsSideMenuItemState extends State<SettingsSideMenuItem> {
   @override
   Widget build(BuildContext context) {
     provider = Provider.of<SettingsProvider>(context);
-    final sideMenuTheme = Provider.of<ThemeProvider>(context)
-        .activeTheme
-        .settingTheme
-        .sideMenuTheme;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
-        hoverColor: sideMenuTheme.inactiveTabHoverBackgroundColor,
+        hoverColor:
+            theme.settingTheme.sideMenuTheme.inactiveTabHoverBackgroundColor,
         onTap: () => provider.setSelectedSettingsTab(widget.tabId),
         child: Container(
           height: 40,
           width: 160,
           decoration: BoxDecoration(
             color: isTabSelected
-                ? sideMenuTheme.activeTabBackgroundColor
+                ? theme.settingTheme.sideMenuTheme.activeTabBackgroundColor
                 : Colors.transparent,
           ),
           child: Padding(
@@ -49,11 +47,18 @@ class _SettingsSideMenuItemState extends State<SettingsSideMenuItem> {
                 Icon(
                   widget.icon,
                   color: isTabSelected
-                      ? sideMenuTheme.activeTabIconColor
-                      : sideMenuTheme.inactiveTabIconColor,
+                      ? theme.settingTheme.sideMenuTheme.activeTabIconColor
+                      : theme.settingTheme.sideMenuTheme.inactiveTabIconColor,
                 ),
                 SizedBox(width: 10),
-                Text(widget.title, overflow: TextOverflow.ellipsis,)
+                Text(
+                  widget.title,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontWeight: theme.fontWeight,
+                    color: theme.settingTheme.sideMenuTheme.tabTextColor,
+                  ),
+                )
               ],
             ),
           ),

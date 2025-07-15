@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:brisk/theme/application_theme.dart';
+import 'package:brisk/theme/application_theme_holder.dart';
 import 'package:path/path.dart';
 import 'package:brisk/constants/file_type.dart';
 import 'package:brisk/db/hive_util.dart';
@@ -33,6 +35,44 @@ class PlutoGridUtil {
   static final List<PlutoRow> cachedRows = [];
 
   static bool Function(PlutoRow)? filter = null;
+
+  static PlutoGridConfiguration config(DownloadGridTheme downloadGridTheme) {
+    return ApplicationThemeHolder.isLight
+        ? PlutoGridConfiguration(
+            style: PlutoGridStyleConfig(
+              oddRowColor: downloadGridTheme.backgroundColor,
+              evenRowColor: downloadGridTheme.backgroundColor,
+              columnTextStyle: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: downloadGridTheme.rowTextColor,
+              ),
+              activatedBorderColor: Colors.transparent,
+              borderColor: downloadGridTheme.borderColor,
+              gridBorderColor: downloadGridTheme.borderColor,
+              activatedColor: downloadGridTheme.activeRowColor,
+              gridBackgroundColor: downloadGridTheme.backgroundColor,
+              rowColor: downloadGridTheme.rowColor,
+              checkedColor: downloadGridTheme.checkedRowColor,
+            ),
+          )
+        : PlutoGridConfiguration(
+            style: PlutoGridStyleConfig.dark(
+              oddRowColor: downloadGridTheme.backgroundColor,
+              evenRowColor: downloadGridTheme.backgroundColor,
+              columnTextStyle: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: downloadGridTheme.rowTextColor,
+              ),
+              activatedBorderColor: Colors.transparent,
+              borderColor: downloadGridTheme.borderColor,
+              gridBorderColor: downloadGridTheme.borderColor,
+              activatedColor: downloadGridTheme.activeRowColor,
+              gridBackgroundColor: downloadGridTheme.backgroundColor,
+              rowColor: downloadGridTheme.rowColor,
+              checkedColor: downloadGridTheme.checkedRowColor,
+            ),
+          );
+  }
 
   static void handleRowSelection(
     event,
@@ -131,34 +171,42 @@ class PlutoGridUtil {
     );
   }
 
-  static Row fileNameColumnRenderer(
-      PlutoColumnRendererContext rendererContext) {
+  static Widget fileNameColumnRenderer(
+    PlutoColumnRendererContext rendererContext,
+    ApplicationTheme theme,
+  ) {
     final fileName = rendererContext.row.cells["file_name"]!.value;
     final fileType = FileUtil.detectFileType(fileName);
-    return Row(
-      children: [
-        SizedBox(
-          width: resolveIconSize(fileType),
-          height: resolveIconSize(fileType),
-          child: SvgPicture.asset(
-            FileUtil.resolveFileTypeIconPath(fileType.name),
-            colorFilter: ColorFilter.mode(
-              FileUtil.resolveFileTypeIconColor(fileType.name),
-              BlendMode.srcIn,
+    return Padding(
+      padding: const EdgeInsets.only(left: 5.0),
+      child: Row(
+        children: [
+          SizedBox(
+            width: resolveIconSize(fileType),
+            height: resolveIconSize(fileType),
+            child: SvgPicture.asset(
+              FileUtil.resolveFileTypeIconPath(fileType.name),
+              colorFilter: ColorFilter.mode(
+                FileUtil.resolveFileTypeIconColor(fileType.name),
+                BlendMode.srcIn,
+              ),
             ),
           ),
-        ),
-        const SizedBox(width: 5),
-        Expanded(
-          child: Text(
-            rendererContext.row.cells[rendererContext.column.field]!.value
-                .toString(),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(color: Colors.white),
+          const SizedBox(width: 5),
+          Expanded(
+            child: Text(
+              rendererContext.row.cells[rendererContext.column.field]!.value
+                  .toString(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: theme.downloadGridTheme.rowTextColor,
+                fontWeight: theme.fontWeight,
+              ),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

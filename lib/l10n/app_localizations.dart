@@ -1097,7 +1097,7 @@ abstract class AppLocalizations {
   /// No description provided for @installBrowserExtension_title.
   ///
   /// In en, this message translates to:
-  /// **'Install Browser Extension'**
+  /// **'Install the browser extension'**
   String get installBrowserExtension_title;
 
   /// No description provided for @installTheBrowserExtension_description.

@@ -32,7 +32,7 @@ class _FfmpegInstallationProgressDialogState
         padding: const EdgeInsets.all(15),
         child: Text(
           progress?.status ?? "Initializing...",
-          style: TextStyle(fontSize: 18),
+          style: TextStyle(fontSize: 18, color: theme.textColor),
         ),
       ),
       content: Padding(

@@ -1,4 +1,3 @@
-import 'package:brisk/db/hive_util.dart';
 import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/provider/download_request_provider.dart';
 import 'package:brisk/provider/theme_provider.dart';
@@ -59,7 +58,7 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
                 child: Icon(
                   Icons.close,
                   size: 22,
-                  color: Colors.white60,
+                  color: theme.widgetTheme.iconColor,
                 ),
               ),
             )
@@ -76,12 +75,12 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
             Text(
               "${loc.file}: ${downloadProgress.downloadItem.fileName}",
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: Colors.white70),
+              style: TextStyle(color: theme.textColor),
             ),
             Text(
               "${loc.url}: ${downloadProgress.downloadItem.downloadUrl}",
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: Colors.white70),
+              style: TextStyle(color: theme.textColor),
             ),
             const SizedBox(height: 15),
             Row(
@@ -104,23 +103,29 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
               ],
             ),
             const SizedBox(height: 10),
-            RoundedOutlinedButton(
-              onPressed: () {
-                setState(() {
-                  showDetails = !showDetails;
-                });
-              },
-              backgroundColor: Colors.black12,
-              borderColor: Colors.transparent,
-              textColor: Colors.blue,
-              text: showDetails
-                  ? loc.btn_hideConnectionDetails
-                  : loc.btn_showConnectionDetails,
-              icon: Icon(
-                showDetails
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: RoundedOutlinedButton(
+                onPressed: () {
+                  setState(() {
+                    showDetails = !showDetails;
+                  });
+                },
+                backgroundColor: Colors.black12,
+                borderColor: Colors.transparent,
+                hoverBackgroundColor:
+                    theme.widgetTheme.showHideButtonColor.hoverBackgroundColor,
+                hoverTextColor:
+                    theme.widgetTheme.showHideButtonColor.hoverTextColor,
+                textColor: theme.widgetTheme.showHideButtonColor.textColor,
+                text: showDetails
+                    ? loc.btn_hideConnectionDetails
+                    : loc.btn_showConnectionDetails,
+                icon: showDetails
                     ? Icons.expand_less_rounded
                     : Icons.expand_more_rounded,
-                color: Colors.blue,
+                iconColor: theme.widgetTheme.showHideButtonColor.iconColor,
+                iconHoverColor: theme.widgetTheme.showHideButtonColor.iconColor,
               ),
             ),
             const SizedBox(height: 15),
@@ -139,7 +144,7 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
         width: 550,
         height: 200,
         decoration: BoxDecoration(
-          color: theme.alertDialogTheme.itemContainerBackgroundColor,
+          color: theme.alertDialogTheme.surfaceColor,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Selector<DownloadRequestProvider, List<DownloadProgressMessage>>(
@@ -165,15 +170,15 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
                           children: [
                             Text(
                               "${loc.connection} ${(index + 1).toString()}",
-                              style: const TextStyle(
-                                color: Color.fromRGBO(203, 203, 203, 1.0),
+                              style: TextStyle(
+                                color: theme.textColor,
                                 fontSize: 15,
                               ),
                             ),
                             Text(
                               transferRate,
-                              style: const TextStyle(
-                                color: Color.fromRGBO(203, 203, 203, 1.0),
+                              style: TextStyle(
+                                color: theme.textColor,
                                 fontSize: 15,
                               ),
                             ),
@@ -226,7 +231,7 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
             contentPadding: EdgeInsetsDirectional.only(end: 6),
             theme.downloadProgressDialogTheme.pauseColor,
             onPressed: onPausePressed,
-            icon: SizedBox(
+            customIcon: SizedBox(
               width: 20,
               child: Icon(
                 Icons.pause_rounded,
@@ -241,7 +246,7 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
             contentPadding: EdgeInsetsDirectional.only(end: 6),
             theme.downloadProgressDialogTheme.resumeColor,
             onPressed: () => provider.startDownload(widget.downloadId),
-            icon: SizedBox(
+            customIcon: SizedBox(
               width: 20,
               child: Icon(
                 Icons.play_arrow_rounded,
@@ -256,10 +261,9 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
             backgroundColor: Colors.black12,
             contentPadding: EdgeInsetsDirectional.only(end: 6),
             onPressed: null,
-            icon: Icon(
-              Icons.hourglass_bottom_rounded,
-              color: Colors.white70,
-            ),
+            icon: Icons.hourglass_bottom_rounded,
+            iconColor: Colors.white70,
+            iconHoverColor: Colors.white70,
             text: loc.btn_wait,
             textColor: Colors.white70,
           );
@@ -311,6 +315,7 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
           status,
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            color: theme.textColor,
             fontSize: 18,
           ),
         );
@@ -378,7 +383,7 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
       height: 80,
       width: 160,
       decoration: BoxDecoration(
-        color: theme.alertDialogTheme.itemContainerBackgroundColor,
+        color: theme.alertDialogTheme.surfaceColor,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
@@ -387,13 +392,13 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(title, style: TextStyle(color: Colors.white60)),
+            Text(title, style: TextStyle(color: theme.textColor)),
             const SizedBox(height: 5),
             Text(
               value,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white,
+                color: theme.textColor,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -414,8 +419,8 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
             convertByteToReadableStr((totalSize * progress).toInt());
         return Text(
           "$completedSizeStr ${loc.of_} $totalSizeStr",
-          style: const TextStyle(
-            color: Colors.white70,
+          style: TextStyle(
+            color: theme.textColor,
           ),
         );
       },
@@ -430,8 +435,8 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
           progress == 1
               ? '${(progress * 100).toStringAsFixed(0)}%'
               : '${(progress * 100).toStringAsFixed(2)}%',
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: theme.textColor,
             fontWeight: FontWeight.bold,
           )),
     );

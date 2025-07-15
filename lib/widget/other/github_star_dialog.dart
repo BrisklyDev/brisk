@@ -78,7 +78,7 @@ class GithubStarDialog extends StatelessWidget {
       ),
       buttons: [
         RoundedOutlinedButton.fromButtonColor(
-          theme.alertDialogTheme.cancelButtonColor,
+          theme.alertDialogTheme.declineButtonColor,
           onPressed: () {
             GitHubStarHandler.setNeverShowAgain();
             Navigator.of(context).pop();
@@ -87,7 +87,7 @@ class GithubStarDialog extends StatelessWidget {
         ),
         const SizedBox(width: 10),
         RoundedOutlinedButton.fromButtonColor(
-          theme.alertDialogTheme.addButtonColor,
+          theme.alertDialogTheme.acceptButtonColor,
           onPressed: () =>
               launchUrlString("https://github.com/BrisklyDev/brisk"),
           text: "Take me there",

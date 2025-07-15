@@ -87,13 +87,13 @@ class ErrorDialog extends StatelessWidget {
                     if (description != null)
                       Text(
                         description!,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: theme.textColor),
                       ),
                     const SizedBox(height: 10),
                     if (descriptionHint != null)
                       Text(
                         descriptionHint!,
-                        style: TextStyle(color: Colors.white60),
+                        style: TextStyle(color: theme.textHintColor),
                       )
                   ],
                 ),

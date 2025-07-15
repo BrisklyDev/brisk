@@ -59,12 +59,12 @@ class _CreateQueueWindowState extends State<CreateQueueWindow> {
       ),
       actions: [
         RoundedOutlinedButton.fromButtonColor(
-          theme.cancelButtonColor,
+          theme.declineButtonColor,
           text: loc.btn_cancel,
           onPressed: () => Navigator.of(context).pop(),
         ),
         RoundedOutlinedButton.fromButtonColor(
-          theme.addButtonColor,
+          theme.acceptButtonColor,
           text: loc.btn_createQueue,
           onPressed: () => onCreatePressed(context),
         ),
@@ -84,7 +84,7 @@ class _CreateQueueWindowState extends State<CreateQueueWindow> {
         builder: (context) => ErrorDialog(
           title: "Queue with this name already exists!",
           height: 50,
-          width: 400,
+          width: 450,
         ),
       );
     } else {

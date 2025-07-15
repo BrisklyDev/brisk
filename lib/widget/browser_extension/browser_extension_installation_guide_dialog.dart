@@ -1,5 +1,6 @@
 import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/provider/theme_provider.dart';
+import 'package:brisk/theme/application_theme.dart';
 import 'package:brisk/widget/base/rounded_outlined_button.dart';
 import 'package:brisk/widget/base/scrollable_dialog.dart';
 import 'package:flutter/material.dart';
@@ -24,10 +25,11 @@ class BrowserExtensionInstallationGuideDialog extends StatefulWidget {
 class _BrowserExtensionInstallationGuideDialogState
     extends State<BrowserExtensionInstallationGuideDialog> {
   bool videoGuide = false;
+  late ApplicationTheme theme;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Provider.of<ThemeProvider>(context).activeTheme;
+    theme = Provider.of<ThemeProvider>(context).activeTheme;
     final loc = AppLocalizations.of(context)!;
     return ScrollableDialog(
       width: 600,
@@ -54,7 +56,7 @@ class _BrowserExtensionInstallationGuideDialogState
               splashRadius: 20,
               icon: Icon(
                 Icons.close_rounded,
-                color: Colors.white60,
+                color: theme.widgetTheme.iconColor,
               ),
             )
           ],
@@ -71,7 +73,7 @@ class _BrowserExtensionInstallationGuideDialogState
               subtitles: [
                 Text(
                   step1Subtitle(loc),
-                  style: TextStyle(color: Colors.white60, fontSize: 15),
+                  style: installationStepDescriptionStyle,
                 ),
                 const SizedBox(height: 5),
                 RoundedOutlinedButton(
@@ -83,7 +85,7 @@ class _BrowserExtensionInstallationGuideDialogState
                   text: loc.downloadExtension,
                   hoverBackgroundColor: Colors.blueAccent,
                   backgroundColor: Color.fromRGBO(53, 89, 143, 1),
-                  icon: Icon(Icons.download, color: Colors.white70),
+                  icon: Icons.download,
                 ),
               ],
             ),
@@ -93,7 +95,7 @@ class _BrowserExtensionInstallationGuideDialogState
               subtitles: [
                 Text(
                   loc.installBrowserExtension_step2_subtitle,
-                  style: TextStyle(color: Colors.white60, fontSize: 15),
+                  style: installationStepDescriptionStyle,
                 ),
               ],
             ),
@@ -103,7 +105,7 @@ class _BrowserExtensionInstallationGuideDialogState
               subtitles: [
                 Text(
                   step3Subtitle(loc),
-                  style: TextStyle(color: Colors.white60, fontSize: 15),
+                  style: installationStepDescriptionStyle,
                 ),
               ],
             ),
@@ -113,7 +115,7 @@ class _BrowserExtensionInstallationGuideDialogState
               subtitles: [
                 Text(
                   step4Subtitle(loc),
-                  style: TextStyle(color: Colors.white60, fontSize: 15),
+                  style: installationStepDescriptionStyle,
                 ),
               ],
             )
@@ -123,8 +125,15 @@ class _BrowserExtensionInstallationGuideDialogState
     );
   }
 
+  TextStyle get installationStepDescriptionStyle {
+    return TextStyle(
+      color: theme.alertDialogTheme.textHintColor,
+      fontSize: 15,
+    );
+  }
+
   String step4Title(AppLocalizations loc) {
-      return loc.installBrowserExtension_step4_title;
+    return loc.installBrowserExtension_step4_title;
   }
 
   String step4Subtitle(AppLocalizations loc) {
@@ -176,7 +185,11 @@ class _BrowserExtensionInstallationGuideDialogState
             children: [
               Text(
                 title,
-                style: const TextStyle(fontSize: 15),
+                style: TextStyle(
+                  fontSize: 15,
+                  color: theme.textColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 5),
               ...subtitles,

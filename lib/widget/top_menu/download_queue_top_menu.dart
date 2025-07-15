@@ -52,6 +52,7 @@ class DownloadQueueTopMenu extends StatelessWidget {
                 color: topMenuTheme.startQueueColor.iconColor,
               ),
               onHoverColor: topMenuTheme.startQueueColor.hoverBackgroundColor,
+              isEnabled: true,
             ),
           ),
           TopMenuButton(
@@ -64,6 +65,7 @@ class DownloadQueueTopMenu extends StatelessWidget {
               color: topMenuTheme.stopQueueColor.iconColor,
             ),
             onHoverColor: topMenuTheme.stopQueueColor.hoverBackgroundColor,
+            isEnabled: true,
           ),
           TopMenuButton(
             onTap: isDownloadButtonEnabled(provider) ? onDownloadPressed : null,
@@ -77,9 +79,7 @@ class DownloadQueueTopMenu extends StatelessWidget {
                   : Color.fromRGBO(79, 79, 79, 0.5),
             ),
             onHoverColor: topMenuTheme.downloadColor.hoverBackgroundColor,
-            textColor: isDownloadButtonEnabled(provider)
-                ? topMenuTheme.downloadColor.textColor
-                : Color.fromRGBO(79, 79, 79, 1),
+            isEnabled: isDownloadButtonEnabled(provider),
           ),
           TopMenuButton(
             onTap: isPauseButtonEnabled(provider) ? onStopPressed : null,
@@ -93,20 +93,23 @@ class DownloadQueueTopMenu extends StatelessWidget {
                   : Color.fromRGBO(79, 79, 79, 0.5),
             ),
             onHoverColor: topMenuTheme.stopColor.hoverBackgroundColor,
-            textColor: isPauseButtonEnabled(provider)
-                ? topMenuTheme.stopColor.textColor
-                : Color.fromRGBO(79, 79, 79, 1),
+            isEnabled: isPauseButtonEnabled(provider),
           ),
           TopMenuButton(
-            onTap: () => onRemovePressed(context),
+            onTap: PlutoGridUtil.selectedRowExists
+                ? () => onRemovePressed(context)
+                : null,
             fontSize: 14,
             title: loc.remove,
             icon: Icon(
               size: 28,
               Icons.delete,
-              color: topMenuTheme.removeColor.iconColor,
+              color: PlutoGridUtil.selectedRowExists
+                  ? topMenuTheme.removeColor.iconColor
+                  : Colors.white10,
             ),
             onHoverColor: topMenuTheme.removeColor.hoverBackgroundColor,
+            isEnabled: PlutoGridUtil.selectedRowExists,
           ),
         ],
       ),

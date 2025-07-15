@@ -51,9 +51,10 @@ class AskDuplicationAction extends StatelessWidget {
           Text(
             loc.duplicateDownload_title,
             style: TextStyle(
-                color: theme.alertDialogTheme.textColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 20),
+              color: theme.alertDialogTheme.textColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
           ),
         ],
       ),
@@ -61,7 +62,7 @@ class AskDuplicationAction extends StatelessWidget {
         width: 400,
         child: Text(
           loc.duplicateDownload_description,
-          style: const TextStyle(fontSize: 17),
+          style: TextStyle(fontSize: 17, color: theme.textColor),
         ),
       ),
       actions: [
@@ -69,19 +70,19 @@ class AskDuplicationAction extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             RoundedOutlinedButton.fromButtonColor(
-              theme.alertDialogTheme.cancelButtonColor,
+              theme.alertDialogTheme.declineButtonColor,
               text: loc.btn_cancel,
               onPressed: () => Navigator.of(context).pop(),
             ),
             const SizedBox(width: 5),
             RoundedOutlinedButton.fromButtonColor(
-              theme.downloadInfoDialogTheme.addToListColor,
+              theme.alertDialogTheme.secondaryMiscButtonColor,
               text: loc.btn_updateUrl,
               onPressed: onUpdateUrlPressed,
             ),
             const SizedBox(width: 5),
             RoundedOutlinedButton.fromButtonColor(
-              theme.alertDialogTheme.addButtonColor,
+              theme.alertDialogTheme.acceptButtonColor,
               text: loc.btn_addNew,
               onPressed: onCreateNewPressed,
             ),

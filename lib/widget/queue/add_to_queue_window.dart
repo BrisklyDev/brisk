@@ -23,11 +23,10 @@ class _AddToQueueWindowState extends State<AddToQueueWindow> {
   @override
   Widget build(BuildContext context) {
     setDownloadQueues();
-    final theme =
-        Provider.of<ThemeProvider>(context).activeTheme.alertDialogTheme;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     final loc = AppLocalizations.of(context)!;
     return AlertDialog(
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.alertDialogTheme.backgroundColor,
       title: Text(
         loc.addDownloadToQueue,
         style: TextStyle(
@@ -48,12 +47,20 @@ class _AddToQueueWindowState extends State<AddToQueueWindow> {
                 value: selectedValue,
                 menuMaxHeight: 200,
                 menuWidth: 400,
+                iconEnabledColor: theme.widgetTheme.dropDownColor.iconColor,
+                dropdownColor:
+                    theme.widgetTheme.dropDownColor.dropDownBackgroundColor,
                 items: downloadQueues?.map((DownloadQueue value) {
                   return DropdownMenuItem<String>(
                     value: value.name,
                     child: SizedBox(
                       width: 376,
-                      child: Text(value.name),
+                      child: Text(
+                        value.name,
+                        style: TextStyle(
+                          color: theme.widgetTheme.dropDownColor.itemTextColor,
+                        ),
+                      ),
                     ),
                   );
                 }).toList(),
@@ -65,12 +72,12 @@ class _AddToQueueWindowState extends State<AddToQueueWindow> {
       ),
       actions: [
         RoundedOutlinedButton.fromButtonColor(
-          theme.cancelButtonColor,
+          theme.alertDialogTheme.declineButtonColor,
           text: loc.btn_cancel,
           onPressed: () => Navigator.of(context).pop(),
         ),
         RoundedOutlinedButton.fromButtonColor(
-          theme.addButtonColor,
+          theme.alertDialogTheme.acceptButtonColor,
           text: loc.btn_addToQueue,
           onPressed: onAddPressed,
         ),

@@ -24,14 +24,14 @@ class SettingsDialog extends StatefulWidget {
 
 class _SettingsDialogState extends State<SettingsDialog> {
   SettingsProvider? settingsProvider;
-  ThemeProvider? themeProvider;
+  late ThemeProvider themeProvider;
   late AppLocalizations loc;
 
   @override
   Widget build(BuildContext context) {
     settingsProvider = Provider.of<SettingsProvider>(context);
     themeProvider = Provider.of<ThemeProvider>(context);
-    final settingTheme = themeProvider!.activeTheme.settingTheme;
+    final settingTheme = themeProvider.activeTheme.settingTheme;
     loc = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;
     return AlertDialog(
@@ -55,9 +55,10 @@ class _SettingsDialogState extends State<SettingsDialog> {
                 child: Text(
                   loc.settings_title,
                   style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
+                    color: themeProvider.activeTheme.alertDialogTheme.textColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
                 ),
               ),
               SizedBox(height: 30),

@@ -1,5 +1,6 @@
 import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/provider/settings_provider.dart';
+import 'package:brisk/provider/theme_provider.dart';
 import 'package:brisk/util/ffmpeg.dart';
 import 'package:brisk/setting/settings_cache.dart';
 import 'package:brisk/widget/base/error_dialog.dart';
@@ -35,6 +36,7 @@ class _FFmpegSettingsGroupState extends State<FFmpegSettingsGroup> {
     final size = MediaQuery.of(context).size;
     final provider = Provider.of<SettingsProvider>(context);
     loc = AppLocalizations.of(context)!;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     return SettingsGroup(
       title: "FFmpeg",
       tooltipMessage:
@@ -57,7 +59,7 @@ class _FFmpegSettingsGroupState extends State<FFmpegSettingsGroup> {
             },
             icon: Icon(
               Icons.folder,
-              color: Colors.white60,
+              color: theme.widgetTheme.textFieldColor.iconColor,
             ),
           ),
         ),
@@ -68,7 +70,7 @@ class _FFmpegSettingsGroupState extends State<FFmpegSettingsGroup> {
           titleWidth: 100,
           customIcon: Icon(
             Icons.build_circle_rounded,
-            color: Colors.white70,
+            color: theme.widgetTheme.iconColor,
             size: 28,
           ),
           linkText: "",
@@ -80,7 +82,7 @@ class _FFmpegSettingsGroupState extends State<FFmpegSettingsGroup> {
           titleWidth: 250,
           customIcon: Icon(
             Icons.install_desktop_rounded,
-            color: Colors.white70,
+            color: theme.widgetTheme.iconColor,
             size: 28,
           ),
           linkText: "",

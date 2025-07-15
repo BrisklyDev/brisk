@@ -1,9 +1,11 @@
 import 'package:brisk/l10n/app_localizations.dart';
+import 'package:brisk/provider/theme_provider.dart';
 import 'package:brisk/widget/setting/base/switch_setting.dart';
 import 'package:flutter/material.dart';
 import 'package:brisk/setting/settings_cache.dart';
 import 'package:brisk/widget/setting/base/settings_group.dart';
 import 'package:brisk/widget/setting/base/text_field_setting.dart';
+import 'package:provider/provider.dart';
 
 class PortSettingsGroup extends StatefulWidget {
   const PortSettingsGroup({super.key});
@@ -27,6 +29,7 @@ class _WebExtensionSettingsGroupState extends State<PortSettingsGroup> {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     return SettingsGroup(
       title: loc.settings_browserExtension,
       children: [
@@ -49,7 +52,7 @@ class _WebExtensionSettingsGroupState extends State<PortSettingsGroup> {
         Center(
           child: Text(
             '* ${loc.changesRequireRestart}',
-            style: TextStyle(color: Colors.white70, fontSize: 14),
+            style: TextStyle(color: theme.subtleTextColor, fontSize: 14),
           ),
         )
       ],

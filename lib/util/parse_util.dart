@@ -69,7 +69,6 @@ String parseFileSavePathRulesToCsv(List<FileSavePathRule> rules) {
 List<FileSavePathRule> parseCsvToFileSavePathRuleList(String csv) {
   if (csv.isNullOrBlank) return [];
   final rulesStr = parseCsvToList(csv);
-  print(csv);
   return rulesStr.map((str) => FileSavePathRule.fromString(str)).toList();
 }
 

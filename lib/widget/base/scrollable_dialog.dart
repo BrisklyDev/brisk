@@ -107,7 +107,7 @@ class _ScrollableDialogState extends State<ScrollableDialog> {
                               child: Icon(
                                 Icons.arrow_downward_rounded,
                                 size: 22,
-                                color: Colors.white60,
+                                color: theme.widgetTheme.iconColor,
                               ),
                             ),
                           ),

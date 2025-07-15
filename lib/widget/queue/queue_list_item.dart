@@ -16,30 +16,34 @@ class QueueListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final queueTheme =
-        Provider.of<ThemeProvider>(context).activeTheme.queuePageTheme;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     final loc = AppLocalizations.of(context)!;
     return Material(
       type: MaterialType.transparency,
       child: ListTile(
-        hoverColor: queueTheme.queueItemHoverColor,
+        hoverColor: theme.queuePageTheme.queueItemHoverColor,
         onTap: () => onQueueTap(context),
         leading: Padding(
           padding: EdgeInsets.only(left: 10),
           child: Icon(
             Icons.queue_rounded,
-            color: queueTheme.queueItemIconColor,
+            color: theme.widgetTheme.iconColor,
           ),
         ),
         title: Text(
           queue.name == "Main" ? loc.mainQueue : queue.name,
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: theme.queuePageTheme.queueItemTitleTextColor,
+            fontWeight: theme.fontWeight,
+          ),
         ),
         subtitle: Text(
           loc.downloadsInQueue(
             queue.downloadItemsIds == null ? 0 : queue.downloadItemsIds!.length,
           ),
-          style: TextStyle(color: queueTheme.queueItemTitleDetailsTextColor),
+          style: TextStyle(
+            color: theme.queuePageTheme.queueItemTitleDetailsTextColor,
+          ),
         ),
         trailing: SizedBox(
           width: 100,
@@ -48,7 +52,10 @@ class QueueListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               IconButton(
-                icon: Icon(Icons.more_vert_rounded, color: Colors.white),
+                icon: Icon(
+                  Icons.more_vert_rounded,
+                  color: theme.widgetTheme.iconColor,
+                ),
                 onPressed: () => onDetailsTap(context),
               ),
               queue.name == "Main"

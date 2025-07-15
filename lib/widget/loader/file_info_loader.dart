@@ -17,12 +17,11 @@ class FileInfoLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme =
-        Provider.of<ThemeProvider>(context).activeTheme.alertDialogTheme;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     final loc = AppLocalizations.of(context)!;
     return AlertDialog(
-      backgroundColor: theme.backgroundColor,
-      surfaceTintColor: theme.backgroundColor,
+      backgroundColor: theme.alertDialogTheme.backgroundColor,
+      surfaceTintColor: theme.alertDialogTheme.backgroundColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -35,7 +34,10 @@ class FileInfoLoader extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               message ?? loc.retrievingFileInformation,
-              style: TextStyle(color: theme.textColor, fontSize: 15),
+              style: TextStyle(
+                  color: theme.textColor,
+                  fontSize: 15,
+                  fontWeight: theme.fontWeight),
             ),
           ],
         ),
@@ -43,7 +45,8 @@ class FileInfoLoader extends StatelessWidget {
       actions: [
         RoundedOutlinedButton(
           text: loc.btn_cancel,
-          textColor: Colors.red,
+          textColor: Colors.white,
+          backgroundColor: Colors.red,
           borderColor: Colors.red,
           onPressed: onCancelPressed,
         )

@@ -24,9 +24,7 @@ class ExternalLinkSetting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme =
-        Provider.of<ThemeProvider>(context).activeTheme.settingTheme.pageTheme;
-
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     return Row(
       children: [
         SizedBox(
@@ -38,7 +36,8 @@ class ExternalLinkSetting extends StatelessWidget {
                 title,
                 style: TextStyle(
                   overflow: TextOverflow.ellipsis,
-                  color: theme.titleTextColor,
+                  color: theme.settingTheme.pageTheme.titleTextColor,
+                  fontWeight: theme.fontWeight,
                   fontSize: 14,
                 ),
               ),
@@ -47,7 +46,10 @@ class ExternalLinkSetting extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 4.0),
                   child: Tooltip(
                     message: tooltipMessage!,
-                    child: const Icon(Icons.info, color: Colors.grey),
+                    child: Icon(
+                      Icons.info,
+                      color: theme.widgetTheme.tooltipIconColor,
+                    ),
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(33, 33, 33, 1),
                       borderRadius: BorderRadius.circular(10),
@@ -70,7 +72,11 @@ class ExternalLinkSetting extends StatelessWidget {
             ),
             Text(
               linkText,
-              style: const TextStyle(color: Colors.white, fontSize: 11),
+              style: TextStyle(
+                color: theme.settingTheme.pageTheme.titleTextColor,
+                fontWeight: theme.fontWeight,
+                fontSize: 11,
+              ),
             ),
           ],
         )

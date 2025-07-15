@@ -56,15 +56,14 @@ class _AddUrlDialogState extends State<AddUrlDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final theme =
-        Provider.of<ThemeProvider>(context).activeTheme.alertDialogTheme;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     final loc = AppLocalizations.of(context)!;
     return LoaderOverlay(
       overlayWidgetBuilder: (progress) => FileInfoLoader(
         onCancelPressed: () => DownloadAdditionUiUtil.cancelRequest(context),
       ),
       child: ScrollableDialog(
-        backgroundColor: theme.backgroundColor,
+        backgroundColor: theme.alertDialogTheme.backgroundColor,
         width: 450,
         height: resolveHeight(),
         scrollviewHeight: resolveHeight() - 50,
@@ -75,7 +74,8 @@ class _AddUrlDialogState extends State<AddUrlDialog> {
             widget.updateDialog
                 ? loc.updateDownloadUrl
                 : loc.add_a_download_url,
-            style: TextStyle(color: theme.textColor),
+            style:
+                TextStyle(color: theme.textColor, fontWeight: theme.fontWeight),
           ),
         ),
         content: Padding(
@@ -93,6 +93,8 @@ class _AddUrlDialogState extends State<AddUrlDialog> {
                       SizedBox(
                         width: 420,
                         child: OutLinedTextField(
+                          cursorColor:
+                              theme.widgetTheme.textFieldColor.iconColor,
                           controller: txtController,
                           onChanged: _handleTextFieldExpansion,
                           hintText: widget.updateDialog
@@ -108,7 +110,7 @@ class _AddUrlDialogState extends State<AddUrlDialog> {
                             },
                             icon: Icon(
                               Icons.paste_rounded,
-                              color: Colors.white60,
+                              color: theme.widgetTheme.textFieldColor.iconColor,
                             ),
                           ),
                         ),
@@ -123,18 +125,23 @@ class _AddUrlDialogState extends State<AddUrlDialog> {
                       showAdvancedOptions = !showAdvancedOptions;
                     });
                   },
-                  backgroundColor: theme.itemContainerBackgroundColor,
+                  backgroundColor:
+                      theme.widgetTheme.showHideButtonColor.backgroundColor,
                   borderColor: Colors.transparent,
-                  textColor: Colors.white,
+                  hoverBackgroundColor: theme
+                      .widgetTheme.showHideButtonColor.hoverBackgroundColor,
+                  hoverTextColor:
+                      theme.widgetTheme.showHideButtonColor.hoverTextColor,
+                  textColor: theme.widgetTheme.showHideButtonColor.textColor,
                   text: showAdvancedOptions
                       ? loc.btn_hideAdvancedOptions
                       : loc.btn_showAdvancedOptions,
-                  icon: Icon(
-                    showAdvancedOptions
-                        ? Icons.expand_less_rounded
-                        : Icons.expand_more_rounded,
-                    color: Colors.white70,
-                  ),
+                  icon: showAdvancedOptions
+                      ? Icons.expand_less_rounded
+                      : Icons.expand_more_rounded,
+                  iconColor: theme.widgetTheme.showHideButtonColor.iconColor,
+                  iconHoverColor:
+                      theme.widgetTheme.showHideButtonColor.iconColor,
                 ),
                 const SizedBox(height: 10),
                 Visibility(
@@ -197,7 +204,7 @@ class _AddUrlDialogState extends State<AddUrlDialog> {
                           Text(
                             "Save headers for future requests",
                             style:
-                                TextStyle(fontSize: 14, color: Colors.white70),
+                                TextStyle(fontSize: 14, color: theme.textColor),
                           ),
                         ],
                       ),
@@ -210,13 +217,13 @@ class _AddUrlDialogState extends State<AddUrlDialog> {
         ),
         buttons: [
           RoundedOutlinedButton.fromButtonColor(
-            theme.cancelButtonColor,
+            theme.alertDialogTheme.declineButtonColor,
             text: loc.btn_cancel,
             onPressed: () => _onCancelPressed(context),
           ),
           const SizedBox(width: 10),
           RoundedOutlinedButton.fromButtonColor(
-            theme.addButtonColor,
+            theme.alertDialogTheme.acceptButtonColor,
             text: widget.updateDialog ? loc.btn_updateUrl : loc.btn_addUrl,
             onPressed: () => _onAddPressed(context),
           ),
@@ -226,7 +233,6 @@ class _AddUrlDialogState extends State<AddUrlDialog> {
   }
 
   void _handleTextFieldExpansion(String value) {
-    print(widget.updateDialog);
     if (widget.updateDialog) return;
     if (value.contains("\n")) {
       setState(() => minLines = 3);

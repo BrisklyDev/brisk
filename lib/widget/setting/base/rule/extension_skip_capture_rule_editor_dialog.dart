@@ -68,7 +68,13 @@ class _ExtensionSkipCaptureRuleEditorDialogState
         children: [
           Padding(
             padding: const EdgeInsets.all(20),
-            child: Text(loc.settings_rules_edit),
+            child: Text(
+              loc.settings_rules_edit,
+              style: TextStyle(
+                color: theme.textColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           Container(
             height: 1,
@@ -99,14 +105,15 @@ class _ExtensionSkipCaptureRuleEditorDialogState
           const SizedBox(height: 5),
           Center(
             child: RoundedOutlinedButton(
-              icon: Icon(
-                Icons.add,
-                color: Colors.white70,
-              ),
+              icon: Icons.add,
+              iconColor:
+              theme.alertDialogTheme.primaryMiscButtonColor.iconColor,
+              iconHoverColor:
+              theme.alertDialogTheme.primaryMiscButtonColor.hoverIconColor,
+              textColor: theme.textColor,
               width: 580,
               onPressed: _onAddNewPressed,
-              backgroundColor:
-                  theme.alertDialogTheme.itemContainerBackgroundColor,
+              backgroundColor: theme.alertDialogTheme.surfaceColor,
               hoverBackgroundColor: Color.fromRGBO(53, 89, 143, 1),
               text: loc.btn_addNew,
             ),
@@ -115,13 +122,13 @@ class _ExtensionSkipCaptureRuleEditorDialogState
       ),
       buttons: [
         RoundedOutlinedButton.fromButtonColor(
-          theme.alertDialogTheme.cancelButtonColor,
+          theme.alertDialogTheme.declineButtonColor,
           onPressed: () => Navigator.of(context).pop(),
           text: loc.btn_cancel,
         ),
         const SizedBox(width: 10),
         RoundedOutlinedButton.fromButtonColor(
-          theme.alertDialogTheme.addButtonColor,
+          theme.alertDialogTheme.acceptButtonColor,
           onPressed: _onSavePressed,
           text: loc.btn_save,
         ),
@@ -134,7 +141,7 @@ class _ExtensionSkipCaptureRuleEditorDialogState
       padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
       child: Container(
         decoration: BoxDecoration(
-          color: theme.settingTheme.pageTheme.itemAccentColor,
+          color: theme.alertDialogTheme.surfaceColor,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Padding(
@@ -143,7 +150,13 @@ class _ExtensionSkipCaptureRuleEditorDialogState
             children: [
               Row(
                 children: [
-                  Text("Rule ${idx + 1}"),
+                  Text(
+                    "Rule ${idx + 1}",
+                    style: TextStyle(
+                      color: theme.alertDialogTheme.textColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   const Spacer(),
                   IconButton(
                     onPressed: () {
@@ -168,7 +181,9 @@ class _ExtensionSkipCaptureRuleEditorDialogState
                       children: [
                         Text(
                           "${loc.condition}:",
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(
+                            color: theme.alertDialogTheme.textColor,
+                          ),
                         ),
                         const SizedBox(height: 5),
                         DropdownButtonHideUnderline(
@@ -179,8 +194,10 @@ class _ExtensionSkipCaptureRuleEditorDialogState
                                       value: item,
                                       child: Text(
                                         item,
-                                        style: const TextStyle(
-                                            color: Colors.white),
+                                        style: TextStyle(
+                                          color: theme.widgetTheme.dropDownColor
+                                              .itemTextColor,
+                                        ),
                                       ),
                                     ))
                                 .toList(),
@@ -209,7 +226,8 @@ class _ExtensionSkipCaptureRuleEditorDialogState
                             iconStyleData: IconStyleData(
                               icon: Icon(
                                 Icons.arrow_drop_down,
-                                color: Colors.grey[300],
+                                color:
+                                    theme.widgetTheme.dropDownColor.iconColor,
                               ),
                             ),
                           ),
@@ -225,14 +243,16 @@ class _ExtensionSkipCaptureRuleEditorDialogState
                       children: [
                         Text(
                           "${loc.value}:",
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(
+                            color: theme.alertDialogTheme.textColor,
+                          ),
                         ),
                         const SizedBox(height: 5),
                         SizedBox(
                           height: 40,
                           child: OutLinedTextField(
-                            fillColor: theme.settingTheme.pageTheme.widgetColor
-                                .dropDownColor.dropDownBackgroundColor,
+                            fillColor: theme.widgetTheme.dropDownColor
+                                .dropDownBackgroundColor,
                             contentPadding: EdgeInsets.only(left: 10),
                             controller: valueControllers[idx],
                           ),
@@ -248,7 +268,9 @@ class _ExtensionSkipCaptureRuleEditorDialogState
                       children: [
                         Text(
                           "${loc.type}:",
-                          style: const TextStyle(color: Colors.grey),
+                          style: TextStyle(
+                            color: theme.alertDialogTheme.textColor,
+                          ),
                         ),
                         const SizedBox(height: 5),
                         DropdownButtonHideUnderline(
@@ -260,8 +282,9 @@ class _ExtensionSkipCaptureRuleEditorDialogState
                                       value: item,
                                       child: Text(
                                         item,
-                                        style: const TextStyle(
-                                          color: Colors.white,
+                                        style: TextStyle(
+                                          color: theme.widgetTheme.dropDownColor
+                                              .itemTextColor,
                                         ),
                                       ),
                                     ))
@@ -285,7 +308,8 @@ class _ExtensionSkipCaptureRuleEditorDialogState
                             iconStyleData: IconStyleData(
                               icon: Icon(
                                 Icons.arrow_drop_down,
-                                color: Colors.grey[300],
+                                color:
+                                    theme.widgetTheme.dropDownColor.iconColor,
                               ),
                             ),
                           ),
@@ -305,8 +329,7 @@ class _ExtensionSkipCaptureRuleEditorDialogState
   BoxDecoration get dropDownDecoration {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(10),
-      color: theme.settingTheme.pageTheme.widgetColor.dropDownColor
-          .dropDownBackgroundColor,
+      color: theme.widgetTheme.dropDownColor.dropDownBackgroundColor,
     );
   }
 

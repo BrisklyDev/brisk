@@ -23,8 +23,7 @@ class _AboutPageState extends State<AboutPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme =
-        Provider.of<ThemeProvider>(context).activeTheme.settingTheme.pageTheme;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     final loc = AppLocalizations.of(context)!;
     return SingleChildScrollView(
       child: Column(
@@ -39,13 +38,14 @@ class _AboutPageState extends State<AboutPage> {
                 const SizedBox(width: 5),
                 Icon(
                   Icons.info_outline,
-                  color: theme.widgetColor.aboutIconColor,
+                  color: theme.widgetTheme.iconColor,
                   size: 30,
                 ),
                 const SizedBox(width: 30),
                 Text(
                   "${loc.settings_version}: ${SettingsCache.currentVersion}$buildType",
-                  style: TextStyle(color: theme.titleTextColor),
+                  style: TextStyle(
+                      color: theme.settingTheme.pageTheme.titleTextColor),
                 ),
               ],
             )
@@ -61,13 +61,14 @@ class _AboutPageState extends State<AboutPage> {
                   const SizedBox(width: 5),
                   Icon(
                     Icons.person,
-                    color: theme.widgetColor.aboutIconColor,
+                    color: theme.widgetTheme.iconColor,
                     size: 30,
                   ),
                   const SizedBox(width: 30),
                   Text(
                     "Amin Beheshti",
-                    style: TextStyle(color: theme.titleTextColor),
+                    style: TextStyle(
+                        color: theme.settingTheme.pageTheme.titleTextColor),
                   ),
                 ],
               ),
@@ -79,43 +80,17 @@ class _AboutPageState extends State<AboutPage> {
                   const SizedBox(width: 5),
                   Icon(
                     Icons.email,
-                    color: theme.widgetColor.aboutIconColor,
+                    color: theme.widgetTheme.iconColor,
                     size: 30,
                   ),
                   const SizedBox(width: 30),
                   Text(
                     "amin.bhst@gmail.com",
-                    style: TextStyle(color: theme.titleTextColor),
+                    style: TextStyle(
+                        color: theme.settingTheme.pageTheme.titleTextColor),
                   ),
                 ],
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   crossAxisAlignment: CrossAxisAlignment.center,
-              //   children: [
-              //     const SizedBox(width: 3),
-              //     SvgPicture.asset(
-              //       "assets/icons/github.svg",
-              //       height: 35,
-              //       width: 35,
-              //       colorFilter: ColorFilter.mode(
-              //         theme.widgetColor.aboutIconColor,
-              //         BlendMode.srcIn,
-              //       ),
-              //     ),
-              //     const SizedBox(width: 30),
-              //     InkWell(
-              //         onTap: () =>
-              //             launchUrlString("https://github.com/AminBhst"),
-              //         child: Text(
-              //           "AminBhst",
-              //           style: TextStyle(
-              //             color: theme.titleTextColor,
-              //           ),
-              //         )),
-              //   ],
-              // ),
-              // const SizedBox(height: 30),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -124,7 +99,7 @@ class _AboutPageState extends State<AboutPage> {
                   const SizedBox(width: 3),
                   Icon(
                     Icons.attach_money_rounded,
-                    color: theme.widgetColor.aboutIconColor,
+                    color: theme.widgetTheme.iconColor,
                     size: 35,
                   ),
                   const SizedBox(width: 30),
@@ -137,7 +112,7 @@ class _AboutPageState extends State<AboutPage> {
                       style: TextStyle(
                           color: donationHover
                               ? Colors.blue
-                              : theme.titleTextColor),
+                              : theme.settingTheme.pageTheme.titleTextColor),
                     ),
                   ),
                 ],
@@ -153,7 +128,7 @@ class _AboutPageState extends State<AboutPage> {
                     height: 35,
                     width: 35,
                     colorFilter: ColorFilter.mode(
-                      theme.widgetColor.aboutIconColor,
+                      theme.widgetTheme.iconColor,
                       BlendMode.srcIn,
                     ),
                   ),
@@ -165,8 +140,10 @@ class _AboutPageState extends State<AboutPage> {
                     child: Text(
                       "BrisklyDev/Brisk",
                       style: TextStyle(
-                          color:
-                              githubHover ? Colors.blue : theme.titleTextColor),
+                        color: githubHover
+                            ? Colors.blue
+                            : theme.settingTheme.pageTheme.titleTextColor,
+                      ),
                     ),
                   ),
                 ],
@@ -182,7 +159,7 @@ class _AboutPageState extends State<AboutPage> {
                     height: 35,
                     width: 35,
                     colorFilter: ColorFilter.mode(
-                      theme.widgetColor.aboutIconColor,
+                      theme.widgetTheme.iconColor,
                       BlendMode.srcIn,
                     ),
                   ),
@@ -196,7 +173,7 @@ class _AboutPageState extends State<AboutPage> {
                       style: TextStyle(
                           color: discordHover
                               ? Colors.blue
-                              : theme.titleTextColor),
+                              : theme.settingTheme.pageTheme.titleTextColor),
                     ),
                   ),
                 ],
@@ -212,7 +189,7 @@ class _AboutPageState extends State<AboutPage> {
                     height: 35,
                     width: 35,
                     colorFilter: ColorFilter.mode(
-                      theme.widgetColor.aboutIconColor,
+                      theme.widgetTheme.iconColor,
                       BlendMode.srcIn,
                     ),
                   ),
@@ -225,7 +202,7 @@ class _AboutPageState extends State<AboutPage> {
                       style: TextStyle(
                           color: telegramHover
                               ? Colors.blue
-                              : theme.titleTextColor),
+                              : theme.settingTheme.pageTheme.titleTextColor),
                     ),
                   ),
                 ],

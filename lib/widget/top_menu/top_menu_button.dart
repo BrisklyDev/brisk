@@ -1,4 +1,6 @@
+import 'package:brisk/provider/theme_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TopMenuButton extends StatefulWidget {
   final String title;
@@ -6,7 +8,7 @@ class TopMenuButton extends StatefulWidget {
   final Color onHoverColor;
   final VoidCallback? onTap;
   final double fontSize;
-  final Color textColor;
+  final bool isEnabled;
 
   const TopMenuButton({
     super.key,
@@ -15,7 +17,7 @@ class TopMenuButton extends StatefulWidget {
     this.onHoverColor = Colors.blueGrey,
     required this.onTap,
     this.fontSize = 13,
-    this.textColor = Colors.white60,
+    required this.isEnabled,
   });
 
   @override
@@ -27,6 +29,7 @@ class _TopMenuButtonState extends State<TopMenuButton> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
@@ -36,7 +39,11 @@ class _TopMenuButtonState extends State<TopMenuButton> {
           width: 100,
           height: 100,
           decoration: BoxDecoration(
-            color: _isHovered ? widget.onHoverColor : Colors.transparent,
+            color: _isHovered
+                ? (widget.isEnabled
+                    ? widget.onHoverColor
+                    : theme.topMenuTheme.disabledHoverColor)
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(3),
           ),
           child: InkWell(
@@ -51,7 +58,6 @@ class _TopMenuButtonState extends State<TopMenuButton> {
                   top: _isHovered ? 0 : 18,
                   child: widget.icon,
                 ),
-                // Text appears below icon
                 AnimatedOpacity(
                   duration: const Duration(milliseconds: 200),
                   opacity: _isHovered ? 1.0 : 0.0,
@@ -66,12 +72,15 @@ class _TopMenuButtonState extends State<TopMenuButton> {
                           width: 100,
                           child: Text(
                             widget.title,
-                            maxLines: 2,
+                            maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: widget.fontSize,
-                              color: widget.textColor,
+                              fontWeight: theme.fontWeight,
+                              color: widget.isEnabled
+                                  ? theme.topMenuTheme.buttonTextColor
+                                  : theme.topMenuTheme.disabledButtonTextColor,
                             ),
                           ),
                         ),

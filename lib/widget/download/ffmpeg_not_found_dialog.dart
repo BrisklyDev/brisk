@@ -69,7 +69,7 @@ class FFmpegNotFoundDialog extends StatelessWidget {
       ),
       buttons: [
         RoundedOutlinedButton.fromButtonColor(
-          theme.alertDialogTheme.cancelButtonColor,
+          theme.alertDialogTheme.declineButtonColor,
           onPressed: () {
             final warningIgnore = HiveUtil.instance.generalDataBox.values
                 .where(
@@ -84,7 +84,7 @@ class FFmpegNotFoundDialog extends StatelessWidget {
         ),
         const SizedBox(width: 10),
         RoundedOutlinedButton.fromButtonColor(
-          theme.alertDialogTheme.addButtonColor,
+          theme.alertDialogTheme.acceptButtonColor,
           onPressed: () {
             Navigator.of(context).pop();
             FFmpeg.install(context);

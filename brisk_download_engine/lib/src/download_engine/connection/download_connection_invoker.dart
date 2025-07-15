@@ -189,8 +189,7 @@ class DownloadConnectionInvoker {
       case DownloadCommand.startReuseConnection:
         if (!forcedConnectionReuse) {
           connection.segment = data.segment!;
-          if (connection.connectionStatus == DownloadStatus.paused ||
-              connection.reset) {
+          if (connection.connectionStatus == DownloadStatus.paused) {
             connection.logger?.info(
               "Invoker:: received start_ConnectionReuse command in paused status! reset? ${connection.reset}",
             );

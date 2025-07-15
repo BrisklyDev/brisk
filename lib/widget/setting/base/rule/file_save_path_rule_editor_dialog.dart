@@ -75,7 +75,12 @@ class _FileSavePathRuleEditorDialogState
         children: [
           Padding(
             padding: const EdgeInsets.all(20),
-            child: Text(loc.settings_rules_edit),
+            child: Text(
+              loc.settings_rules_edit,
+              style: TextStyle(
+                color: theme.alertDialogTheme.textColor,
+              ),
+            ),
           ),
           Container(
             height: 1,
@@ -106,15 +111,16 @@ class _FileSavePathRuleEditorDialogState
           const SizedBox(height: 5),
           Center(
             child: RoundedOutlinedButton(
-              icon: Icon(
-                Icons.add,
-                color: Colors.white70,
-              ),
+              icon: Icons.add,
+              iconColor:
+                  theme.alertDialogTheme.primaryMiscButtonColor.iconColor,
+              iconHoverColor:
+                  theme.alertDialogTheme.primaryMiscButtonColor.hoverIconColor,
+              textColor: theme.textColor,
               width: 580,
               onPressed: _onAddNewPressed,
               text: loc.btn_addNew,
-              backgroundColor:
-                  theme.alertDialogTheme.itemContainerBackgroundColor,
+              backgroundColor: theme.alertDialogTheme.surfaceColor,
               hoverBackgroundColor: Color.fromRGBO(53, 89, 143, 1),
             ),
           ),
@@ -122,13 +128,13 @@ class _FileSavePathRuleEditorDialogState
       ),
       buttons: [
         RoundedOutlinedButton.fromButtonColor(
-          theme.alertDialogTheme.cancelButtonColor,
+          theme.alertDialogTheme.declineButtonColor,
           onPressed: () => Navigator.of(context).pop(),
           text: loc.btn_cancel,
         ),
         const SizedBox(width: 10),
         RoundedOutlinedButton.fromButtonColor(
-          theme.alertDialogTheme.addButtonColor,
+          theme.alertDialogTheme.acceptButtonColor,
           onPressed: _onSavePressed,
           text: loc.btn_save,
         ),
@@ -141,7 +147,7 @@ class _FileSavePathRuleEditorDialogState
       padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
       child: Container(
         decoration: BoxDecoration(
-          color: theme.settingTheme.pageTheme.itemAccentColor,
+          color: theme.alertDialogTheme.surfaceColor,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Padding(
@@ -150,7 +156,13 @@ class _FileSavePathRuleEditorDialogState
             children: [
               Row(
                 children: [
-                  Text("Rule ${idx + 1}"),
+                  Text(
+                    "Rule ${idx + 1}",
+                    style: TextStyle(
+                      color: theme.alertDialogTheme.textColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   const Spacer(),
                   IconButton(
                     onPressed: () {
@@ -175,7 +187,9 @@ class _FileSavePathRuleEditorDialogState
                       children: [
                         Text(
                           "${loc.condition}:",
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(
+                            color: theme.alertDialogTheme.textHintColor,
+                          ),
                         ),
                         const SizedBox(height: 5),
                         DropdownButtonHideUnderline(
@@ -186,8 +200,10 @@ class _FileSavePathRuleEditorDialogState
                                       value: item,
                                       child: Text(
                                         item,
-                                        style: const TextStyle(
-                                            color: Colors.white),
+                                        style: TextStyle(
+                                          color: theme.widgetTheme.dropDownColor
+                                              .itemTextColor,
+                                        ),
                                       ),
                                     ))
                                 .toList(),
@@ -216,7 +232,7 @@ class _FileSavePathRuleEditorDialogState
                             iconStyleData: IconStyleData(
                               icon: Icon(
                                 Icons.arrow_drop_down,
-                                color: Colors.grey[300],
+                                color: theme.widgetTheme.iconColor,
                               ),
                             ),
                           ),
@@ -232,14 +248,14 @@ class _FileSavePathRuleEditorDialogState
                       children: [
                         Text(
                           "${loc.value}:",
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(color: theme.textColor),
                         ),
                         const SizedBox(height: 5),
                         SizedBox(
                           height: 40,
                           child: OutLinedTextField(
-                            fillColor: theme.settingTheme.pageTheme.widgetColor
-                                .dropDownColor.dropDownBackgroundColor,
+                            fillColor: theme.widgetTheme.dropDownColor
+                                .dropDownBackgroundColor,
                             contentPadding: EdgeInsets.only(left: 10),
                             controller: valueControllers[idx],
                           ),
@@ -255,7 +271,7 @@ class _FileSavePathRuleEditorDialogState
                       children: [
                         Text(
                           "${loc.type}:",
-                          style: const TextStyle(color: Colors.grey),
+                          style: TextStyle(color: theme.textColor),
                         ),
                         const SizedBox(height: 5),
                         DropdownButtonHideUnderline(
@@ -267,8 +283,9 @@ class _FileSavePathRuleEditorDialogState
                                       value: item,
                                       child: Text(
                                         item,
-                                        style: const TextStyle(
-                                          color: Colors.white,
+                                        style: TextStyle(
+                                          color: theme.widgetTheme.dropDownColor
+                                              .itemTextColor,
                                         ),
                                       ),
                                     ))
@@ -292,7 +309,7 @@ class _FileSavePathRuleEditorDialogState
                             iconStyleData: IconStyleData(
                               icon: Icon(
                                 Icons.arrow_drop_down,
-                                color: Colors.grey[300],
+                                color: theme.widgetTheme.iconColor,
                               ),
                             ),
                           ),
@@ -308,7 +325,7 @@ class _FileSavePathRuleEditorDialogState
                 children: [
                   Text(
                     "${loc.savePath}:",
-                    style: const TextStyle(color: Colors.grey),
+                    style: TextStyle(color: theme.textColor),
                   ),
                   const SizedBox(height: 5),
                   DropdownButtonHideUnderline(
@@ -316,11 +333,14 @@ class _FileSavePathRuleEditorDialogState
                       height: 40,
                       child: OutLinedTextField(
                         contentPadding: EdgeInsets.only(left: 10),
-                        fillColor: theme.settingTheme.pageTheme.widgetColor
-                            .dropDownColor.dropDownBackgroundColor,
+                        fillColor: theme
+                            .widgetTheme.dropDownColor.dropDownBackgroundColor,
                         controller: savePathControllers[idx],
                         suffixIcon: IconButton(
-                          icon: Icon(Icons.folder, color: Colors.white60),
+                          icon: Icon(
+                            Icons.folder,
+                            color: theme.widgetTheme.iconColor,
+                          ),
                           onPressed: () => pickSaveLocation(idx),
                         ),
                       ),
@@ -346,8 +366,7 @@ class _FileSavePathRuleEditorDialogState
   BoxDecoration get dropDownDecoration {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(10),
-      color: theme.settingTheme.pageTheme.widgetColor.dropDownColor
-          .dropDownBackgroundColor,
+      color: theme.widgetTheme.dropDownColor.dropDownBackgroundColor,
     );
   }
 

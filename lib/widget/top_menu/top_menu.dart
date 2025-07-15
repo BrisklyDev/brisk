@@ -70,7 +70,7 @@ class _TopMenuState extends State<TopMenu> {
                 color: topMenuTheme.addUrlColor.iconColor,
               ),
               onHoverColor: topMenuTheme.addUrlColor.hoverBackgroundColor,
-              textColor: topMenuTheme.addUrlColor.textColor,
+              isEnabled: true,
             ),
           ),
           TopMenuButton(
@@ -82,14 +82,10 @@ class _TopMenuState extends State<TopMenu> {
               Icons.download_rounded,
               color: isDownloadButtonEnabled(provider)
                   ? topMenuTheme.downloadColor.iconColor
-                  : Color.fromRGBO(79, 79, 79, 0.5),
+                  : topMenuTheme.disabledButtonIconColor,
             ),
-            onHoverColor: isDownloadButtonEnabled(provider)
-                ? topMenuTheme.downloadColor.hoverBackgroundColor
-                : Colors.white10,
-            textColor: isDownloadButtonEnabled(provider)
-                ? topMenuTheme.downloadColor.textColor
-                : Color.fromRGBO(79, 79, 79, 1),
+            onHoverColor: topMenuTheme.downloadColor.hoverBackgroundColor,
+            isEnabled: isDownloadButtonEnabled(provider),
           ),
           TopMenuButton(
             onTap: isPauseButtonEnabled(provider) ? onStopPressed : null,
@@ -100,14 +96,10 @@ class _TopMenuState extends State<TopMenu> {
               Icons.stop_rounded,
               color: isPauseButtonEnabled(provider)
                   ? topMenuTheme.stopColor.iconColor
-                  : Color.fromRGBO(79, 79, 79, 0.5),
+                  : topMenuTheme.disabledButtonIconColor,
             ),
-            onHoverColor: isPauseButtonEnabled(provider)
-                ? topMenuTheme.stopColor.hoverBackgroundColor
-                : Colors.white10,
-            textColor: isPauseButtonEnabled(provider)
-                ? topMenuTheme.stopColor.textColor
-                : Color.fromRGBO(79, 79, 79, 1),
+            onHoverColor: topMenuTheme.stopColor.hoverBackgroundColor,
+            isEnabled: isPauseButtonEnabled(provider),
           ),
           TopMenuButton(
             onTap: PlutoGridUtil.selectedRowExists
@@ -120,14 +112,10 @@ class _TopMenuState extends State<TopMenu> {
               Icons.delete,
               color: PlutoGridUtil.selectedRowExists
                   ? topMenuTheme.removeColor.iconColor
-                  : disabledButtonColor,
+                  : topMenuTheme.disabledButtonIconColor,
             ),
-            onHoverColor: PlutoGridUtil.selectedRowExists
-                ? topMenuTheme.removeColor.hoverBackgroundColor
-                : Colors.white10,
-            textColor: PlutoGridUtil.selectedRowExists
-                ? topMenuTheme.removeColor.textColor
-                : disabledButtonTextColor,
+            onHoverColor: topMenuTheme.removeColor.hoverBackgroundColor,
+            isEnabled: PlutoGridUtil.selectedRowExists,
           ),
           TopMenuButton(
             onTap: PlutoGridUtil.selectedRowExists
@@ -139,18 +127,13 @@ class _TopMenuState extends State<TopMenu> {
               Icons.queue,
               color: PlutoGridUtil.selectedRowExists
                   ? topMenuTheme.addToQueueColor.iconColor
-                  : disabledButtonColor,
+                  : topMenuTheme.disabledButtonIconColor,
             ),
             fontSize: 13,
-            onHoverColor: PlutoGridUtil.selectedRowExists
-                ? topMenuTheme.addToQueueColor.hoverBackgroundColor
-                : Colors.white10,
-            textColor: PlutoGridUtil.selectedRowExists
-                ? topMenuTheme.addToQueueColor.textColor
-                : disabledButtonTextColor,
+            onHoverColor: topMenuTheme.addToQueueColor.hoverBackgroundColor,
+            isEnabled: PlutoGridUtil.selectedRowExists,
           ),
           SizedBox(width: 5),
-          // Container(color: Colors.white, width: 1, height: 40),
           TopMenuButton(
             title: loc.getExtension,
             fontSize: 13,
@@ -164,7 +147,7 @@ class _TopMenuState extends State<TopMenu> {
               builder: (context) => GetBrowserExtensionDialog(),
             ),
             onHoverColor: topMenuTheme.extensionColor.hoverBackgroundColor,
-            textColor: topMenuTheme.extensionColor.textColor,
+            isEnabled: true,
           ),
           TopMenuButton(
             onTap: () => handleBriskUpdateCheck(
@@ -180,7 +163,7 @@ class _TopMenuState extends State<TopMenu> {
             ),
             fontSize: 12.5,
             onHoverColor: topMenuTheme.addToQueueColor.hoverBackgroundColor,
-            textColor: topMenuTheme.checkForUpdateColor.textColor,
+            isEnabled: true,
           ),
           TopMenuButton(
             title: loc.btn_restart_extension,
@@ -192,51 +175,12 @@ class _TopMenuState extends State<TopMenu> {
             ),
             onTap: () => restart_extension(),
             onHoverColor: topMenuTheme.extensionColor.hoverBackgroundColor,
-            textColor: topMenuTheme.extensionColor.textColor,
+            isEnabled: true,
           ),
-          // TopMenuButton(
-          //   title: 'Discord',
-          //   fontSize: 11.5,
-          //   icon: SvgPicture.asset(
-          //     "assets/icons/discord.svg",
-          //     height: 30,
-          //     width: 30,
-          //     colorFilter: ColorFilter.mode(
-          //       Color.fromRGBO(96, 100, 244,1),
-          //       BlendMode.srcIn,
-          //     ),
-          //   ),
-          //   onTap: () => launchUrlString(
-          //     'https://discord.gg/g8fwgZ84',
-          //   ),
-          //   onHoverColor: topMenuTheme.extensionColor.hoverBackgroundColor,
-          //   textColor: topMenuTheme.extensionColor.textColor,
-          // ),
-          SizedBox(width: 5),
-          // Container(color: Colors.white, width: 1, height: 40),
-          // TopMenuButton(
-          //   title: 'Build',
-          //   icon: Icon(
-          //     Icons.extension,
-          //     color: Colors.red,
-          //   ),
-          //   onTap: () {
-          //     final dlitem = HiveUtil.instance.downloadItemsBox.getAt(0);
-          //     final itemModel = DownloadItemModel.fromDownloadItem(dlitem!);
-          //     FileUtil.doooo(itemModel.uid);
-          //     assembleFile(
-          //         itemModel, SettingsCache.temporaryDir, SettingsCache.saveDir);
-          //     print("DONE");
-          //   },
-          // ),
         ],
       ),
     );
   }
-
-  Color get disabledButtonColor => Color.fromRGBO(79, 79, 79, 0.5);
-
-  Color get disabledButtonTextColor => Color.fromRGBO(79, 79, 79, 1);
 
   void onMockDownloadPressed(BuildContext context) async {
     // final item = DownloadItem.fromUrl(mockDownloadUrl);

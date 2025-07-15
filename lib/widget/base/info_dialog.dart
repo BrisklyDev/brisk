@@ -16,8 +16,7 @@ class InfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme =
-        Provider.of<ThemeProvider>(context).activeTheme.alertDialogTheme;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     return AlertDialog(
       contentPadding: EdgeInsets.zero,
       insetPadding: EdgeInsets.zero,
@@ -25,7 +24,7 @@ class InfoDialog extends StatelessWidget {
       iconPadding: EdgeInsets.zero,
       buttonPadding: EdgeInsets.zero,
       titlePadding: EdgeInsets.zero,
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.alertDialogTheme.backgroundColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -49,7 +48,7 @@ class InfoDialog extends StatelessWidget {
               padding: const EdgeInsets.only(right: 10.0),
               child: Text(
                 titleText,
-                style: TextStyle( fontSize: 18),
+                style: TextStyle(fontSize: 18, color: theme.textColor),
               ),
             ),
           ],

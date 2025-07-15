@@ -48,9 +48,10 @@ class DeleteConfirmationDialog extends StatelessWidget {
           Text(
             loc.confirmAction,
             style: TextStyle(
-                color: theme.textColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 20),
+              color: theme.textColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
           ),
         ],
       ),
@@ -58,7 +59,7 @@ class DeleteConfirmationDialog extends StatelessWidget {
         width: 400,
         child: Text(
           title,
-          style: const TextStyle(fontSize: 17),
+          style: TextStyle(fontSize: 17, color: theme.textColor),
         ),
       ),
       actions: [

@@ -164,7 +164,7 @@
   "err_invalidSavePath": "Invalid Save Path!",
   "availableDownloads": "Available Downloads",
   "installationGuide": "Installation Guide",
-  "installBrowserExtension_title": "Install Browser Extension",
+  "installBrowserExtension_title": "Install the browser extension",
   "installTheBrowserExtension_description": "Choose your browser to install Brisk's browser extension to capture downloads from the browser",
   "installTheBrowserExtension_description_subtitle": "Due to restrictions, the extension is only available in the official store for Firefox. For other browsers, manual installation is required. This will hopefully change in the future and the extension will be available for all browsers in their official websites.",
   "installBrowserExtensionGuide_title": "Installation Guide",

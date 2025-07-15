@@ -78,13 +78,10 @@ class _AppExitDialogState extends State<AppExitDialog> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   text: loc.btn_exitApplication,
                   mainAxisSize: MainAxisSize.max,
-                  icon: Icon(
-                    Icons.power_settings_new_rounded,
-                    color: Colors.white54,
-                  ),
+                  icon: Icons.power_settings_new_rounded,
                   textColor: Colors.white,
                   borderColor: Colors.transparent,
-                  backgroundColor: theme.itemContainerBackgroundColor,
+                  backgroundColor: theme.surfaceColor,
                   hoverBackgroundColor: Color.fromRGBO(220, 38, 38, 1),
                   height: 45,
                   width: 500,
@@ -99,11 +96,11 @@ class _AppExitDialogState extends State<AppExitDialog> {
                   mainAxisSize: MainAxisSize.max,
                   text: loc.btn_minimizeToTray,
                   height: 45,
-                  icon: Icon(Icons.minimize_rounded, color: Colors.white54),
+                  icon: Icons.minimize_rounded,
                   textColor: Colors.white,
                   borderColor: Colors.transparent,
                   hoverBackgroundColor: Color.fromRGBO(53, 89, 143, 1),
-                  backgroundColor: theme.itemContainerBackgroundColor,
+                  backgroundColor: theme.surfaceColor,
                   width: 500,
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -116,10 +113,10 @@ class _AppExitDialogState extends State<AppExitDialog> {
                   mainAxisSize: MainAxisSize.max,
                   text: loc.btn_cancel,
                   height: 45,
-                  icon: Icon(Icons.close_rounded, color: Colors.white54),
+                  icon: Icons.close_rounded,
                   textColor: Colors.white,
                   borderColor: Colors.transparent,
-                  backgroundColor: theme.itemContainerBackgroundColor,
+                  backgroundColor: theme.surfaceColor,
                   width: 500,
                   onPressed: () {
                     Navigator.of(context).pop();

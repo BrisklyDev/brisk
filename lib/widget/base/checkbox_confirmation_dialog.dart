@@ -28,14 +28,13 @@ class _CheckedBoxedConfirmationDialogState
 
   @override
   Widget build(BuildContext context) {
-    final theme =
-        Provider.of<ThemeProvider>(context).activeTheme.alertDialogTheme;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     return ScrollableDialog(
       scrollviewHeight: 110,
       scrollButtonVisible: false,
       width: 450,
       height: 130,
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.alertDialogTheme.backgroundColor,
       title: Padding(
         padding: const EdgeInsets.all(10),
         child: Row(
@@ -79,7 +78,7 @@ class _CheckedBoxedConfirmationDialogState
               padding: EdgeInsets.only(top: 10),
               child: Text(
                 widget.title,
-                style: const TextStyle(fontSize: 17),
+                style: TextStyle(fontSize: 17, color: theme.textColor),
               ),
             ),
             const SizedBox(height: 20),
@@ -92,16 +91,16 @@ class _CheckedBoxedConfirmationDialogState
                   side: WidgetStateBorderSide.resolveWith(
                     (states) => BorderSide(
                       width: 1.0,
-                      color: theme.checkBoxColor.borderColor,
+                      color: theme.alertDialogTheme.checkBoxColor.borderColor,
                     ),
                   ),
-                  activeColor: theme.checkBoxColor.activeColor,
+                  activeColor: theme.alertDialogTheme.checkBoxColor.activeColor,
                   value: checkBoxValue,
                   onChanged: (value) => setState(() => checkBoxValue = value),
                 ),
                 Text(
                   widget.checkBoxTitle,
-                  style: const TextStyle(color: Colors.white, fontSize: 14),
+                  style: TextStyle(color: theme.textColor, fontSize: 15),
                 ),
               ],
             )
@@ -110,7 +109,7 @@ class _CheckedBoxedConfirmationDialogState
       ),
       buttons: [
         RoundedOutlinedButton.fromButtonColor(
-          theme.deleteCancelColor,
+          theme.alertDialogTheme.deleteCancelColor,
           text: AppLocalizations.of(context)!.btn_cancel,
           onPressed: () {
             Navigator.of(context).pop();
@@ -118,7 +117,7 @@ class _CheckedBoxedConfirmationDialogState
         ),
         const SizedBox(width: 5),
         RoundedOutlinedButton.fromButtonColor(
-          theme.deleteConfirmColor,
+          theme.alertDialogTheme.deleteConfirmColor,
           text: AppLocalizations.of(context)!.btn_deleteConfirm,
           onPressed: () {
             Navigator.of(context).pop();

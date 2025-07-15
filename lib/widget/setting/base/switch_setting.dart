@@ -15,8 +15,7 @@ class SwitchSetting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme =
-        Provider.of<ThemeProvider>(context).activeTheme.settingTheme.pageTheme;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     final size = MediaQuery.of(context).size;
     return Row(
       children: [
@@ -26,7 +25,8 @@ class SwitchSetting extends StatelessWidget {
             text,
             style: TextStyle(
               overflow: TextOverflow.clip,
-              color: theme.titleTextColor,
+              color: theme.settingTheme.pageTheme.titleTextColor,
+              fontWeight: theme.fontWeight,
               fontSize: 14,
             ),
           ),
@@ -35,9 +35,10 @@ class SwitchSetting extends StatelessWidget {
         Switch(
           value: switchValue,
           onChanged: onChanged,
-          hoverColor: theme.widgetColor.switchColor.hoverColor,
-          activeColor: theme.widgetColor.switchColor.activeColor,
-          focusColor: theme.widgetColor.switchColor.focusColor,
+          inactiveTrackColor: theme.widgetTheme.switchColor.inactiveTrackColor,
+          hoverColor: theme.widgetTheme.switchColor.hoverColor,
+          activeColor: theme.widgetTheme.switchColor.activeColor,
+          focusColor: theme.widgetTheme.switchColor.focusColor,
         ),
       ],
     );
@@ -56,5 +57,4 @@ class SwitchSetting extends StatelessWidget {
     }
     return width;
   }
-
 }

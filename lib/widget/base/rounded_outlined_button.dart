@@ -1,5 +1,7 @@
+import 'package:brisk/provider/theme_provider.dart';
 import 'package:brisk/theme/application_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RoundedOutlinedButton extends StatefulWidget {
   final VoidCallback? onPressed;
@@ -12,7 +14,10 @@ class RoundedOutlinedButton extends StatefulWidget {
   Color? hoverBackgroundColor;
   Color? hoverTextColor;
   final double borderRadius;
-  final Widget? icon;
+  final IconData? icon;
+  final Widget? customIcon;
+  final Color? iconColor;
+  final Color? iconHoverColor;
   final MainAxisAlignment mainAxisAlignment;
   final MainAxisSize mainAxisSize;
   EdgeInsetsGeometry? contentPadding;
@@ -29,10 +34,13 @@ class RoundedOutlinedButton extends StatefulWidget {
     this.hoverBackgroundColor,
     this.hoverTextColor,
     this.borderRadius = 8.0,
+    this.customIcon = null,
     this.icon = null,
     this.mainAxisAlignment = MainAxisAlignment.center,
     this.mainAxisSize = MainAxisSize.min,
     this.contentPadding,
+    this.iconColor,
+    this.iconHoverColor,
   }) : super(key: key);
 
   factory RoundedOutlinedButton.fromButtonColor(
@@ -43,7 +51,8 @@ class RoundedOutlinedButton extends StatefulWidget {
     double? width,
     double? height = 35,
     double borderRadius = 8.0,
-    Widget? icon = null,
+    IconData? icon = null,
+    Widget? customIcon = null,
     mainAxisAlignment = MainAxisAlignment.center,
     mainAxisSize = MainAxisSize.min,
     EdgeInsetsGeometry? contentPadding,
@@ -60,6 +69,7 @@ class RoundedOutlinedButton extends StatefulWidget {
       mainAxisSize: mainAxisSize,
       onPressed: onPressed,
       contentPadding: contentPadding,
+      customIcon: customIcon,
       icon: icon,
       mainAxisAlignment: mainAxisAlignment,
       borderRadius: borderRadius,
@@ -75,6 +85,7 @@ class _RoundedOutlinedButtonState extends State<RoundedOutlinedButton> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     Widget button = OutlinedButton(
       onPressed: widget.onPressed,
       onHover: (val) => setState(() => hover = val),
@@ -104,7 +115,13 @@ class _RoundedOutlinedButtonState extends State<RoundedOutlinedButton> {
           mainAxisAlignment: widget.mainAxisAlignment,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (widget.icon != null) widget.icon!,
+            if (widget.icon != null)
+              Icon(
+                widget.icon!,
+                color: hover ? widget.iconHoverColor : widget.iconColor,
+              ),
+            if (widget.customIcon != null) widget.customIcon!,
+            if (widget.customIcon != null && widget.text != null) SizedBox(width: 5),
             if (widget.icon != null && widget.text != null) SizedBox(width: 5),
             if (widget.text != null)
               Text(

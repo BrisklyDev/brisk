@@ -17,6 +17,7 @@ import 'package:provider/provider.dart';
 class M3u8MasterPlaylistDialog extends StatelessWidget {
   final M3U8 m3u8;
   late AppLocalizations loc;
+  late ApplicationTheme theme;
   List<Map<String, String>> subtitles;
 
   M3u8MasterPlaylistDialog({
@@ -27,7 +28,7 @@ class M3u8MasterPlaylistDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Provider.of<ThemeProvider>(context).activeTheme;
+    theme = Provider.of<ThemeProvider>(context).activeTheme;
     loc = AppLocalizations.of(context)!;
     return ScrollableDialog(
       backgroundColor: theme.alertDialogTheme.backgroundColor,
@@ -40,7 +41,7 @@ class M3u8MasterPlaylistDialog extends StatelessWidget {
             child: Text(
               loc.availableDownloads,
               style: TextStyle(
-                color: Colors.white,
+                color: theme.textColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
@@ -91,7 +92,7 @@ class M3u8MasterPlaylistDialog extends StatelessWidget {
           hoverBackgroundColor: Color.fromRGBO(244, 67, 54, 0.6),
           borderColor: Colors.transparent,
           hoverTextColor: Colors.white,
-          textColor: theme.downloadInfoDialogTheme.cancelColor.textColor,
+          textColor: theme.alertDialogTheme.cancelColor.textColor,
         )
       ],
     );
@@ -103,26 +104,13 @@ class M3u8MasterPlaylistDialog extends StatelessWidget {
     ApplicationTheme theme,
   ) {
     final duration = streamInf.m3u8!.totalDuration;
-    if (streamInf.m3u8 != null && streamInf.m3u8!.fileName.contains(".ts")) {
-      final rawName = streamInf.m3u8?.fileName.substring(
-        0,
-        streamInf.m3u8?.fileName.lastIndexOf(".ts"),
-      );
-      if (streamInf.resolution == '1920x1080') {
-        streamInf.m3u8?.fileName = '${rawName}.1080p.ts';
-      } else if (streamInf.resolution == '1280x720') {
-        streamInf.m3u8?.fileName = '${rawName}.720p.ts';
-      } else {
-        streamInf.m3u8?.fileName = '${rawName}.${streamInf.resolution}.ts';
-      }
-    }
     final fileName = streamInf.m3u8?.fileName ?? streamInf.fileName;
     return Padding(
       padding: EdgeInsets.only(top: 10),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: theme.alertDialogTheme.itemContainerBackgroundColor,
+          color: theme.alertDialogTheme.surfaceColor,
         ),
         height: 70,
         width: 500,
@@ -156,7 +144,7 @@ class M3u8MasterPlaylistDialog extends StatelessWidget {
                         child: Text(
                           fileName,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: theme.textColor),
                         ),
                       ),
                       SizedBox(height: 5),
@@ -191,24 +179,15 @@ class M3u8MasterPlaylistDialog extends StatelessWidget {
                 ],
               ),
               Spacer(),
-              RoundedOutlinedButton(
-                icon: Icon(
+              RoundedOutlinedButton.fromButtonColor(
+                theme.alertDialogTheme.acceptButtonColor,
+                customIcon: Icon(
                   Icons.download,
                   color: Colors.white,
                   size: 18,
                 ),
                 text: loc.btn_download,
                 onPressed: () => _onDownloadPressed(streamInf, context),
-                backgroundColor:
-                    theme.downloadInfoDialogTheme.downloadColor.backgroundColor,
-                borderColor:
-                    theme.downloadInfoDialogTheme.downloadColor.borderColor,
-                hoverBackgroundColor: theme
-                    .downloadInfoDialogTheme.downloadColor.hoverBackgroundColor,
-                hoverTextColor:
-                    theme.downloadInfoDialogTheme.downloadColor.hoverTextColor,
-                textColor:
-                    theme.downloadInfoDialogTheme.downloadColor.textColor,
               ),
             ],
           ),
@@ -226,13 +205,14 @@ class M3u8MasterPlaylistDialog extends StatelessWidget {
         children: [
           Icon(
             iconData,
-            color: Colors.white70,
+            color: theme.widgetTheme.iconColor,
             size: 15,
           ),
           const SizedBox(width: 5),
           Text(
             value,
-            style: TextStyle(color: Colors.white70, fontSize: 12),
+            style: TextStyle(
+                color: theme.alertDialogTheme.textHintColor, fontSize: 12),
           ),
         ],
       ),

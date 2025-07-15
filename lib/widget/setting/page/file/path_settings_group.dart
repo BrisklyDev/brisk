@@ -40,11 +40,7 @@ class _PathSettingsGroupState extends State<PathSettingsGroup> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final provider = Provider.of<SettingsProvider>(context);
-    final theme = Provider.of<ThemeProvider>(context)
-        .activeTheme
-        .settingTheme
-        .pageTheme
-        .widgetColor;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme.widgetTheme;
 
     final loc = AppLocalizations.of(context)!;
     return SettingsGroup(
@@ -67,7 +63,7 @@ class _PathSettingsGroupState extends State<PathSettingsGroup> {
             },
             icon: Icon(
               Icons.folder,
-              color: Colors.white60,
+              color: theme.textFieldColor.iconColor,
             ),
           ),
         ),
@@ -89,7 +85,7 @@ class _PathSettingsGroupState extends State<PathSettingsGroup> {
             },
             icon: Icon(
               Icons.folder,
-              color: Colors.white60,
+              color: theme.textFieldColor.iconColor,
             ),
           ),
         ),

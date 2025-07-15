@@ -19,10 +19,12 @@ class OutLinedTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final int? maxLines;
   final int? minLines;
+  final Color cursorColor;
 
   const OutLinedTextField({
     super.key,
     required this.controller,
+    this.cursorColor = Colors.white,
     this.fillColor,
     this.textColor = Colors.white,
     this.readOnly = false,
@@ -43,9 +45,7 @@ class OutLinedTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Provider.of<ThemeProvider>(context)
         .activeTheme
-        .settingTheme
-        .pageTheme
-        .widgetColor
+        .widgetTheme
         .textFieldColor;
     return TextField(
       enabled: enabled,
@@ -56,7 +56,7 @@ class OutLinedTextField extends StatelessWidget {
       maxLines: maxLines,
       minLines: minLines,
       inputFormatters: inputFormatters,
-      cursorColor: Colors.white,
+      cursorColor: theme.cursorColor,
       controller: controller,
       onChanged: onChanged,
       textAlign: TextAlign.left,
@@ -76,6 +76,10 @@ class OutLinedTextField extends StatelessWidget {
         fillColor: fillColor ?? theme.fillColor,
         hoverColor: theme.hoverColor,
         hintText: hintText,
+        hintStyle: TextStyle(
+          color: theme.hintTextColor,
+          fontStyle: FontStyle.italic,
+        ),
         border: OutlineInputBorder(
           borderSide: BorderSide(color: theme.borderColor, width: 0.5),
           borderRadius: BorderRadius.circular(10),

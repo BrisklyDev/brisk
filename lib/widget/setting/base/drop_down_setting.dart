@@ -26,8 +26,7 @@ class DropDownSetting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme =
-        Provider.of<ThemeProvider>(context).activeTheme.settingTheme.pageTheme;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     final size = MediaQuery.of(context).size;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -40,7 +39,8 @@ class DropDownSetting extends StatelessWidget {
             Text(
               text,
               style: TextStyle(
-                color: theme.titleTextColor,
+                color: theme.settingTheme.pageTheme.titleTextColor,
+                fontWeight: theme.fontWeight,
                 fontSize: 14,
               ),
             ),
@@ -63,8 +63,9 @@ class DropDownSetting extends StatelessWidget {
           width: dropDownWidth,
           child: DropdownButton<String>(
             value: value,
+            iconEnabledColor: theme.widgetTheme.dropDownColor.iconColor,
             dropdownColor:
-                theme.widgetColor.dropDownColor.dropDownBackgroundColor,
+                theme.widgetTheme.dropDownColor.dropDownBackgroundColor,
             items: items.map((String value) {
               return DropdownMenuItem<String>(
                 value: value,
@@ -73,7 +74,7 @@ class DropDownSetting extends StatelessWidget {
                   child: Text(
                     value,
                     style: TextStyle(
-                      color: theme.widgetColor.dropDownColor.ItemTextColor,
+                      color: theme.widgetTheme.dropDownColor.itemTextColor,
                     ),
                   ),
                 ),

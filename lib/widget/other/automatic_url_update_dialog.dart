@@ -12,15 +12,14 @@ class AutomaticUrlUpdateDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme =
-        Provider.of<ThemeProvider>(context).activeTheme.alertDialogTheme;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     final loc = AppLocalizations.of(context)!;
     return ScrollableDialog(
       scrollButtonVisible: false,
       scrollviewHeight: 200,
       height: 120,
       width: 430,
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.alertDialogTheme.backgroundColor,
       title: Padding(
         padding: const EdgeInsets.all(15),
         child: Row(
@@ -43,18 +42,25 @@ class AutomaticUrlUpdateDialog extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(loc.awaitingUrl_description),
+            Text(
+              loc.awaitingUrl_description,
+              style: TextStyle(
+                color: theme.alertDialogTheme.textHintColor,
+              ),
+            ),
             const SizedBox(height: 5),
             Text(
               loc.awaitingUrl_descriptionHint,
-              style: TextStyle(color: Colors.white60),
+              style: TextStyle(
+                color: theme.alertDialogTheme.textHintColor,
+              ),
             )
           ],
         ),
       ),
       buttons: [
         RoundedOutlinedButton.fromButtonColor(
-          theme.deleteConfirmColor,
+          theme.alertDialogTheme.deleteConfirmColor,
           text: loc.btn_cancel,
           onPressed: () {
             BrowserExtensionServer.awaitingUpdateUrlItem = null;
