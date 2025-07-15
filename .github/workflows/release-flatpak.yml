@@ -97,6 +97,7 @@ jobs:
           ls -ltrh ../flatpak-flutter/brisk/*
           cat ../flatpak-flutter/brisk/flatpak-flutter.yml
           find ../flatpak-flutter/brisk -maxdepth 1 -type f -exec cp {} . \;
+          cp -r ../flatpak-flutter/brisk/cargokit .
           ls -la
           git add .
           git commit -m "Release"
