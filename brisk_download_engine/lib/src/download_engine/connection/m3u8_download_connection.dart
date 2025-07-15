@@ -142,7 +142,7 @@ class M3U8DownloadConnection extends HttpDownloadConnection {
 
   @override
   void onDownloadComplete() async {
-    if (paused || reset) return;
+    if (paused || reset || terminatedOnError) return;
     flushBuffer();
     connectionStatus = DownloadStatus.connectionComplete;
     logger?.info("Download complete with completion signal");

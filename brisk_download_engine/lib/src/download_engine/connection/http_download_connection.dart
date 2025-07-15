@@ -17,7 +17,6 @@ import 'package:brisk_download_engine/src/download_engine/util/types.dart';
 import 'package:dartx/dartx.dart';
 import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
-import 'package:rhttp/rhttp.dart';
 
 import '../log/logger.dart';
 
@@ -74,6 +73,8 @@ class HttpDownloadConnection {
   bool reset = false;
 
   bool terminatedOnCompletion = false;
+
+  bool terminatedOnError = false;
 
   String connectionStatus = "";
 
@@ -215,6 +216,7 @@ class HttpDownloadConnection {
     paused = false;
     reset = false;
     terminatedOnCompletion = false;
+    terminatedOnError = false;
     totalRequestReceivedBytes = 0;
   }
 
@@ -789,7 +791,7 @@ class HttpDownloadConnection {
   /// Flushes the remaining bytes in the buffer and completes the download.
   void onDownloadComplete() {
     logger?.info("onDownloadComplete paused $paused reset $reset");
-    if (paused || reset || terminatedOnCompletion) return;
+    if (paused || reset || terminatedOnCompletion || terminatedOnError) return;
     bytesTransferRate = 0;
     downloadProgress = totalRequestReceivedBytes / segment.length;
     totalDownloadProgress =
@@ -810,7 +812,9 @@ class HttpDownloadConnection {
   /// Therefore, we handle the mentioned exception here in a way that [onDownloadComplete] will be called
   /// only when a download is actually completed.
   void onError(dynamic error, [dynamic s]) async {
+    logger?.error("onError::: error : $error \n $s");
     clearBuffer();
+    terminatedOnError = true;
     await terminateConnection();
     notifyProgress();
     if (!(error is http.ClientException &&

@@ -709,6 +709,7 @@ class HttpDownloadEngine {
   }
 
   /// Reassigns a connection that has finished receiving its bytes to a new segment
+  /// TODO: Re-add to queue if failed
   static void _sendRefreshSegmentCommandReuseConnection(
     HttpDownloadConnectionChannel connectionChannel,
   ) {
@@ -716,6 +717,8 @@ class HttpDownloadEngine {
     final engineChannel = _engineChannels[downloadUid]!;
     final logger = engineChannel.logger;
     final segmentTree = engineChannel.segmentTree;
+
+    /// inQueue is for when it's built from missing bytes
     final nodes = segmentTree!.inQueueNodes!.isNotEmpty
         ? segmentTree.inQueueNodes
         : segmentTree.inUseNodes;
@@ -771,6 +774,7 @@ class HttpDownloadEngine {
       ..rightChild?.segmentStatus = SegmentStatus.initial;
     final oldestSegmentConnection = engineChannel.connectionChannels.values
         .where((conn) => conn.segment == targetNode.segment)
+        .where((conn) => !conn.awaitingResetResponse)
         .firstOrNull;
     logger?.info("Segment tree in reuseConnection :");
     for (final element in segmentTree.lowestLevelNodes) {
