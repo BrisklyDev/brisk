@@ -1,7 +1,7 @@
 name: brisk
 description: Ultra-fast, modern download manager for desktop
 
-version: 2.3.5
+version: 2.3.6
 
 environment:
   sdk: ">=3.4.0 <=4.0.0"

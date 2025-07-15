@@ -43,18 +43,13 @@
   </screenshots>
 
   <releases>
-    <release version="2.3.5" date="2025-07-10">
+    <release version="2.3.6" date="2025-07-15">
     <description>
       <p><em>🔧 Bug Fixes and Improvements</em></p>
       <ul>
-        <li>Fixed download addition hotkey issues</li>
-        <li>Added support for capturing cookies from the browser extension to allow for downloading files that require it</li>
-        <li>Added compatibility for video button injection into video stream iframes (requires browser extension v1.4.0)</li>
-        <li>Added caching and prefetching of video stream metadata to skip the waiting for retrieving file information for downloading video streams</li>
-        <li>Minor memory optimizations</li>
-        <li>Fixed automatic ffmpeg installation not working</li>
-        <li>Fixed editing category issues in settings</li>
-        <li>Minor UI fixes and improvements</li>
+        <li>Download engine bug fixes and improvements</li>
+        <li>Added new light theme</li>
+        <li>UI improvements</li>
       </ul>
     </description>
     </release>
