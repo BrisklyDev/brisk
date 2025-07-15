@@ -726,6 +726,7 @@ class HttpDownloadEngine {
       logger?.error(
         "_sendRefreshSegmentCommand_ReuseConnection:: Fatal! Failed to find segment node!",
       );
+      engineChannel.connectionReuseQueue.add(connectionChannel);
       return;
     }
     nodes.sort((a, b) => b.segment.length.compareTo(a.segment.length));
@@ -737,6 +738,7 @@ class HttpDownloadEngine {
       logger?.error(
         "_sendRefreshSegmentCommand_ReuseConnection:: Fatal! Target node is null!",
       );
+      engineChannel.connectionReuseQueue.add(connectionChannel);
       return;
     }
     bool success = false;
@@ -759,6 +761,7 @@ class HttpDownloadEngine {
       logger?.warn(
         "Failed to split segment node ${targetNode.segment}. skipping...",
       );
+      engineChannel.connectionReuseQueue.add(connectionChannel);
       return;
     }
     logger?.info(
@@ -787,6 +790,7 @@ class HttpDownloadEngine {
       engineChannel.connectionChannels.forEach((_, conn) {
         logger?.info("Conn:${conn.connectionNumber} => ${conn.segment}");
       });
+      engineChannel.connectionReuseQueue.add(connectionChannel);
       return;
     }
     logger?.info(

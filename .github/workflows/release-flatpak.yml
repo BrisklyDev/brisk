@@ -80,38 +80,38 @@ jobs:
           ../flatpak-flutter.py flatpak-flutter.yml
           ls -la
 
-      - name: Set up Git
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-
-      - name: Push update to flathub release branch
-        env:
-          PAGES_REPO_PAT: ${{ secrets.REPO_PAT }}
-        run: |
-          git clone https://x-access-token:${PAGES_REPO_PAT}@github.com/flathub/io.github.BrisklyDev.Brisk.git
-          cd io.github.BrisklyDev.Brisk
-          pwd
-          git checkout -B release-${{ needs.version.outputs.version }}
-          find . -maxdepth 1 -type f ! -name '.gitmodules' -exec rm -rf {} +
-          ls -ltrh ../flatpak-flutter/brisk/*
-          cat ../flatpak-flutter/brisk/flatpak-flutter.yml
-          find ../flatpak-flutter/brisk -maxdepth 1 -type f -exec cp {} . \;
-          ls -la
-          git add .
-          git commit -m "Release"
-          git push origin release-${{ needs.version.outputs.version }}
-
-
-      - name: Install GitHub CLI
-        run: sudo apt install -y gh
-
-      - name: Create Pull Request with gh CLI
-        env:
-          GH_TOKEN: ${{ secrets.REPO_PAT }}
-        run: |
-          gh pr create --repo flathub/io.github.BrisklyDev.Brisk \
-            --title "Release v${{ needs.version.outputs.version }}" \
-            --body "Automated release PR for version v${{ needs.version.outputs.version }}" \
-            --head "release-${{ needs.version.outputs.version }}" \
-            --base master
+#      - name: Set up Git
+#        run: |
+#          git config --global user.name "GitHub Actions"
+#          git config --global user.email "actions@github.com"
+#
+#      - name: Push update to flathub release branch
+#        env:
+#          PAGES_REPO_PAT: ${{ secrets.REPO_PAT }}
+#        run: |
+#          git clone https://x-access-token:${PAGES_REPO_PAT}@github.com/flathub/io.github.BrisklyDev.Brisk.git
+#          cd io.github.BrisklyDev.Brisk
+#          pwd
+#          git checkout -B release-${{ needs.version.outputs.version }}
+#          find . -maxdepth 1 -type f ! -name '.gitmodules' -exec rm -rf {} +
+#          ls -ltrh ../flatpak-flutter/brisk/*
+#          cat ../flatpak-flutter/brisk/flatpak-flutter.yml
+#          find ../flatpak-flutter/brisk -maxdepth 1 -type f -exec cp {} . \;
+#          ls -la
+#          git add .
+#          git commit -m "Release"
+#          git push origin release-${{ needs.version.outputs.version }}
+#
+#
+#      - name: Install GitHub CLI
+#        run: sudo apt install -y gh
+#
+#      - name: Create Pull Request with gh CLI
+#        env:
+#          GH_TOKEN: ${{ secrets.REPO_PAT }}
+#        run: |
+#          gh pr create --repo flathub/io.github.BrisklyDev.Brisk \
+#            --title "Release v${{ needs.version.outputs.version }}" \
+#            --body "Automated release PR for version v${{ needs.version.outputs.version }}" \
+#            --head "release-${{ needs.version.outputs.version }}" \
+#            --base master
