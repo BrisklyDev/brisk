@@ -23,12 +23,11 @@ class _AppExitDialogState extends State<AppExitDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final theme =
-        Provider.of<ThemeProvider>(context).activeTheme.alertDialogTheme;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     final loc = AppLocalizations.of(context)!;
     return AlertDialog(
-      backgroundColor: theme.backgroundColor,
-      surfaceTintColor: theme.backgroundColor,
+      backgroundColor: theme.alertDialogTheme.backgroundColor,
+      surfaceTintColor: theme.alertDialogTheme.backgroundColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -70,7 +69,12 @@ class _AppExitDialogState extends State<AppExitDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(loc.appChooseActionDescription),
+            Text(
+              loc.appChooseActionDescription,
+              style: TextStyle(
+                color: theme.alertDialogTheme.textHintColor,
+              ),
+            ),
             const SizedBox(height: 20),
             Column(
               children: [
@@ -78,10 +82,12 @@ class _AppExitDialogState extends State<AppExitDialog> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   text: loc.btn_exitApplication,
                   mainAxisSize: MainAxisSize.max,
+                  iconHoverColor: theme.widgetTheme.iconColor,
                   icon: Icons.power_settings_new_rounded,
-                  textColor: Colors.white,
+                  textColor: theme.textColor,
+                  iconColor: theme.widgetTheme.iconColor,
                   borderColor: Colors.transparent,
-                  backgroundColor: theme.surfaceColor,
+                  backgroundColor: theme.alertDialogTheme.surfaceColor,
                   hoverBackgroundColor: Color.fromRGBO(220, 38, 38, 1),
                   height: 45,
                   width: 500,
@@ -97,10 +103,12 @@ class _AppExitDialogState extends State<AppExitDialog> {
                   text: loc.btn_minimizeToTray,
                   height: 45,
                   icon: Icons.minimize_rounded,
-                  textColor: Colors.white,
+                  iconColor: theme.widgetTheme.iconColor,
+                  textColor: theme.textColor,
                   borderColor: Colors.transparent,
                   hoverBackgroundColor: Color.fromRGBO(53, 89, 143, 1),
-                  backgroundColor: theme.surfaceColor,
+                  iconHoverColor: theme.widgetTheme.iconColor,
+                  backgroundColor: theme.alertDialogTheme.surfaceColor,
                   width: 500,
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -114,9 +122,14 @@ class _AppExitDialogState extends State<AppExitDialog> {
                   text: loc.btn_cancel,
                   height: 45,
                   icon: Icons.close_rounded,
-                  textColor: Colors.white,
+                  iconColor: theme.widgetTheme.iconColor,
+                  textColor: theme.textColor,
                   borderColor: Colors.transparent,
-                  backgroundColor: theme.surfaceColor,
+                  backgroundColor: theme.alertDialogTheme.surfaceColor,
+                  iconHoverColor: theme.widgetTheme.iconColor,
+                  hoverBackgroundColor:
+                      theme.alertDialogTheme.cancelColor.hoverBackgroundColor,
+                  hoverTextColor: theme.textColor,
                   width: 500,
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -138,7 +151,10 @@ class _AppExitDialogState extends State<AppExitDialog> {
                         () => rememberChecked = value!,
                       ),
                     ),
-                    Text(loc.rememberThisDecision),
+                    Text(
+                      loc.rememberThisDecision,
+                      style: TextStyle(color: theme.textColor),
+                    ),
                   ],
                 )
               ],

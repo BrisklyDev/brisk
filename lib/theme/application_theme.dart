@@ -95,7 +95,7 @@ class TopMenuTheme {
   final ButtonColor stopQueueColor;
   final ButtonColor checkForUpdateColor;
 
-  TopMenuTheme({
+  const TopMenuTheme({
     required this.backgroundColor,
     required this.addUrlColor,
     required this.downloadColor,
@@ -220,7 +220,6 @@ class SettingTheme {
   final windowBackgroundColor;
   final SettingPageTheme pageTheme;
   final SettingSideMenuTheme sideMenuTheme;
-  final ButtonColor cancelButtonColor;
   final ButtonColor saveButtonColor;
   final ButtonColor resetDefaultsButtonColor;
 
@@ -228,7 +227,6 @@ class SettingTheme {
     required this.windowBackgroundColor,
     required this.pageTheme,
     required this.sideMenuTheme,
-    required this.cancelButtonColor,
     required this.saveButtonColor,
     required this.resetDefaultsButtonColor,
   });

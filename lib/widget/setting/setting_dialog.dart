@@ -31,7 +31,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
   Widget build(BuildContext context) {
     settingsProvider = Provider.of<SettingsProvider>(context);
     themeProvider = Provider.of<ThemeProvider>(context);
-    final settingTheme = themeProvider.activeTheme.settingTheme;
+    final theme = themeProvider.activeTheme;
     loc = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;
     return AlertDialog(
@@ -41,7 +41,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: settingTheme.windowBackgroundColor,
+            color: theme.settingTheme.windowBackgroundColor,
           ),
           height: resolveDialogHeight(size),
           width: resolveDialogWidth(size),
@@ -72,8 +72,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    // color: const Color.fromRGBO(26, 26, 26, 1.0),
-                    color: settingTheme.sideMenuTheme.backgroundColor,
+                    color: theme.settingTheme.sideMenuTheme.backgroundColor,
                     height: resolveDialogHeight(size) - 144,
                     child: SingleChildScrollView(
                       child: SizedBox(
@@ -135,7 +134,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                 color: Color.fromRGBO(65, 65, 65, 1.0),
               ),
               Container(
-                color: settingTheme.sideMenuTheme.backgroundColor,
+                color: theme.settingTheme.sideMenuTheme.backgroundColor,
                 child: Column(
                   children: [
                     const SizedBox(height: 30),
@@ -151,19 +150,19 @@ class _SettingsDialogState extends State<SettingsDialog> {
                         children: [
                           SizedBox(width: size.width < 880 ? 10 : 20),
                           RoundedOutlinedButton.fromButtonColor(
-                            settingTheme.resetDefaultsButtonColor,
+                            theme.settingTheme.resetDefaultsButtonColor,
                             text: loc.btn_resetDefaults,
                             onPressed: _onResetDefaultPressed,
                           ),
                           Spacer(),
                           RoundedOutlinedButton.fromButtonColor(
-                            settingTheme.cancelButtonColor,
+                            theme.alertDialogTheme.cancelColor,
                             text: loc.btn_cancel,
                             onPressed: _onCancelPressed,
                           ),
                           SizedBox(width: size.width < 880 ? 10 : 20),
                           RoundedOutlinedButton.fromButtonColor(
-                            settingTheme.saveButtonColor,
+                            theme.settingTheme.saveButtonColor,
                             text: loc.btn_saveChanges,
                             onPressed: _onApplyPressed,
                           ),

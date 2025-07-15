@@ -46,7 +46,7 @@ class FFmpegNotFoundDialog extends StatelessWidget {
             Text(
               loc.ffmpeg_notFound_title,
               style: TextStyle(
-                color: Colors.white,
+                color: theme.textColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),
@@ -60,9 +60,17 @@ class FFmpegNotFoundDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(loc.ffmpeg_notFound_description),
-            Text(loc.ffmpeg_notFound_descriptionHint,
-              style: TextStyle(color: Colors.white60),
+            Text(
+              loc.ffmpeg_notFound_description,
+              style: TextStyle(
+                color: theme.textColor,
+              ),
+            ),
+            Text(
+              loc.ffmpeg_notFound_descriptionHint,
+              style: TextStyle(
+                color: theme.alertDialogTheme.textHintColor,
+              ),
             ),
           ],
         ),
