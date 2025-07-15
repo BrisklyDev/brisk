@@ -514,9 +514,8 @@ jobs:
       - name: Run flatpak-flutter
         run: |
           cp linux/packaging/flatpak/flatpak-flutter.yml flatpak-flutter/brisk/
-          cp linux/packaging/flatpak/run_build_tool.sh.offline.patch flatpak-flutter/brisk/
           cd flatpak-flutter/brisk/
-          ../flatpak-flutter.py --extra-pubspecs=.pub-cache/hosted/pub.dev/rhttp-0.12.0/cargokit/build_tool --cargo-locks=.pub-cache/hosted/pub.dev/rhttp-0.12.0/rust flatpak-flutter.yml
+          ../flatpak-flutter.py flatpak-flutter.yml
           ls -la
 
       - name: Set up Git
