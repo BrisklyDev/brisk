@@ -47,7 +47,6 @@ class BrowserExtensionServer {
   static Map<int, Pair<int, Timer?>> _vttFetcherTimers = {};
 
   static Future<void> setup(BuildContext context) async {
-    showNewBrowserExtensionVersion(context);
     if (_server != null) return;
     _m3u8PrefetchCacheClearTimer = Timer.periodic(
       Duration(minutes: 5),
