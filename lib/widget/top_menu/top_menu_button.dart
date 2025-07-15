@@ -53,16 +53,16 @@ class _TopMenuButtonState extends State<TopMenuButton> {
               alignment: Alignment.center,
               children: [
                 AnimatedPositioned(
-                  duration: const Duration(milliseconds: 200),
+                  duration: const Duration(milliseconds: 100),
                   curve: Curves.easeOut,
                   top: _isHovered ? 0 : 18,
                   child: widget.icon,
                 ),
                 AnimatedOpacity(
-                  duration: const Duration(milliseconds: 200),
+                  duration: const Duration(milliseconds: 100),
                   opacity: _isHovered ? 1.0 : 0.0,
                   child: AnimatedSlide(
-                    duration: const Duration(milliseconds: 200),
+                    duration: const Duration(milliseconds: 100),
                     offset: _isHovered ? Offset.zero : const Offset(0, 0.3),
                     child: Align(
                       alignment: Alignment.bottomCenter,
