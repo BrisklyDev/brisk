@@ -376,7 +376,7 @@ class _FileSavePathRuleEditorDialogState
       var value = valueControllers[i].text;
       var savePath = savePathControllers[i].text;
       var type = selectedTypes[i];
-      if (value.isEmpty) {
+      if (value.trim().isEmpty) {
         errorText = "Rule ${i + 1} has an empty value!";
       }
       if (value.contains(",")) {

@@ -338,7 +338,7 @@ class _ExtensionSkipCaptureRuleEditorDialogState
     for (int i = 0; i < rules.length; i++) {
       var value = valueControllers[i].text;
       var type = selectedTypes[i];
-      if (value.isEmpty) {
+      if (value.trim().isEmpty) {
         errorText = "Rule ${i + 1} has an empty value!";
       }
       if (value.contains(",")) {
