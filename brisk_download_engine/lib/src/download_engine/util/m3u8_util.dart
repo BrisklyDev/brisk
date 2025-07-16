@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:brisk_download_engine/brisk_download_engine.dart';
 import 'package:brisk_download_engine/src/download_engine/client/http_client_builder.dart';
+import 'package:brisk_download_engine/src/download_engine/util/constants.dart';
 import 'package:path/path.dart';
 
 import 'package:encrypt/encrypt.dart';
@@ -76,8 +77,7 @@ Future<String> fetchBodyString(
   final client = await HttpClientBuilder.buildClient(clientSettings);
   try {
     var requestHeaders = headers;
-    requestHeaders["User-Agent"] =
-        "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko;";
+    requestHeaders.addAll(userAgentHeader);
     final response = await client.get(
       Uri.parse(url),
       headers: requestHeaders,
@@ -104,8 +104,7 @@ Future<Uint8List> fetchDecryptionKey(
     final response = await client.get(
       Uri.parse(keyUrl),
       headers: {
-        "User-Agent":
-            "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko;",
+        "User-Agent": userAgentHeader.values.first,
       },
     );
     if (response.statusCode == 200) {

@@ -3,13 +3,13 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:brisk_download_engine/brisk_download_engine.dart';
 import 'package:brisk_download_engine/src/download_engine/client/custom_base_client.dart';
-import 'package:brisk_download_engine/src/download_engine/client/rhttp_client_proxy.dart';
 import 'package:brisk_download_engine/src/download_engine/engine/http_download_engine.dart';
 import 'package:brisk_download_engine/src/download_engine/message/connection_segment_message.dart';
 import 'package:brisk_download_engine/src/download_engine/message/engine_panic_message.dart';
 import 'package:brisk_download_engine/src/download_engine/message/internal_messages.dart';
 import 'package:brisk_download_engine/src/download_engine/message/log_message.dart';
 import 'package:brisk_download_engine/src/download_engine/segment/segment.dart';
+import 'package:brisk_download_engine/src/download_engine/util/constants.dart';
 import 'package:brisk_download_engine/src/download_engine/util/file_util.dart';
 import 'package:brisk_download_engine/src/download_engine/util/lang_utils.dart';
 import 'package:brisk_download_engine/src/download_engine/util/temp_file_util.dart';
@@ -326,10 +326,7 @@ class HttpDownloadConnection {
       // TODO handle request time-out response (We should reinitialize client)
     });
     if (!downloadItem.requestHeaders.containsKeyIgnoreCase("User-Agent")) {
-      request.headers.addAll({
-        "User-Agent":
-            "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko;"
-      });
+      request.headers.addAll(userAgentHeader);
     }
     if (downloadItem.requestHeaders.isNotEmpty) {
       request.headers.addAll(downloadItem.requestHeaders);
