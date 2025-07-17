@@ -89,7 +89,7 @@ Future<void> main(List<String> args) async {
             create: (_) => FFmpegInstallationProvider(),
           ),
           ChangeNotifierProvider<SearchBarNotifierProvider>(
-            create: (_) => SearchBarNotifierProvider(),
+            create: (_) => SearchBarNotifierProvider.instance,
           ),
           ChangeNotifierProxyProvider<PlutoGridCheckRowProvider,
               DownloadRequestProvider>(

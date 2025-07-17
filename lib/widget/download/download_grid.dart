@@ -31,7 +31,7 @@ class _DownloadGridState extends State<DownloadGrid> {
   DownloadRequestProvider? provider;
   QueueProvider? queueProvider;
   late PlutoGridCheckRowProvider plutoProvider;
-  late SearchBarNotifierProvider notifier;
+  late SearchBarNotifierProvider searchBarNotifier;
   late AppLocalizations loc;
   late ApplicationTheme theme;
 
@@ -39,9 +39,9 @@ class _DownloadGridState extends State<DownloadGrid> {
   void didChangeDependencies() {
     loc = AppLocalizations.of(context)!;
     initColumns(context);
-    notifier = Provider.of<SearchBarNotifierProvider>(context);
+    searchBarNotifier = Provider.of<SearchBarNotifierProvider>(context);
     theme = Provider.of<ThemeProvider>(context).activeTheme;
-    if (notifier.showSearchBar) {
+    if (searchBarNotifier.showSearchBar) {
       Future.delayed(Duration(milliseconds: 50), () {
         _searchFocusNode.requestFocus();
       });
@@ -212,7 +212,7 @@ class _DownloadGridState extends State<DownloadGrid> {
     queueProvider = Provider.of<QueueProvider>(context);
     final size = MediaQuery.of(context).size;
     theme = Provider.of<ThemeProvider>(context).activeTheme;
-    notifier = Provider.of<SearchBarNotifierProvider>(context);
+    searchBarNotifier = Provider.of<SearchBarNotifierProvider>(context);
     return Material(
       type: MaterialType.transparency,
       child: Container(
@@ -232,13 +232,13 @@ class _DownloadGridState extends State<DownloadGrid> {
                 PlutoGridUtil.plutoStateManager!,
                 plutoProvider,
               ),
-              onRowChecked: (row) => plutoProvider?.notifyListeners(),
+              onRowChecked: (row) => plutoProvider.notifyListeners(),
               onRowDoubleTap: onRowDoubleTap,
               onLoaded: (event) => onLoaded(event, provider!, queueProvider!),
               onRowSecondaryTap: (event) =>
                   showSecondaryTapMenu(context, event),
             ),
-            if (notifier.showSearchBar) showSearchbar(),
+            if (searchBarNotifier.showSearchBar) showSearchbar(),
           ],
         ),
       ),
@@ -283,7 +283,7 @@ class _DownloadGridState extends State<DownloadGrid> {
                 ),
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
-                onPressed: notifier.toggleShow,
+                onPressed: searchBarNotifier.toggleShow,
               ),
             ],
           ),
