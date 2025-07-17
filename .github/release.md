@@ -2,6 +2,8 @@
 
 ## :hammer_and_wrench: New Features and Improvements
 
-- Download engine bug fixes and improvements
-- Added new light theme
-- UI improvements
+- Fixed download issue from google drive
+- Added searching through downloads via ctrl+f
+- Added all catppucin themes
+- Added tokyo night theme
+- UI bug fixes

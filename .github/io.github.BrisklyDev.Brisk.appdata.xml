@@ -20,6 +20,7 @@
     </p>
     <ul>
       <li>Powerful, Custom-Built Download Engine</li>
+      <li>Multiple themes including catppuccin and tokyo night</li>
       <li>Browser Integration</li>
       <li>Downloading video streams from the browser</li>
       <li>Soft-subbing video files downloaded from streaming websites</li>
@@ -43,13 +44,15 @@
   </screenshots>
 
   <releases>
-    <release version="2.3.6" date="2025-07-15">
+    <release version="2.3.7" date="2025-07-17">
     <description>
       <p><em>🔧 Bug Fixes and Improvements</em></p>
       <ul>
-        <li>Download engine bug fixes and improvements</li>
-        <li>Added new light theme</li>
-        <li>UI improvements</li>
+        <li>Fixed download issue from google drive</li>
+        <li>Added searching through downloads via ctrl+f</li>
+        <li>Added all catppucin themes</li>
+        <li>Added tokyo night theme</li>
+        <li>UI bug fixes</li>
       </ul>
     </description>
     </release>
