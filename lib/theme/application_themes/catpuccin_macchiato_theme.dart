@@ -1,7 +1,7 @@
 import 'package:brisk/theme/application_theme.dart';
 import 'package:flutter/material.dart';
 
-ApplicationTheme catppuccinMacchiato = ApplicationTheme(
+ApplicationTheme catppuccinMacchiato = const ApplicationTheme(
   isLight: false,
   themeId: "Catppuccin Macchiato",
   fontWeight: FontWeight.normal,
@@ -44,7 +44,12 @@ ApplicationTheme catppuccinMacchiato = ApplicationTheme(
       cursorColor: Color.fromRGBO(198, 208, 245, 1),
     ),
   ),
-  contextMenuBackgroundColor: const Color.fromRGBO(49, 50, 68, 1),
+  contextMenuTheme: ContextMenuTheme(
+    backgroundColor: const Color.fromRGBO(49, 50, 68, 1),
+    itemDisabledTextColor: Colors.grey,
+    borderColor: Colors.transparent,
+    itemTextColor: Color.fromRGBO(202, 211, 245, 1),
+  ),
   downloadProgressDialogTheme: const DownloadProgressDialogTheme(
     totalProgressColor: ProgressIndicatorColor(
       backgroundColor: Color.fromRGBO(69, 71, 90, 1),

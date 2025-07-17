@@ -1,15 +1,19 @@
 import 'package:brisk/theme/application_theme.dart';
 import 'package:flutter/material.dart';
 
-ApplicationTheme light = ApplicationTheme(
+ApplicationTheme light = const ApplicationTheme(
   themeId: "Light",
   isLight: true,
   fontWeight: FontWeight.w500,
   textColor: Colors.black,
   textHintColor: const Color.fromRGBO(44, 44, 44, 1.0),
   subtleTextColor: const Color.fromRGBO(33, 33, 33, 1.0),
-  contextMenuBackgroundColor: const Color.fromRGBO(168, 168, 168, 1.0),
-  contextMenuItemDisabledTextColor: const Color.fromRGBO(222, 222, 222, 1.0),
+  contextMenuTheme: ContextMenuTheme(
+    backgroundColor: const Color.fromRGBO(168, 168, 168, 1.0),
+    itemDisabledTextColor: const Color.fromRGBO(222, 222, 222, 1.0),
+    borderColor: Colors.transparent,
+    itemTextColor: Colors.black,
+  ),
   widgetTheme: WidgetTheme(
     iconColor: const Color.fromRGBO(89, 89, 89, 1.0),
     tooltipIconColor: Colors.black45,

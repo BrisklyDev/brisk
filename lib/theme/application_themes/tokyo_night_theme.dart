@@ -1,7 +1,7 @@
 import 'package:brisk/theme/application_theme.dart';
 import 'package:flutter/material.dart';
 
-ApplicationTheme tokyoNight = ApplicationTheme(
+ApplicationTheme tokyoNight = const ApplicationTheme(
   themeId: "Tokyo Night",
   isLight: false,
   fontWeight: FontWeight.normal,
@@ -43,8 +43,21 @@ ApplicationTheme tokyoNight = ApplicationTheme(
       cursorColor: Colors.white,
     ),
   ),
-  contextMenuBackgroundColor: Color.fromRGBO(41, 45, 62, 1),
+  contextMenuTheme: const ContextMenuTheme(
+    backgroundColor: Color.fromRGBO(26, 27, 38, 0.95),
+    borderColor: Color.fromRGBO(67, 76, 94, 1),
+    itemDisabledTextColor: Colors.grey,
+    itemTextColor: Color.fromRGBO(192, 202, 245, 1),
+  ),
   downloadProgressDialogTheme: const DownloadProgressDialogTheme(
+    connectionProgressColor: ProgressIndicatorColor(
+      backgroundColor: Color.fromRGBO(30, 33, 45, 1.0),
+      color: Colors.blueAccent,
+    ),
+    totalProgressColor: ProgressIndicatorColor(
+      backgroundColor: Color.fromRGBO(41, 45, 62, 1.0),
+      color: Colors.green,
+    ),
     resumeColor: ButtonColor(
       iconColor: Colors.transparent,
       hoverIconColor: Colors.transparent,
@@ -56,7 +69,7 @@ ApplicationTheme tokyoNight = ApplicationTheme(
     ),
     pauseColor: ButtonColor(
       iconColor: Color.fromRGBO(100, 40, 50, 1),
-      hoverIconColor: Colors.transparent,
+      hoverIconColor: Colors.white,
       textColor: Color.fromRGBO(100, 40, 50, 1),
       hoverBackgroundColor: Color.fromRGBO(200, 110, 130, 1),
       hoverTextColor: Colors.white,
@@ -134,7 +147,7 @@ ApplicationTheme tokyoNight = ApplicationTheme(
     backgroundColor: Color.fromRGBO(30, 34, 45, 1),
     briskLogoColor: Color.fromRGBO(97, 175, 239, 1),
     activeTabIconColor: Colors.white,
-    activeTabBackgroundColor: Color.fromRGBO(107, 163, 213, 1.0),
+    activeTabBackgroundColor: Color.fromRGBO(108, 172, 227, 1.0),
     tabHoverColor: Color.fromRGBO(52, 56, 81, 1),
     tabIconColor: Colors.white,
     tabBackgroundColor: Colors.transparent,
@@ -151,8 +164,8 @@ ApplicationTheme tokyoNight = ApplicationTheme(
     borderColor: Colors.black26,
     rowColor: Colors.black26,
   ),
-  settingTheme: SettingTheme(
-    pageTheme: SettingPageTheme(
+  settingTheme: const SettingTheme(
+    pageTheme: const SettingPageTheme(
       groupBackgroundColor: Color.fromRGBO(40, 45, 60, 1),
       groupTitleTextColor: Colors.white,
       titleTextColor: Colors.white,
@@ -183,16 +196,17 @@ ApplicationTheme tokyoNight = ApplicationTheme(
       borderHoverColor: const Color.fromRGBO(53, 89, 143, 1),
     ),
   ),
-  queuePageTheme: QueuePageTheme(
+  queuePageTheme: const QueuePageTheme(
     backgroundColor: const Color.fromRGBO(30, 30, 30, 1),
     queueItemTitleTextColor: Colors.white,
     queueItemTitleDetailsTextColor: Colors.grey,
     queueItemHoverColor: Colors.white12,
   ),
   alertDialogTheme: AlertDialogTheme(
-    backgroundColor: Color.fromRGBO(33, 38, 47, 1),
+    backgroundColor: const Color.fromRGBO(33, 38, 47, 1),
     innerContainerBorderColor: Colors.white30,
-    cancelColor: ButtonColor(
+    borderColor: const Color.fromRGBO(67, 76, 94, 1),
+    cancelColor: const ButtonColor(
       iconColor: Colors.transparent,
       hoverIconColor: Colors.transparent,
       textColor: Colors.white,
@@ -202,7 +216,7 @@ ApplicationTheme tokyoNight = ApplicationTheme(
       borderColor: Colors.transparent,
       borderHoverColor: Colors.red,
     ),
-    secondaryMiscButtonColor: ButtonColor(
+    secondaryMiscButtonColor: const ButtonColor(
       iconColor: Colors.transparent,
       hoverIconColor: Colors.transparent,
       hoverBackgroundColor: Color.fromRGBO(33, 38, 47, 0.15),
@@ -211,7 +225,7 @@ ApplicationTheme tokyoNight = ApplicationTheme(
       borderColor: Color.fromRGBO(88, 91, 112, 0.3),
       backgroundColor: Color.fromRGBO(33, 38, 47, 0.1),
     ),
-    primaryMiscButtonColor: ButtonColor(
+    primaryMiscButtonColor: const ButtonColor(
       iconColor: Colors.transparent,
       hoverIconColor: Colors.transparent,
       hoverBackgroundColor: Color.fromRGBO(170, 135, 220, 1),
@@ -224,7 +238,7 @@ ApplicationTheme tokyoNight = ApplicationTheme(
       borderColor: Colors.grey,
       activeColor: const Color.fromRGBO(53, 89, 143, 1),
     ),
-    acceptButtonColor: ButtonColor(
+    acceptButtonColor: const ButtonColor(
       iconColor: Colors.transparent,
       hoverIconColor: Colors.transparent,
       hoverBackgroundColor: Color.fromRGBO(110, 170, 110, 1),
@@ -233,17 +247,17 @@ ApplicationTheme tokyoNight = ApplicationTheme(
       textColor: Colors.white,
       borderHoverColor: Colors.green,
     ),
-    declineButtonColor: ButtonColor(
+    declineButtonColor: const ButtonColor(
       iconColor: Colors.transparent,
       hoverIconColor: Colors.transparent,
       textColor: Colors.white,
       hoverBackgroundColor: const Color.fromRGBO(244, 67, 54, 0.6),
       hoverTextColor: Colors.white,
-      backgroundColor: const Color.fromRGBO(45, 45, 45, 0.5),
+      backgroundColor: Colors.transparent,
       borderColor: Colors.transparent,
       borderHoverColor: Colors.red,
     ),
-    deleteConfirmColor: ButtonColor(
+    deleteConfirmColor: const ButtonColor(
       iconColor: Colors.transparent,
       hoverIconColor: Colors.transparent,
       hoverTextColor: Colors.white,
@@ -251,13 +265,13 @@ ApplicationTheme tokyoNight = ApplicationTheme(
       backgroundColor: const Color.fromRGBO(220, 38, 38, 1),
       textColor: Colors.white,
     ),
-    deleteCancelColor: ButtonColor(
+    deleteCancelColor: const ButtonColor(
       iconColor: Colors.transparent,
       hoverIconColor: Colors.transparent,
       hoverBackgroundColor: const Color.fromRGBO(61, 61, 61, 1.0),
       backgroundColor: const Color.fromRGBO(37, 37, 37, 1.0),
       textColor: Colors.white70,
     ),
-    surfaceColor: Color.fromRGBO(40, 45, 60, 1),
+    surfaceColor: const Color.fromRGBO(40, 45, 60, 1),
   ),
 );

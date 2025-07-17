@@ -8,17 +8,16 @@ class ApplicationTheme {
   final DownloadGridTheme downloadGridTheme;
   final QueuePageTheme queuePageTheme;
   final SettingTheme settingTheme;
-  final Color contextMenuBackgroundColor;
-  final Color contextMenuItemDisabledTextColor;
   final WidgetTheme widgetTheme;
+  final ContextMenuTheme contextMenuTheme;
   final FontWeight fontWeight;
   final Color textColor;
   final Color textHintColor;
   final Color subtleTextColor;
-  AlertDialogTheme alertDialogTheme;
-  DownloadProgressDialogTheme downloadProgressDialogTheme;
+  final AlertDialogTheme alertDialogTheme;
+  final DownloadProgressDialogTheme downloadProgressDialogTheme;
 
-  ApplicationTheme({
+  const ApplicationTheme({
     required this.themeId,
     required this.isLight,
     required this.fontWeight,
@@ -33,8 +32,21 @@ class ApplicationTheme {
     required this.settingTheme,
     required this.alertDialogTheme,
     required this.downloadProgressDialogTheme,
-    this.contextMenuBackgroundColor = const Color.fromRGBO(20, 20, 20, 1),
-    this.contextMenuItemDisabledTextColor = Colors.grey,
+    this.contextMenuTheme = const ContextMenuTheme(),
+  });
+}
+
+class ContextMenuTheme {
+  final Color backgroundColor;
+  final Color itemDisabledTextColor;
+  final Color itemTextColor;
+  final Color borderColor;
+
+  const ContextMenuTheme({
+    this.backgroundColor = const Color.fromRGBO(20, 20, 20, 1),
+    this.itemDisabledTextColor = Colors.grey,
+    this.borderColor = Colors.transparent,
+    this.itemTextColor = Colors.white,
   });
 }
 
@@ -44,7 +56,7 @@ class QueuePageTheme {
   final Color queueItemTitleDetailsTextColor;
   final Color queueItemHoverColor;
 
-  QueuePageTheme({
+  const QueuePageTheme({
     required this.backgroundColor,
     required this.queueItemTitleTextColor,
     required this.queueItemTitleDetailsTextColor,
@@ -153,8 +165,10 @@ class AlertDialogTheme {
   final Color surfaceColor;
   final CheckBoxColor checkBoxColor;
   final Color innerContainerBorderColor;
+  final Color borderColor;
 
-  AlertDialogTheme({
+  const AlertDialogTheme({
+    this.borderColor = Colors.transparent,
     required this.backgroundColor,
     required this.iconColor,
     required this.acceptButtonColor,
@@ -174,7 +188,7 @@ class CheckBoxColor {
   final Color borderColor;
   final Color activeColor;
 
-  CheckBoxColor({
+  const CheckBoxColor({
     required this.borderColor,
     required this.activeColor,
   });
@@ -220,7 +234,7 @@ class SettingTheme {
   final ButtonColor saveButtonColor;
   final ButtonColor resetDefaultsButtonColor;
 
-  SettingTheme({
+  const SettingTheme({
     required this.pageTheme,
     required this.sideMenuTheme,
     required this.saveButtonColor,
@@ -233,7 +247,7 @@ class SettingPageTheme {
   final Color groupTitleTextColor;
   final Color titleTextColor;
 
-  SettingPageTheme({
+  const SettingPageTheme({
     required this.groupBackgroundColor,
     required this.groupTitleTextColor,
     required this.titleTextColor,
@@ -250,7 +264,7 @@ class WidgetTheme {
   final ButtonColor showHideButtonColor;
   final ButtonColor iconButtonColor;
 
-  WidgetTheme({
+  const WidgetTheme({
     required this.switchColor,
     required this.dropDownColor,
     required this.textFieldColor,
@@ -301,7 +315,7 @@ class DropDownColor {
   final Color itemTextColor;
   final Color iconColor;
 
-  DropDownColor({
+  const DropDownColor({
     this.iconColor = Colors.white70,
     required this.dropDownBackgroundColor,
     required this.itemTextColor,
@@ -309,12 +323,12 @@ class DropDownColor {
 }
 
 class SwitchColor {
-  Color? activeColor;
-  Color? hoverColor;
-  Color? focusColor;
-  Color? inactiveTrackColor;
+  final Color? activeColor;
+  final Color? hoverColor;
+  final Color? focusColor;
+  final Color? inactiveTrackColor;
 
-  SwitchColor({
+  const SwitchColor({
     this.activeColor,
     this.hoverColor,
     this.focusColor,

@@ -1,7 +1,7 @@
 import 'package:brisk/theme/application_theme.dart';
 import 'package:flutter/material.dart';
 
-ApplicationTheme celestialDark = ApplicationTheme(
+ApplicationTheme celestialDark = const ApplicationTheme(
   themeId: "Celestial Dark",
   isLight: false,
   fontWeight: FontWeight.normal,
@@ -36,7 +36,11 @@ ApplicationTheme celestialDark = ApplicationTheme(
       cursorColor: Colors.white,
     ),
   ),
-  contextMenuBackgroundColor: const Color.fromRGBO(35, 35, 35, 1.0),
+  contextMenuTheme: ContextMenuTheme(
+    backgroundColor: const Color.fromRGBO(35, 35, 35, 1.0),
+    itemDisabledTextColor: Colors.grey,
+    borderColor: Colors.transparent,
+  ),
   downloadProgressDialogTheme: DownloadProgressDialogTheme(
     resumeColor: const ButtonColor(
       iconColor: Colors.transparent,

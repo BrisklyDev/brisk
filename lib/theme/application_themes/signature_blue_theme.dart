@@ -1,7 +1,7 @@
 import 'package:brisk/theme/application_theme.dart';
 import 'package:flutter/material.dart';
 
-ApplicationTheme signatureBlue = ApplicationTheme(
+ApplicationTheme signatureBlue = const ApplicationTheme(
   themeId: "Signature Blue",
   fontWeight: FontWeight.normal,
   isLight: false,
@@ -35,7 +35,11 @@ ApplicationTheme signatureBlue = ApplicationTheme(
       hoverBackgroundColor: Colors.transparent,
     ),
   ),
-  contextMenuBackgroundColor: const Color.fromRGBO(33, 43, 49, 1.0),
+  contextMenuTheme: ContextMenuTheme(
+    backgroundColor: const Color.fromRGBO(33, 43, 49, 1.0),
+    itemDisabledTextColor: Colors.grey,
+    borderColor: Colors.transparent,
+  ),
   downloadProgressDialogTheme: DownloadProgressDialogTheme(
     connectionProgressColor: ProgressIndicatorColor(
       color: Colors.indigoAccent,
@@ -71,7 +75,7 @@ ApplicationTheme signatureBlue = ApplicationTheme(
     backgroundColor: const Color.fromRGBO(55, 64, 81, 1),
     briskLogoColor: Colors.white,
     activeTabIconColor: Colors.white,
-    activeTabBackgroundColor: Colors.blueGrey.shade600,
+    activeTabBackgroundColor: Color.fromRGBO(84, 110, 122, 1.0),
     tabHoverColor: Colors.blueGrey,
     tabIconColor: Colors.white,
     tabBackgroundColor: Colors.transparent,
@@ -220,7 +224,7 @@ ApplicationTheme signatureBlue = ApplicationTheme(
     titleColumnTextColor: Colors.white,
     backgroundColor: const Color.fromRGBO(40, 46, 58, 1),
     activeRowColor: Colors.black26,
-    checkedRowColor: Colors.blueGrey.shade700,
+    checkedRowColor: Color.fromRGBO(69, 90, 100, 1.0),
     borderColor: Colors.black26,
     rowColor: const Color.fromRGBO(49, 56, 72, 1),
   ),

@@ -1,7 +1,7 @@
 import 'package:brisk/theme/application_theme.dart';
 import 'package:flutter/material.dart';
 
-ApplicationTheme catppuccinLatte = ApplicationTheme(
+ApplicationTheme catppuccinLatte = const ApplicationTheme(
   isLight: true,
   themeId: "Catppuccin Latte",
   fontWeight: FontWeight.w500,
@@ -48,8 +48,12 @@ ApplicationTheme catppuccinLatte = ApplicationTheme(
       cursorColor: Color.fromRGBO(114, 135, 253, 1),
     ),
   ),
-  contextMenuBackgroundColor: const Color.fromRGBO(230, 233, 239, 1),
-  contextMenuItemDisabledTextColor: const Color.fromRGBO(178, 176, 176, 1.0),
+  contextMenuTheme: ContextMenuTheme(
+    backgroundColor: const Color.fromRGBO(230, 233, 239, 1),
+    itemDisabledTextColor: const Color.fromRGBO(178, 176, 176, 1.0),
+    borderColor: Colors.transparent,
+    itemTextColor: Color.fromRGBO(76, 79, 105, 1),
+  ),
   downloadProgressDialogTheme: const DownloadProgressDialogTheme(
     totalProgressColor: ProgressIndicatorColor(
       backgroundColor: Color.fromRGBO(204, 208, 218, 1),

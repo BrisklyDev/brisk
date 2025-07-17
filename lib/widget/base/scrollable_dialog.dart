@@ -60,6 +60,10 @@ class _ScrollableDialogState extends State<ScrollableDialog> {
       titlePadding: EdgeInsets.all(0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
+        side: BorderSide(
+          color: theme.contextMenuTheme.borderColor,
+          width: 0.5,
+        ),
       ),
       content: Container(
         width: widget.width,

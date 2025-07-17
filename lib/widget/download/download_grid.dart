@@ -315,9 +315,13 @@ class _DownloadGridState extends State<DownloadGrid> {
         HiveUtil.instance.downloadItemsBox.get(id)?.referer != null;
     showMenu(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(8),
+        side: BorderSide(
+          color: theme.contextMenuTheme.borderColor,
+          width: 1,
+        ),
       ),
-      color: theme.contextMenuBackgroundColor,
+      color: theme.contextMenuTheme.backgroundColor,
       popUpAnimationStyle: AnimationStyle(
         curve: Easing.emphasizedAccelerate,
         duration: Durations.short2,
@@ -391,7 +395,9 @@ class _DownloadGridState extends State<DownloadGrid> {
 
   TextStyle contextMenuItemTextStyle(bool enabled) {
     return TextStyle(
-      color: enabled ? theme.textColor : theme.contextMenuItemDisabledTextColor,
+      color: enabled
+          ? theme.contextMenuTheme.itemTextColor
+          : theme.contextMenuTheme.itemDisabledTextColor,
     );
   }
 
