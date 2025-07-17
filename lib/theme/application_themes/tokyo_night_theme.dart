@@ -203,7 +203,7 @@ ApplicationTheme tokyoNight = const ApplicationTheme(
     queueItemHoverColor: Colors.white12,
   ),
   alertDialogTheme: AlertDialogTheme(
-    backgroundColor: const Color.fromRGBO(33, 38, 47, 1),
+    backgroundColor: const Color.fromRGBO(33, 38, 47, 0.95),
     innerContainerBorderColor: Colors.white30,
     borderColor: const Color.fromRGBO(67, 76, 94, 1),
     cancelColor: const ButtonColor(
