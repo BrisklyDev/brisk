@@ -214,6 +214,15 @@ class SettingsCache {
     ],
   };
 
+  static Future<void> init() async {
+    try {
+      await setCachedSettings();
+    } catch (_) {
+      await resetDefault();
+      await setCachedSettings();
+    }
+  }
+
   static Future<void> setCachedSettings() async {
     final settings = HiveUtil.instance.settingBox.values;
     for (var setting in settings) {

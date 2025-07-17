@@ -61,7 +61,7 @@ Future<void> main(List<String> args) async {
     await FileUtil.setDefaultSaveDir();
     await HiveUtil.instance.putInitialBoxValues();
     await MigrationManager.runMigrations();
-    await SettingsCache.setCachedSettings();
+    await SettingsCache.init();
     await updateLaunchAtStartupSetting();
     LocaleProvider.instance.setCurrentLocale();
     ApplicationThemeHolder.setActiveTheme();
