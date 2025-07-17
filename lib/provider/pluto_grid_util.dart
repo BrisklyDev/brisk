@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:brisk/theme/application_theme.dart';
 import 'package:brisk/theme/application_theme_holder.dart';
+import 'package:dartx/dartx.dart';
 import 'package:path/path.dart';
 import 'package:brisk/constants/file_type.dart';
 import 'package:brisk/db/hive_util.dart';
@@ -34,7 +35,9 @@ class PlutoGridUtil {
   static Timer? cacheClearTimer;
   static final List<PlutoRow> cachedRows = [];
 
-  static bool Function(PlutoRow)? filter = null;
+  static Map<String, Function(PlutoRow)> filters = {};
+
+  static String? _fileNameSearchQuery;
 
   static PlutoGridConfiguration config(DownloadGridTheme downloadGridTheme) {
     return ApplicationThemeHolder.isLight
@@ -177,6 +180,21 @@ class PlutoGridUtil {
   ) {
     final fileName = rendererContext.row.cells["file_name"]!.value;
     final fileType = FileUtil.detectFileType(fileName);
+    String? strBeforeSearch;
+    String? strMatchSearch;
+    String? strAfterSearch;
+    if (_fileNameSearchQuery != null) {
+      int index =
+          fileName.toLowerCase().indexOf(_fileNameSearchQuery!.toLowerCase());
+      if (index >= 0) {
+        strBeforeSearch = fileName.toString().substring(0, index);
+        strMatchSearch = fileName
+            .toString()
+            .substring(index, index + _fileNameSearchQuery!.length);
+        strAfterSearch =
+            fileName.toString().substring(index + _fileNameSearchQuery!.length);
+      }
+    }
     return Padding(
       padding: const EdgeInsets.only(left: 5.0),
       child: Row(
@@ -193,18 +211,64 @@ class PlutoGridUtil {
             ),
           ),
           const SizedBox(width: 5),
-          Expanded(
-            child: Text(
-              rendererContext.row.cells[rendererContext.column.field]!.value
-                  .toString(),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: theme.downloadGridTheme.rowTextColor,
-                fontWeight: theme.fontWeight,
+          if (strMatchSearch != null)
+            Expanded(
+              child: RichText(
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                text: TextSpan(
+                  children: [
+                    if (strBeforeSearch != null)
+                      TextSpan(
+                        text: strBeforeSearch,
+                        style: TextStyle(
+                          color: theme.downloadGridTheme.rowTextColor,
+                          fontWeight: theme.fontWeight,
+                        ),
+                      ),
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.baseline,
+                      baseline: TextBaseline.alphabetic,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 2),
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(238, 197, 25, 0.3),
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                        child: Text(
+                          strMatchSearch,
+                          style: TextStyle(
+                            color: theme.downloadGridTheme.rowTextColor,
+                            fontWeight: theme.fontWeight,
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (strAfterSearch != null)
+                      TextSpan(
+                        text: strAfterSearch,
+                        style: TextStyle(
+                          color: theme.downloadGridTheme.rowTextColor,
+                          fontWeight: theme.fontWeight,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            )
+          else
+            Expanded(
+              child: Text(
+                rendererContext.row.cells[rendererContext.column.field]!.value
+                    .toString(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: theme.downloadGridTheme.rowTextColor,
+                  fontWeight: theme.fontWeight,
+                ),
               ),
             ),
-          ),
         ],
       ),
     );
@@ -247,14 +311,40 @@ class PlutoGridUtil {
     _multiDownloadAdditionStateManager = plutoStateManager;
   }
 
-  static void setFilter(String cellName, String filterValue,
-      {bool negate = false}) {
-    filter = (row) {
+  static void setSavedFilters() {
+    final combinedFilter = (row) => filters.values.every((fn) => fn(row));
+    _stateManager?.setFilter(combinedFilter);
+    _stateManager?.notifyListeners();
+  }
+
+  static void addFilter(
+    String cellName,
+    String filterValue, {
+    bool negate = false,
+  }) {
+    Function(PlutoRow) filter = (row) {
       final cellValue = row.cells[cellName]?.value;
       return negate ? cellValue != filterValue : cellValue == filterValue;
     };
-    _stateManager?.setFilter(filter);
-    _stateManager?.notifyListeners();
+    filters[(filters.length + 1).toString()] = filter;
+    setSavedFilters();
+  }
+
+  static void addSearchFilter(String filterValue) {
+    if (filterValue.isBlank) {
+      _fileNameSearchQuery = null;
+      filters.remove('search');
+      setSavedFilters();
+      return;
+    }
+    final searchFilter = (row) {
+      final cellValue = row.cells['file_name']?.value;
+      return cellValue != null &&
+          cellValue.toString().toLowerCase().contains(filterValue.trim());
+    };
+    _fileNameSearchQuery = filterValue.trim();
+    filters['search'] = searchFilter;
+    setSavedFilters();
   }
 
   static void registerKeyListeners(
@@ -298,7 +388,8 @@ class PlutoGridUtil {
   }
 
   static void removeFilters() {
-    filter = null;
+    filters.clear();
+    _fileNameSearchQuery = null;
     _stateManager?.setFilter(null);
     _stateManager?.notifyListeners();
   }

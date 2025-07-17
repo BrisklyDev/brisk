@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:brisk/db/migration_manager.dart';
 import 'package:brisk/provider/ffmpeg_installation_provider.dart';
 import 'package:brisk/provider/locale_provider.dart';
+import 'package:brisk/provider/search_bar_notifier_provider.dart';
 import 'package:brisk/util/app_logger.dart';
 import 'package:brisk/util/auto_updater_util.dart';
 import 'package:brisk/browser_extension/browser_extension_server.dart';
@@ -87,6 +88,9 @@ Future<void> main(List<String> args) async {
           ChangeNotifierProvider<FFmpegInstallationProvider>(
             create: (_) => FFmpegInstallationProvider(),
           ),
+          ChangeNotifierProvider<SearchBarNotifierProvider>(
+            create: (_) => SearchBarNotifierProvider(),
+          ),
           ChangeNotifierProxyProvider<PlutoGridCheckRowProvider,
               DownloadRequestProvider>(
             create: (_) => DownloadRequestProvider(PlutoGridCheckRowProvider()),
@@ -151,6 +155,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
     with WindowListener, TrayListener {
+  final FocusNode _globalFocusNode = FocusNode();
+
   @override
   void onWindowClose() async {
     bool isPreventClose = await windowManager.isPreventClose();
@@ -214,10 +220,7 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   void didChangeDependencies() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      HotKeyUtil.registerDownloadAdditionHotKey(context);
-      if (Platform.isMacOS) {
-        HotKeyUtil.registerMacOsDefaultWindowHotkeys(context);
-      }
+      HotKeyUtil.registerHotkeys(context);
       BrowserExtensionServer.setup(context);
       GitHubStarHandler.handleShowDialog(context);
       handleBriskUpdateCheck(context);

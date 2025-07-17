@@ -5,9 +5,9 @@ import 'package:brisk/provider/download_request_provider.dart';
 import 'package:brisk/provider/pluto_grid_check_row_provider.dart';
 import 'package:brisk/provider/pluto_grid_util.dart';
 import 'package:brisk/provider/queue_provider.dart';
+import 'package:brisk/provider/search_bar_notifier_provider.dart';
 import 'package:brisk/provider/theme_provider.dart';
 import 'package:brisk/theme/application_theme.dart';
-import 'package:brisk/theme/application_theme_holder.dart';
 import 'package:brisk/util/file_util.dart';
 import 'package:brisk/util/ui_util.dart';
 import 'package:brisk/widget/download/add_url_dialog.dart';
@@ -16,7 +16,6 @@ import 'package:brisk/widget/download/download_progress_dialog.dart';
 import 'package:brisk/widget/other/automatic_url_update_dialog.dart';
 import 'package:brisk_download_engine/brisk_download_engine.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -31,7 +30,8 @@ class _DownloadGridState extends State<DownloadGrid> {
   late List<PlutoColumn> columns;
   DownloadRequestProvider? provider;
   QueueProvider? queueProvider;
-  PlutoGridCheckRowProvider? plutoProvider;
+  late PlutoGridCheckRowProvider plutoProvider;
+  late SearchBarNotifierProvider notifier;
   late AppLocalizations loc;
   late ApplicationTheme theme;
 
@@ -39,7 +39,13 @@ class _DownloadGridState extends State<DownloadGrid> {
   void didChangeDependencies() {
     loc = AppLocalizations.of(context)!;
     initColumns(context);
+    notifier = Provider.of<SearchBarNotifierProvider>(context);
     theme = Provider.of<ThemeProvider>(context).activeTheme;
+    if (notifier.showSearchBar) {
+      Future.delayed(Duration(milliseconds: 50), () {
+        _searchFocusNode.requestFocus();
+      });
+    }
     super.didChangeDependencies();
   }
 
@@ -191,6 +197,9 @@ class _DownloadGridState extends State<DownloadGrid> {
       return 30;
   }
 
+  final _searchController = TextEditingController();
+  final _searchFocusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     provider = Provider.of<DownloadRequestProvider>(context, listen: false);
@@ -203,27 +212,81 @@ class _DownloadGridState extends State<DownloadGrid> {
     queueProvider = Provider.of<QueueProvider>(context);
     final size = MediaQuery.of(context).size;
     theme = Provider.of<ThemeProvider>(context).activeTheme;
+    notifier = Provider.of<SearchBarNotifierProvider>(context);
     return Material(
       type: MaterialType.transparency,
       child: Container(
         height: size.height - topMenuHeight,
         width: resolveWindowWidth(size),
         decoration: const BoxDecoration(color: Colors.black26),
-        child: PlutoGrid(
-          key: ValueKey(queueProvider?.selectedQueueId ?? 'download-grid'),
-          mode: PlutoGridMode.selectWithOneTap,
-          configuration: PlutoGridUtil.config(downloadGridTheme),
-          columns: columns,
-          rows: [],
-          onSelected: (event) => PlutoGridUtil.handleRowSelection(
-            event,
-            PlutoGridUtil.plutoStateManager!,
-            plutoProvider,
+        child: Stack(
+          children: [
+            PlutoGrid(
+              key: ValueKey(queueProvider?.selectedQueueId ?? 'download-grid'),
+              mode: PlutoGridMode.selectWithOneTap,
+              configuration: PlutoGridUtil.config(downloadGridTheme),
+              columns: columns,
+              rows: [],
+              onSelected: (event) => PlutoGridUtil.handleRowSelection(
+                event,
+                PlutoGridUtil.plutoStateManager!,
+                plutoProvider,
+              ),
+              onRowChecked: (row) => plutoProvider?.notifyListeners(),
+              onRowDoubleTap: onRowDoubleTap,
+              onLoaded: (event) => onLoaded(event, provider!, queueProvider!),
+              onRowSecondaryTap: (event) =>
+                  showSecondaryTapMenu(context, event),
+            ),
+            if (notifier.showSearchBar) showSearchbar(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget showSearchbar() {
+    return Positioned(
+      top: 16,
+      left: 16,
+      width: 400,
+      height: 35,
+      child: Material(
+        elevation: 10,
+        borderRadius: BorderRadius.circular(10),
+        color: theme.alertDialogTheme.backgroundColor,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _searchController,
+                  focusNode: _searchFocusNode,
+                  style: TextStyle(color: theme.textColor),
+                  decoration: InputDecoration(
+                    isDense: true,
+                    hintStyle: TextStyle(color: theme.textColor),
+                    hintText: 'Search downloads...',
+                    contentPadding: EdgeInsets.zero,
+                    border: InputBorder.none,
+                  ),
+                  onChanged: PlutoGridUtil.addSearchFilter,
+                ),
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.close,
+                  size: 20,
+                  color: theme.widgetTheme.iconColor,
+                ),
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                onPressed: notifier.toggleShow,
+              ),
+            ],
           ),
-          onRowChecked: (row) => plutoProvider?.notifyListeners(),
-          onRowDoubleTap: onRowDoubleTap,
-          onLoaded: (event) => onLoaded(event, provider!, queueProvider!),
-          onRowSecondaryTap: (event) => showSecondaryTapMenu(context, event),
         ),
       ),
     );
@@ -410,7 +473,7 @@ class _DownloadGridState extends State<DownloadGrid> {
           .toList();
       provider.fetchRows(downloads);
     }
-    PlutoGridUtil.plutoStateManager!.setFilter(PlutoGridUtil.filter);
+    PlutoGridUtil.setSavedFilters();
   }
 
   void onRowDoubleTap(event) {

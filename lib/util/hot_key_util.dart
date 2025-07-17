@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:brisk/provider/search_bar_notifier_provider.dart';
 import 'package:brisk/util/app_logger.dart';
 import 'package:brisk/setting/settings_cache.dart';
 import 'package:brisk/util/tray_handler.dart';
@@ -7,6 +8,7 @@ import 'package:clipboard/clipboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
+import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'download_addition_ui_util.dart';
@@ -14,9 +16,37 @@ import 'download_addition_ui_util.dart';
 class HotKeyUtil {
   static bool _isDownloadHotkeyRegistered = false;
   static bool _isMacosWindowHotkeyRegistered = false;
+  static bool _isSearchHotkeyRegistered = false;
   static HotKey? downloadAdditionHotkey;
 
-  static void registerMacOsDefaultWindowHotkeys(BuildContext context) async {
+  static void registerHotkeys(BuildContext context) async {
+    await HotKeyUtil.registerDownloadAdditionHotKey(context);
+    await HotKeyUtil.registerRowSearchHotkey(context);
+    if (Platform.isMacOS) {
+      await HotKeyUtil.registerMacOsDefaultWindowHotkeys(context);
+    }
+  }
+
+  static Future<void> registerRowSearchHotkey(BuildContext context) async {
+    if (_isSearchHotkeyRegistered) return;
+    final searchHotkey = HotKey(
+      key: LogicalKeyboardKey.keyF,
+      modifiers: [HotKeyModifier.control],
+      scope: HotKeyScope.inapp,
+    );
+    await hotKeyManager.register(
+      searchHotkey,
+      keyDownHandler: (_) => {
+        Provider.of<SearchBarNotifierProvider>(
+          context,
+          listen: false,
+        ).toggleShow()
+      },
+    );
+  }
+
+  static Future<void> registerMacOsDefaultWindowHotkeys(
+      BuildContext context) async {
     if (_isMacosWindowHotkeyRegistered) return;
     //Show window thumbnail in dock, keep dock icon,
     // click window thumbnail or dock icon to restore window,
@@ -57,7 +87,8 @@ class HotKeyUtil {
     _isMacosWindowHotkeyRegistered = true;
   }
 
-  static void registerDownloadAdditionHotKey(BuildContext context) async {
+  static Future<void> registerDownloadAdditionHotKey(
+      BuildContext context) async {
     if (_isDownloadHotkeyRegistered) return;
     if (SettingsCache.downloadAdditionHotkeyLogicalKey == null ||
         (SettingsCache.downloadAdditionHotkeyModifierOne == null &&

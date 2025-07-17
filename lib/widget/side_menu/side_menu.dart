@@ -216,7 +216,7 @@ class _SideMenuState extends State<SideMenu> {
   }
 
   void setGridFileTypeFilter(DLFileType fileType) {
-    PlutoGridUtil.setFilter("file_type", fileType.name);
+    PlutoGridUtil.addFilter("file_type", fileType.name);
     int? selected;
     switch (fileType) {
       case DLFileType.music:
@@ -241,7 +241,8 @@ class _SideMenuState extends State<SideMenu> {
   }
 
   void setUnfinishedGridFilter(QueueProvider queueProvider) {
-    PlutoGridUtil.setFilter(
+    PlutoGridUtil.removeFilters();
+    PlutoGridUtil.addFilter(
       "status",
       DownloadStatus.assembleComplete,
       negate: true,
@@ -256,7 +257,8 @@ class _SideMenuState extends State<SideMenu> {
   }
 
   void setFinishedFilter(QueueProvider queueProvider) {
-    PlutoGridUtil.setFilter("status", DownloadStatus.assembleComplete);
+    PlutoGridUtil.removeFilters();
+    PlutoGridUtil.addFilter("status", DownloadStatus.assembleComplete);
     setState(() {
       selectedTab = 2;
       selectedExpansionTileItemTab = null;
