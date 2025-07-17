@@ -16,8 +16,8 @@ ApplicationTheme tokyoNight = const ApplicationTheme(
     iconButtonColor: ButtonColor(
       iconColor: Colors.white54,
       hoverIconColor: Colors.white,
-      hoverBackgroundColor: const Color.fromRGBO(33, 33, 33, 1.0),
-      backgroundColor: const Color.fromRGBO(33, 33, 33, 1.0),
+      hoverBackgroundColor: Color.fromRGBO(19, 25, 30, 1.0),
+      backgroundColor: Color.fromRGBO(26, 30, 40, 1),
     ),
     showHideButtonColor: ButtonColor(
       iconColor: Color.fromRGBO(97, 175, 239, 1),
@@ -217,7 +217,7 @@ ApplicationTheme tokyoNight = const ApplicationTheme(
       textColor: Colors.white,
       hoverBackgroundColor: Color.fromRGBO(224, 108, 117, 1),
       hoverTextColor: Colors.white,
-      backgroundColor: Color.fromRGBO(45, 45, 45, 0.5),
+      backgroundColor: Colors.transparent,
       borderColor: Colors.transparent,
       borderHoverColor: Colors.red,
     ),

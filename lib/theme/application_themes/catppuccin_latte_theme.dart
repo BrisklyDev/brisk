@@ -18,8 +18,8 @@ ApplicationTheme catppuccinLatte = const ApplicationTheme(
     iconButtonColor: ButtonColor(
       iconColor: Color.fromRGBO(76, 79, 105, 1),
       hoverIconColor: Colors.white,
-      hoverBackgroundColor: const Color.fromRGBO(33, 33, 33, 1.0),
-      backgroundColor: const Color.fromRGBO(33, 33, 33, 1.0),
+      hoverBackgroundColor: const Color.fromRGBO(188, 192, 204, 1),
+      backgroundColor: const Color.fromRGBO(204, 208, 218, 1),
     ),
     showHideButtonColor: ButtonColor(
       iconColor: Color.fromRGBO(108, 111, 133, 1),

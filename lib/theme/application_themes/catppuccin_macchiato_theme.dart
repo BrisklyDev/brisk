@@ -17,8 +17,8 @@ ApplicationTheme catppuccinMacchiato = const ApplicationTheme(
     iconButtonColor: ButtonColor(
       iconColor: Colors.white54,
       hoverIconColor: Colors.white,
-      hoverBackgroundColor: const Color.fromRGBO(33, 33, 33, 1.0),
-      backgroundColor: const Color.fromRGBO(33, 33, 33, 1.0),
+      hoverBackgroundColor: Color.fromRGBO(54, 58, 73, 1.0),
+      backgroundColor: Color.fromRGBO(65, 69, 89, 1),
     ),
     showHideButtonColor: ButtonColor(
       iconColor: Color.fromRGBO(202, 211, 245, 1),
@@ -218,7 +218,7 @@ ApplicationTheme catppuccinMacchiato = const ApplicationTheme(
       textColor: Colors.white,
       hoverBackgroundColor: Color.fromRGBO(230, 170, 170, 1),
       hoverTextColor: Color.fromRGBO(30, 32, 45, 1),
-      backgroundColor: Color.fromRGBO(45, 45, 45, 0.5),
+      backgroundColor: Colors.transparent,
       borderColor: Colors.transparent,
       borderHoverColor: Colors.red,
     ),
@@ -259,7 +259,7 @@ ApplicationTheme catppuccinMacchiato = const ApplicationTheme(
       textColor: Colors.white,
       hoverBackgroundColor: Color.fromRGBO(243, 139, 168, 1),
       hoverTextColor: Colors.white,
-      backgroundColor: Color.fromRGBO(45, 45, 45, 0.5),
+      backgroundColor: Colors.transparent,
       borderColor: Colors.transparent,
       borderHoverColor: Colors.red,
     ),

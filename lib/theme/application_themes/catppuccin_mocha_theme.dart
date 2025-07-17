@@ -10,8 +10,8 @@ ApplicationTheme catppuccinMocha = const ApplicationTheme(
     iconButtonColor: ButtonColor(
       iconColor: Colors.white54,
       hoverIconColor: Colors.white,
-      hoverBackgroundColor: const Color.fromRGBO(33, 33, 33, 1.0),
-      backgroundColor: const Color.fromRGBO(33, 33, 33, 1.0),
+      hoverBackgroundColor: Color.fromRGBO(58, 60, 75, 1.0),
+      backgroundColor: Color.fromRGBO(69, 71, 90, 1),
     ),
     showHideButtonColor: ButtonColor(
       iconColor: Color.fromRGBO(203, 166, 247, 1),
@@ -209,7 +209,7 @@ ApplicationTheme catppuccinMocha = const ApplicationTheme(
       textColor: Colors.white,
       hoverBackgroundColor: Color.fromRGBO(243, 139, 168, 1),
       hoverTextColor: Colors.white,
-      backgroundColor: Color.fromRGBO(45, 45, 45, 0.5),
+      backgroundColor: Colors.transparent,
       borderColor: Colors.transparent,
       borderHoverColor: Colors.red,
     ),
@@ -250,7 +250,7 @@ ApplicationTheme catppuccinMocha = const ApplicationTheme(
       textColor: Colors.white,
       hoverBackgroundColor: Color.fromRGBO(243, 139, 168, 1),
       hoverTextColor: Colors.white,
-      backgroundColor: Color.fromRGBO(45, 45, 45, 0.5),
+      backgroundColor: Colors.transparent,
       borderColor: Colors.transparent,
       borderHoverColor: Colors.red,
     ),
