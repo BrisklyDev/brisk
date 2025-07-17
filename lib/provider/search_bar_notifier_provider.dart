@@ -1,3 +1,4 @@
+import 'package:brisk/provider/pluto_grid_util.dart';
 import 'package:flutter/cupertino.dart';
 
 class SearchBarNotifierProvider with ChangeNotifier {
@@ -11,6 +12,7 @@ class SearchBarNotifierProvider with ChangeNotifier {
   bool showSearchBar = false;
 
   void toggleShow() {
+    PlutoGridUtil.isCtrlKeyDown = false;
     showSearchBar = !showSearchBar;
     notifyListeners();
   }
