@@ -108,7 +108,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get btn_updateUrl => '更新 URL';
 
   @override
-  String get btn_restart_extension => 'Restart Extension';
+  String get btn_restart_extension => '重启扩展程序';
 
   @override
   String get err_invalidUrl_title => '无效的 URL';

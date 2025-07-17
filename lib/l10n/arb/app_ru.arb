@@ -33,6 +33,7 @@
   "btn_addUrl": "Добавить URL",
   "btn_add": "Добавить",
   "btn_updateUrl": "Обновить URL",
+  "btn_restart_extension": "Перезапустить расширение",
   "err_invalidUrl_title": "Недопустимый URL",
   "err_invalidUrl_description": "Похоже, вы ввели недопустимый URL.\nПожалуйста, проверьте формат и повторите попытку.",
   "err_invalidUrl_descriptionHint": "Убедитесь, что URL:\n\t • Начинается с https:// или http://\n\t • Содержит допустимое доменное имя\n\t • Не содержит недопустимых символов",

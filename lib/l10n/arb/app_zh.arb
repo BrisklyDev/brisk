@@ -31,6 +31,7 @@
   "btn_addUrl": "添加 URL",
   "btn_add": "添加",
   "btn_updateUrl": "更新 URL",
+  "btn_restart_extension": "重启扩展程序",
   "err_invalidUrl_title": "无效的 URL",
   "err_invalidUrl_description": "您输入的 URL 似乎无效。\n请检查格式并重试。",
   "err_invalidUrl_descriptionHint": "请确保 URL：\n\t • 以 https:// 或 http:// 开头\n\t • 包含有效的域名\n\t • 不包含无效字符",

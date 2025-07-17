@@ -108,7 +108,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get btn_updateUrl => 'Обновить URL';
 
   @override
-  String get btn_restart_extension => 'Restart Extension';
+  String get btn_restart_extension => 'Перезапустить расширение';
 
   @override
   String get err_invalidUrl_title => 'Недопустимый URL';

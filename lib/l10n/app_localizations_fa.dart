@@ -108,7 +108,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get btn_updateUrl => 'به‌روزرسانی لینک';
 
   @override
-  String get btn_restart_extension => 'Restart Extension';
+  String get btn_restart_extension => 'راه‌اندازی مجدد افزونه';
 
   @override
   String get err_invalidUrl_title => 'لینک دانلود نامعتبر';

@@ -32,6 +32,7 @@
   "btn_addUrl": "URL Ekle",
   "btn_add": "Ekle",
   "btn_updateUrl": "URL’yi Güncelle",
+  "btn_restart_extension": "Uzantıyı yeniden başlat",
   "err_invalidUrl_title": "Geçersiz URL",
   "err_invalidUrl_description": "Girdiğiniz URL geçersiz görünüyor.\nLütfen formatı kontrol edin ve tekrar deneyin.",
   "err_invalidUrl_descriptionHint": "URL’nin şu özelliklere sahip olduğundan emin olun:\n\t • https:// veya http:// ile başlıyor\n\t • Geçerli bir alan adı içeriyor\n\t • Geçersiz karakterler içermiyor",

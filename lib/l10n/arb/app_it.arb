@@ -33,6 +33,7 @@
   "btn_addUrl": "Aggiungi URL",
   "btn_add": "Aggiungi",
   "btn_updateUrl": "Aggiorna URL",
+  "btn_restart_extension": "Riavvia estensione",
   "err_invalidUrl_title": "URL non valida",
   "err_invalidUrl_description": "La URL inserita sembra non valida.\nControlla la URL e riprova.",
   "err_invalidUrl_descriptionHint": "Assicurati che la URL:\n\t • Inizi con https:// o http://\n\t • Contenga un nome dominio valido\n\t • Non contenga caratteri non validi",

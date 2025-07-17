@@ -31,6 +31,7 @@
   "btn_addUrl": "URL hinzufügen",
   "btn_add": "Hinzufügen",
   "btn_updateUrl": "URL aktualisieren",
+  "btn_restart_extension": "Erweiterung neu starten",
   "err_invalidUrl_title": "Ungültige URL",
   "err_invalidUrl_description": "Die eingegebene URL scheint ungültig zu sein.\nBitte überprüfen Sie das Format und versuchen Sie es erneut.",
   "err_invalidUrl_descriptionHint": "Stellen Sie sicher, dass die URL:\n\t • Mit https:// oder http:// beginnt\n\t • Einen gültigen Domainnamen enthält\n\t • Keine ungültigen Zeichen enthält",

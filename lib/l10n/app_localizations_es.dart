@@ -108,7 +108,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get btn_updateUrl => 'Actualizar URL';
 
   @override
-  String get btn_restart_extension => 'Restart Extension';
+  String get btn_restart_extension => 'Reiniciar extensión';
 
   @override
   String get err_invalidUrl_title => 'URL Inválida';

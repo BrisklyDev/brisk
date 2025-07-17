@@ -108,7 +108,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get btn_updateUrl => 'URL’yi Güncelle';
 
   @override
-  String get btn_restart_extension => 'Restart Extension';
+  String get btn_restart_extension => 'Uzantıyı yeniden başlat';
 
   @override
   String get err_invalidUrl_title => 'Geçersiz URL';

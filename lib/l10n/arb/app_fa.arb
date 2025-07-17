@@ -30,6 +30,7 @@
   "btn_addUrl": "افزودن",
   "btn_add": "افزودن",
   "btn_updateUrl": "به\u200Cروزرسانی لینک",
+  "btn_restart_extension": "راه\u200Cاندازی مجدد افزونه",
   "err_invalidUrl_title": "لینک دانلود نامعتبر",
   "err_invalidUrl_description": " آدرسی که وارد کرده\u200Cاید نامعتبر است. لطفا فرمت آن را بررسی کرده و دوباره تلاش کنید",
   "err_invalidUrl_descriptionHint": "مطمئن شوید که آدرس:\n\t  • با http یا https شروع میشود\n\t • شامل دامنه معتبر است \n\t • شامل کارکتر های نامعتبر نباشد",
@@ -242,7 +243,6 @@
   "urlUpdateError_title": "خطای به\u200Cروزرسانی لینک دانلود",
   "urlUpdateError_description": "لینک دانلود مورد نظر مربوط به این فایل نمی\u200Cباشد!",
   "urlUpdateSuccess": "لینک دانلود با موفقیت به\u200Cروزرسانی شد!",
-
   "packageManager_updateTitle": "به\u200Cروزرسانی {target}",
   "@packageManager_updateTitle": {
     "placeholders": {
@@ -255,7 +255,6 @@
       "target": {}
     }
   },
-
   "packageManager_updateDescriptionHint": "لطفاً برای به‌روزرسانی برنامه از دستور زیر استفاده کنید.",
   "copiedToClipboard": "در کلیپ‌بورد کپی شد",
   "addUrlFromClipboardHotkey": "کلید میانبر اضافه کردن دانلود از کلیپبورد",
