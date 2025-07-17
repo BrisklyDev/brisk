@@ -122,6 +122,11 @@ ApplicationTheme catppuccinLatte = const ApplicationTheme(
       hoverIconColor: const Color.fromRGBO(0, 128, 128, 1),
       hoverBackgroundColor: const Color.fromRGBO(0, 128, 128, 0.3),
     ),
+    searchColor: const ButtonColor(
+      iconColor: const Color.fromRGBO(0, 128, 128, 1),
+      hoverIconColor: const Color.fromRGBO(0, 128, 128, 1),
+      hoverBackgroundColor: const Color.fromRGBO(0, 128, 128, 0.3),
+    ),
     extensionColor: const ButtonColor(
       iconColor: const Color.fromRGBO(0, 128, 128, 1),
       hoverIconColor: const Color.fromRGBO(0, 128, 128, 1),

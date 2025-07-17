@@ -19,6 +19,9 @@ class AppLocalizationsIt extends AppLocalizations {
       'Nessun nuovo aggiornamento disponibile al momento';
 
   @override
+  String get search => 'Cerca';
+
+  @override
   String get addUrl => 'Aggiungi URL';
 
   @override

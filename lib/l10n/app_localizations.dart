@@ -128,6 +128,12 @@ abstract class AppLocalizations {
   /// **'No new update is available yet'**
   String get noUpdateAvailable;
 
+  /// No description provided for @search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
+
   /// No description provided for @addUrl.
   ///
   /// In en, this message translates to:

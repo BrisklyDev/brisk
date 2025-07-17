@@ -193,6 +193,11 @@ ApplicationTheme signatureBlue = const ApplicationTheme(
       hoverIconColor: Colors.white,
       hoverBackgroundColor: Colors.teal,
     ),
+    searchColor: ButtonColor(
+      iconColor: Colors.white,
+      hoverIconColor: Colors.white,
+      hoverBackgroundColor: Colors.blueGrey,
+    ),
     extensionColor: ButtonColor(
       iconColor: Colors.white,
       hoverIconColor: Colors.white,

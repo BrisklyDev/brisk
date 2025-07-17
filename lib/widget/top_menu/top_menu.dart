@@ -2,9 +2,11 @@ import 'package:brisk/browser_extension/browser_extension_server.dart';
 import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/provider/pluto_grid_check_row_provider.dart';
 import 'package:brisk/provider/queue_provider.dart';
+import 'package:brisk/provider/search_bar_notifier_provider.dart';
 import 'package:brisk/provider/theme_provider.dart';
 import 'package:brisk/util/auto_updater_util.dart';
 import 'package:brisk/util/ui_util.dart';
+import 'package:brisk/widget/base/default_tooltip.dart';
 import 'package:brisk/widget/base/error_dialog.dart';
 import 'package:brisk/widget/base/info_dialog.dart';
 import 'package:brisk/widget/top_menu/top_menu_util.dart';
@@ -132,6 +134,22 @@ class _TopMenuState extends State<TopMenu> {
             fontSize: 13,
             onHoverColor: topMenuTheme.addToQueueColor.hoverBackgroundColor,
             isEnabled: PlutoGridUtil.selectedRowExists,
+          ),
+          SizedBox(width: 5),
+          DefaultTooltip(
+            message: "ctrl+f",
+            child: TopMenuButton(
+              onTap: SearchBarNotifierProvider.instance.toggleShow,
+              title: loc.search,
+              fontSize: 14,
+              icon: Icon(
+                size: 28,
+                Icons.search_rounded,
+                color: topMenuTheme.searchColor.iconColor,
+              ),
+              onHoverColor: topMenuTheme.searchColor.hoverBackgroundColor,
+              isEnabled: true,
+            ),
           ),
           SizedBox(width: 5),
           TopMenuButton(

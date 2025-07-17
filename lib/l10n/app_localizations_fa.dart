@@ -18,6 +18,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get noUpdateAvailable => 'هنوز نسخه جدیدی منتشر نشده است';
 
   @override
+  String get search => 'جستجو';
+
+  @override
   String get addUrl => 'اضافه کردن لینک';
 
   @override

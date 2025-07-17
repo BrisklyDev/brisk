@@ -3,6 +3,7 @@
   "application": "Uygulama",
   "language": "Dil",
   "noUpdateAvailable": "Henüz yeni bir güncelleme mevcut değil",
+  "search": "Ara",
   "addUrl": "URL Ekle",
   "download": "İndir",
   "stop": "Durdur",

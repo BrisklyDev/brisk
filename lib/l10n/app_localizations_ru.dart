@@ -18,6 +18,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get noUpdateAvailable => 'Новых обновлений пока нет';
 
   @override
+  String get search => 'Поиск';
+
+  @override
   String get addUrl => 'Добавить URL';
 
   @override

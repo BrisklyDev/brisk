@@ -18,6 +18,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get noUpdateAvailable => 'Aún no hay actualizaciones disponibles';
 
   @override
+  String get search => 'Buscar';
+
+  @override
   String get addUrl => 'Agregar URL';
 
   @override

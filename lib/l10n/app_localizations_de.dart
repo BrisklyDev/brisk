@@ -18,6 +18,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get noUpdateAvailable => 'Kein neues Update verfügbar';
 
   @override
+  String get search => 'Suchen';
+
+  @override
   String get addUrl => 'URL hinzufügen';
 
   @override

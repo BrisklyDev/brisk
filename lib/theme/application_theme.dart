@@ -100,6 +100,7 @@ class TopMenuTheme {
   final Color disabledButtonTextColor;
   final ButtonColor addUrlColor;
   final ButtonColor downloadColor;
+  final ButtonColor searchColor;
   final ButtonColor stopColor;
   final ButtonColor stopAllColor;
   final ButtonColor removeColor;
@@ -115,6 +116,7 @@ class TopMenuTheme {
     required this.backgroundColor,
     required this.addUrlColor,
     required this.downloadColor,
+    required this.searchColor,
     required this.stopColor,
     required this.stopAllColor,
     required this.removeColor,

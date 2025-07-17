@@ -253,39 +253,48 @@ class _DownloadGridState extends State<DownloadGrid> {
       height: 35,
       child: Material(
         elevation: 10,
-        borderRadius: BorderRadius.circular(10),
         color: theme.alertDialogTheme.backgroundColor,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _searchController,
-                  focusNode: _searchFocusNode,
-                  style: TextStyle(color: theme.textColor),
-                  decoration: InputDecoration(
-                    isDense: true,
-                    hintStyle: TextStyle(color: theme.textColor),
-                    hintText: 'Search downloads...',
-                    contentPadding: EdgeInsets.zero,
-                    border: InputBorder.none,
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: theme.alertDialogTheme.borderColor,
+              width: 1,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _searchController,
+                    focusNode: _searchFocusNode,
+                    style: TextStyle(color: theme.textColor),
+                    decoration: InputDecoration(
+                      isDense: true,
+                      hintStyle: TextStyle(color: theme.textColor),
+                      hintText: 'Search downloads...',
+                      contentPadding: EdgeInsets.zero,
+                      border: InputBorder.none,
+                    ),
+                    onChanged: PlutoGridUtil.addSearchFilter,
                   ),
-                  onChanged: PlutoGridUtil.addSearchFilter,
                 ),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.close,
-                  size: 20,
-                  color: theme.widgetTheme.iconColor,
+                IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    size: 20,
+                    color: theme.widgetTheme.iconColor,
+                  ),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  onPressed: searchBarNotifier.toggleShow,
                 ),
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(),
-                onPressed: searchBarNotifier.toggleShow,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

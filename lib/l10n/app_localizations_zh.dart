@@ -18,6 +18,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get noUpdateAvailable => '暂无可用更新';
 
   @override
+  String get search => '搜索';
+
+  @override
   String get addUrl => '添加 URL';
 
   @override

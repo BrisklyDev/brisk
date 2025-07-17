@@ -118,6 +118,11 @@ ApplicationTheme light = const ApplicationTheme(
       hoverIconColor: Color.fromRGBO(0, 128, 128, 1),
       hoverBackgroundColor: Color.fromRGBO(0, 128, 128, 0.3),
     ),
+    searchColor: const ButtonColor(
+      iconColor: Color.fromRGBO(0, 128, 128, 1),
+      hoverIconColor: Color.fromRGBO(0, 128, 128, 1),
+      hoverBackgroundColor: Color.fromRGBO(0, 128, 128, 0.3),
+    ),
     extensionColor: const ButtonColor(
       iconColor: Color.fromRGBO(0, 128, 128, 1),
       hoverIconColor: Color.fromRGBO(0, 128, 128, 1),

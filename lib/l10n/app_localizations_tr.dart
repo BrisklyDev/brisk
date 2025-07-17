@@ -18,6 +18,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get noUpdateAvailable => 'Henüz yeni bir güncelleme mevcut değil';
 
   @override
+  String get search => 'Ara';
+
+  @override
   String get addUrl => 'URL Ekle';
 
   @override
