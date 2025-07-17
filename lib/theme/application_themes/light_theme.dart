@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 
 ApplicationTheme light = ApplicationTheme(
   themeId: "Light",
+  isLight: true,
   fontWeight: FontWeight.w500,
   textColor: Colors.black,
+  textHintColor: const Color.fromRGBO(44, 44, 44, 1.0),
   subtleTextColor: const Color.fromRGBO(33, 33, 33, 1.0),
   contextMenuBackgroundColor: const Color.fromRGBO(168, 168, 168, 1.0),
   contextMenuItemDisabledTextColor: const Color.fromRGBO(222, 222, 222, 1.0),
@@ -161,13 +163,10 @@ ApplicationTheme light = ApplicationTheme(
     titleColumnTextColor: Colors.black,
   ),
   settingTheme: SettingTheme(
-    windowBackgroundColor: const Color.fromRGBO(255, 255, 255, 1),
     pageTheme: SettingPageTheme(
-      pageBackgroundColor: const Color.fromRGBO(15, 15, 15, 1),
       groupBackgroundColor: const Color.fromRGBO(240, 242, 245, 1),
       groupTitleTextColor: Colors.black,
       titleTextColor: Colors.black,
-      itemAccentColor: const Color.fromRGBO(52, 53, 54, 0.4),
     ),
     sideMenuTheme: SettingSideMenuTheme(
       backgroundColor: const Color.fromRGBO(240, 242, 245, 1),
@@ -175,7 +174,7 @@ ApplicationTheme light = ApplicationTheme(
       activeTabIconColor: Colors.black,
       tabTextColor: Colors.black,
       inactiveTabIconColor: Colors.black,
-      inactiveTabHoverBackgroundColor: const Color.fromRGBO(203, 203, 203, 1.0),
+      tabHoverBackgroundColor: const Color.fromRGBO(203, 203, 203, 1.0),
     ),
     saveButtonColor: ButtonColor(
       iconColor: Colors.transparent,
@@ -232,9 +231,7 @@ ApplicationTheme light = ApplicationTheme(
       backgroundColor: const Color.fromRGBO(53, 89, 143, 1),
     ),
     backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
-    textHintColor: const Color.fromRGBO(44, 44, 44, 1.0),
     innerContainerBorderColor: Colors.white30,
-    textColor: Colors.black,
     iconColor: Colors.white,
     checkBoxColor: CheckBoxColor(
       borderColor: Colors.grey,
@@ -259,11 +256,6 @@ ApplicationTheme light = ApplicationTheme(
       backgroundColor: const Color.fromRGBO(45, 45, 45, 0.5),
       borderColor: Colors.transparent,
       borderHoverColor: Colors.red,
-    ),
-    urlFieldColor: TextFieldColor(
-      focusBorderColor: Colors.white,
-      borderColor: Colors.white,
-      textColor: Colors.white,
     ),
     deleteConfirmColor: ButtonColor(
       iconColor: Colors.transparent,

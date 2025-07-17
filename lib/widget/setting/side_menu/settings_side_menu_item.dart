@@ -30,7 +30,7 @@ class _SettingsSideMenuItemState extends State<SettingsSideMenuItem> {
       type: MaterialType.transparency,
       child: InkWell(
         hoverColor:
-            theme.settingTheme.sideMenuTheme.inactiveTabHoverBackgroundColor,
+            theme.settingTheme.sideMenuTheme.tabHoverBackgroundColor,
         onTap: () => provider.setSelectedSettingsTab(widget.tabId),
         child: Container(
           height: 40,

@@ -72,7 +72,7 @@ class _AppExitDialogState extends State<AppExitDialog> {
             Text(
               loc.appChooseActionDescription,
               style: TextStyle(
-                color: theme.alertDialogTheme.textHintColor,
+                color: theme.textHintColor,
               ),
             ),
             const SizedBox(height: 20),

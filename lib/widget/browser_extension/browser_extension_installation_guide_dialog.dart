@@ -45,7 +45,7 @@ class _BrowserExtensionInstallationGuideDialogState
             Text(
               loc.installBrowserExtensionGuide_title,
               style: TextStyle(
-                color: theme.alertDialogTheme.textColor,
+                color: theme.textColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),
@@ -127,7 +127,7 @@ class _BrowserExtensionInstallationGuideDialogState
 
   TextStyle get installationStepDescriptionStyle {
     return TextStyle(
-      color: theme.alertDialogTheme.textHintColor,
+      color: theme.textHintColor,
       fontSize: 15,
     );
   }

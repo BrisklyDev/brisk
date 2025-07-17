@@ -71,6 +71,7 @@ class RoundedOutlinedButton extends StatefulWidget {
       contentPadding: contentPadding,
       customIcon: customIcon,
       icon: icon,
+      iconColor: buttonColor.iconColor,
       mainAxisAlignment: mainAxisAlignment,
       borderRadius: borderRadius,
     );

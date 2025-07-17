@@ -49,12 +49,11 @@ class _ShutdownWarningDialogState extends State<ShutdownWarningDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final theme =
-        Provider.of<ThemeProvider>(context).activeTheme.alertDialogTheme;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     final loc = AppLocalizations.of(context)!;
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.alertDialogTheme.backgroundColor,
       title: Row(
         children: [
           Container(
@@ -95,7 +94,7 @@ class _ShutdownWarningDialogState extends State<ShutdownWarningDialog> {
       ),
       actions: [
         RoundedOutlinedButton.fromButtonColor(
-          theme.deleteCancelColor,
+          theme.alertDialogTheme.deleteCancelColor,
           text: loc.btn_cancelShutdown,
           onPressed: () {
             _countdownTimer.cancel();
@@ -104,7 +103,7 @@ class _ShutdownWarningDialogState extends State<ShutdownWarningDialog> {
           },
         ),
         RoundedOutlinedButton.fromButtonColor(
-          theme.deleteConfirmColor,
+          theme.alertDialogTheme.deleteConfirmColor,
           text: loc.btn_shutdownNow,
           onPressed: () {
             _countdownTimer.cancel();

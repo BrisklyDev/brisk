@@ -51,7 +51,7 @@ class AskDuplicationAction extends StatelessWidget {
           Text(
             loc.duplicateDownload_title,
             style: TextStyle(
-              color: theme.alertDialogTheme.textColor,
+              color: theme.textColor,
               fontWeight: FontWeight.bold,
               fontSize: 20,
             ),

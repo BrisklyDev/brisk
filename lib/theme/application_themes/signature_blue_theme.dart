@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 ApplicationTheme signatureBlue = ApplicationTheme(
   themeId: "Signature Blue",
   fontWeight: FontWeight.normal,
+  isLight: false,
   widgetTheme: WidgetTheme(
     iconButtonColor: ButtonColor(
       iconColor: Colors.white54,
@@ -108,7 +109,6 @@ ApplicationTheme signatureBlue = ApplicationTheme(
     ),
     backgroundColor: const Color.fromRGBO(33, 43, 49, 1.0),
     innerContainerBorderColor: Colors.white38,
-    textColor: Colors.white,
     iconColor: Colors.white,
     checkBoxColor: CheckBoxColor(
       borderColor: Colors.grey,
@@ -133,11 +133,6 @@ ApplicationTheme signatureBlue = ApplicationTheme(
       backgroundColor: const Color.fromRGBO(45, 45, 45, 0.5),
       borderColor: Colors.transparent,
       borderHoverColor: Colors.red,
-    ),
-    urlFieldColor: TextFieldColor(
-      focusBorderColor: Colors.white,
-      borderColor: Colors.white,
-      textColor: Colors.white,
     ),
     deleteConfirmColor: ButtonColor(
       iconColor: Colors.transparent,
@@ -230,20 +225,17 @@ ApplicationTheme signatureBlue = ApplicationTheme(
     rowColor: const Color.fromRGBO(49, 56, 72, 1),
   ),
   settingTheme: SettingTheme(
-    windowBackgroundColor: const Color.fromRGBO(33, 43, 49, 1.0),
     pageTheme: SettingPageTheme(
-      pageBackgroundColor: Colors.black26,
       groupBackgroundColor: const Color.fromRGBO(43, 54, 63, 1.0),
       groupTitleTextColor: Colors.white,
       titleTextColor: Colors.white,
-      itemAccentColor: const Color.fromRGBO(40, 52, 59, 1.0),
     ),
     sideMenuTheme: SettingSideMenuTheme(
       backgroundColor: Colors.black26,
       activeTabBackgroundColor: Colors.blueGrey,
       activeTabIconColor: Colors.white,
       inactiveTabIconColor: Colors.white,
-      inactiveTabHoverBackgroundColor: Colors.black26,
+      tabHoverBackgroundColor: Colors.black26,
     ),
     saveButtonColor: ButtonColor(
       iconColor: Colors.transparent,

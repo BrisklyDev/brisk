@@ -29,6 +29,7 @@ class BrowserExtensionRulesGroup extends StatelessWidget {
           ),
           onLinkPressed: () => showDialog(
             builder: (context) => ExtensionSkipCaptureRuleEditorDialog(),
+            barrierDismissible: false,
             context: context,
           ),
           tooltipMessage: loc.settings_rules_extensionSkipCaptureRules_tooltip,

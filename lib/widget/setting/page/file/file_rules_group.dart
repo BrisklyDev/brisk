@@ -33,6 +33,7 @@ class FileRulesGroup extends StatelessWidget {
           ),
           onLinkPressed: () => showDialog(
             builder: (context) => FileSavePathRuleEditorDialog(),
+            barrierDismissible: false,
             context: context,
           ),
           tooltipMessage: loc.settings_rules_fileSavePathRules_tooltip,

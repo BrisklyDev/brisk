@@ -29,10 +29,9 @@ class _CreateQueueWindowState extends State<CreateQueueWindow> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
-    final theme =
-        Provider.of<ThemeProvider>(context).activeTheme.alertDialogTheme;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     return AlertDialog(
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.alertDialogTheme.backgroundColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -59,12 +58,12 @@ class _CreateQueueWindowState extends State<CreateQueueWindow> {
       ),
       actions: [
         RoundedOutlinedButton.fromButtonColor(
-          theme.declineButtonColor,
+          theme.alertDialogTheme.declineButtonColor,
           text: loc.btn_cancel,
           onPressed: () => Navigator.of(context).pop(),
         ),
         RoundedOutlinedButton.fromButtonColor(
-          theme.acceptButtonColor,
+          theme.alertDialogTheme.acceptButtonColor,
           text: loc.btn_createQueue,
           onPressed: () => onCreatePressed(context),
         ),

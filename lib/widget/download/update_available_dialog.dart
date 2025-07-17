@@ -79,14 +79,14 @@ class _UpdateAvailableDialogState extends State<UpdateAvailableDialog> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                    color: theme.alertDialogTheme.textColor,
+                    color: theme.textColor,
                   ),
                 ),
                 Text(
                   widget.newVersion,
                   style: TextStyle(
                     fontSize: 14,
-                    color: theme.alertDialogTheme.textColor,
+                    color: theme.textColor,
                   ),
                 ),
               ],
@@ -108,7 +108,7 @@ class _UpdateAvailableDialogState extends State<UpdateAvailableDialog> {
                       ? loc.settings_browserExtension
                       : loc.application,
                 ),
-                style: TextStyle(color: theme.alertDialogTheme.textColor),
+                style: TextStyle(color: theme.textColor),
               ),
               const SizedBox(height: 10),
               Container(
@@ -135,7 +135,7 @@ class _UpdateAvailableDialogState extends State<UpdateAvailableDialog> {
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,
-                                color: theme.alertDialogTheme.textColor,
+                                color: theme.textColor,
                               ),
                             )
                           ],

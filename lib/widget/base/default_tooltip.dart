@@ -1,4 +1,6 @@
+import 'package:brisk/provider/theme_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DefaultTooltip extends StatelessWidget {
   final String message;
@@ -8,12 +10,17 @@ class DefaultTooltip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeProvider>(context)
+        .activeTheme
+        .widgetTheme
+        .toolTipColor;
     return Tooltip(
       message: message,
-      textStyle: TextStyle(color: Colors.white),
+      textStyle: TextStyle(color: theme.textColor),
       decoration: BoxDecoration(
-        color: Color.fromRGBO(33, 33, 33, 1),
+        color: theme.backgroundColor,
         borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: theme.borderColor),
       ),
       child: child,
     );

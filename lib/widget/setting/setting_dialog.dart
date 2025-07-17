@@ -35,13 +35,16 @@ class _SettingsDialogState extends State<SettingsDialog> {
     loc = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;
     return AlertDialog(
+      contentPadding: EdgeInsets.all(0),
+      titlePadding: EdgeInsets.zero,
+      insetPadding: EdgeInsets.zero,
       content: Padding(
-        padding: const EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(top: 0),
         child: Container(
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: theme.settingTheme.windowBackgroundColor,
+            color: theme.alertDialogTheme.backgroundColor,
           ),
           height: resolveDialogHeight(size),
           width: resolveDialogWidth(size),
@@ -49,19 +52,24 @@ class _SettingsDialogState extends State<SettingsDialog> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20),
-              Padding(
-                padding: EdgeInsetsDirectional.only(start: 20),
-                child: Text(
-                  loc.settings_title,
-                  style: TextStyle(
-                    color: themeProvider.activeTheme.alertDialogTheme.textColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+              // SizedBox(height: 20),
+              Container(
+              color: theme.settingTheme.sideMenuTheme.backgroundColor,
+                width: resolveDialogWidth(size),
+                height: 77,
+                child: Padding(
+                  padding: EdgeInsetsDirectional.only(start: 20, top: 20),
+                  child: Text(
+                    loc.settings_title,
+                    style: TextStyle(
+                      color: themeProvider.activeTheme.textColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
-              SizedBox(height: 30),
+              // SizedBox(height: 30),
               Container(
                 width: resolveDialogWidth(size),
                 height: 1,

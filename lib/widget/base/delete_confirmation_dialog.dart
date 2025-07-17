@@ -16,14 +16,13 @@ class DeleteConfirmationDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme =
-        Provider.of<ThemeProvider>(context).activeTheme.alertDialogTheme;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     final loc = AppLocalizations.of(context)!;
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.alertDialogTheme.backgroundColor,
       title: Row(
         children: [
           Container(
@@ -64,14 +63,14 @@ class DeleteConfirmationDialog extends StatelessWidget {
       ),
       actions: [
         RoundedOutlinedButton.fromButtonColor(
-          theme.deleteCancelColor,
+          theme.alertDialogTheme.deleteCancelColor,
           text: loc.btn_cancel,
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
         RoundedOutlinedButton.fromButtonColor(
-          theme.deleteConfirmColor,
+          theme.alertDialogTheme.deleteConfirmColor,
           text: loc.btn_deleteConfirm,
           onPressed: () {
             Navigator.of(context).pop();

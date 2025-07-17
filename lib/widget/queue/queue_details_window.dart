@@ -215,13 +215,13 @@ class _QueueDetailsWindowState extends State<QueueDetailsWindow> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 RoundedOutlinedButton.fromButtonColor(
-                  theme.alertDialogTheme.declineButtonColor,
+                  theme.alertDialogTheme.cancelColor,
                   onPressed: onCancelPressed,
                   text: loc.btn_cancel,
                 ),
                 const SizedBox(width: 10),
                 RoundedOutlinedButton.fromButtonColor(
-                  theme.alertDialogTheme.acceptButtonColor,
+                  theme.settingTheme.saveButtonColor,
                   onPressed: onSavePressed,
                   text: loc.btn_saveChanges,
                 )

@@ -40,7 +40,7 @@ class PlutoGridUtil {
   static String? _fileNameSearchQuery;
 
   static PlutoGridConfiguration config(DownloadGridTheme downloadGridTheme) {
-    return ApplicationThemeHolder.isLight
+    return ApplicationThemeHolder.activeTheme.isLight
         ? PlutoGridConfiguration(
             style: PlutoGridStyleConfig(
               oddRowColor: downloadGridTheme.backgroundColor,

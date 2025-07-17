@@ -1,4 +1,5 @@
 import 'package:brisk/provider/theme_provider.dart';
+import 'package:brisk/widget/base/default_tooltip.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,18 +48,13 @@ class DropDownSetting extends StatelessWidget {
             if (tooltipMessage != null)
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
-                child: Tooltip(
+                child: DefaultTooltip(
                   message: tooltipMessage!,
                   child: Icon(
                     Icons.info,
                     color: theme.widgetTheme.iconColor,
                     size: 19,
                   ),
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(33, 33, 33, 1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  textStyle: const TextStyle(color: Colors.white),
                 ),
               ),
           ],

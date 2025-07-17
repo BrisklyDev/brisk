@@ -45,14 +45,14 @@ class AutomaticUrlUpdateDialog extends StatelessWidget {
             Text(
               loc.awaitingUrl_description,
               style: TextStyle(
-                color: theme.alertDialogTheme.textHintColor,
+                color: theme.textHintColor,
               ),
             ),
             const SizedBox(height: 5),
             Text(
               loc.awaitingUrl_descriptionHint,
               style: TextStyle(
-                color: theme.alertDialogTheme.textHintColor,
+                color: theme.textHintColor,
               ),
             )
           ],

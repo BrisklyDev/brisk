@@ -111,7 +111,7 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
                     showDetails = !showDetails;
                   });
                 },
-                backgroundColor: Colors.black12,
+                backgroundColor: theme.widgetTheme.showHideButtonColor.backgroundColor,
                 borderColor: Colors.transparent,
                 hoverBackgroundColor:
                     theme.widgetTheme.showHideButtonColor.hoverBackgroundColor,
@@ -235,7 +235,7 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
               width: 20,
               child: Icon(
                 Icons.pause_rounded,
-                color: Colors.white60,
+                color: theme.downloadProgressDialogTheme.pauseColor.iconColor,
               ),
             ),
             text: loc.btn_pause,

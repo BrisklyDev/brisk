@@ -212,7 +212,7 @@ class M3u8MasterPlaylistDialog extends StatelessWidget {
           Text(
             value,
             style: TextStyle(
-                color: theme.alertDialogTheme.textHintColor, fontSize: 12),
+                color: theme.textHintColor, fontSize: 12),
           ),
         ],
       ),

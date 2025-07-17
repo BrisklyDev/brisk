@@ -107,7 +107,6 @@ class QueueScheduleHandler {
           final row = fetchNextQueueRow(queue);
           if (row == null) {
             if (queue.shutdownAfterCompletion) {
-              print("Shutting down...");
               ShutdownManager.scheduleShutdown();
               downloadCheckerTimer?.cancel();
               downloadCheckerTimer = null;

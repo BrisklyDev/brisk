@@ -111,7 +111,7 @@ class _DownloadInfoDialogState extends State<DownloadInfoDialog>
               child: Text(
                 widget.newDownload ? loc.addNewDownload : loc.downloadInfo,
                 style: TextStyle(
-                  color: alertDialogTheme.textColor,
+                  color: theme.textColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),

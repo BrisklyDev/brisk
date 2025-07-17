@@ -21,13 +21,13 @@ class HotKeyUtil {
 
   static void registerHotkeys(BuildContext context) async {
     await HotKeyUtil.registerDownloadAdditionHotKey(context);
-    await HotKeyUtil.registerRowSearchHotkey(context);
+    await HotKeyUtil.registerRowSearchHotkey();
     if (Platform.isMacOS) {
       await HotKeyUtil.registerMacOsDefaultWindowHotkeys(context);
     }
   }
 
-  static Future<void> registerRowSearchHotkey(BuildContext context) async {
+  static Future<void> registerRowSearchHotkey() async {
     if (_isSearchHotkeyRegistered) return;
     final searchHotkey = HotKey(
       key: LogicalKeyboardKey.keyF,
@@ -36,13 +36,11 @@ class HotKeyUtil {
     );
     await hotKeyManager.register(
       searchHotkey,
-      keyDownHandler: (_) => {
-        Provider.of<SearchBarNotifierProvider>(
-          context,
-          listen: false,
-        ).toggleShow()
+      keyDownHandler: (_) {
+        SearchBarNotifierProvider.instance.toggleShow();
       },
     );
+    _isSearchHotkeyRegistered = true;
   }
 
   static Future<void> registerMacOsDefaultWindowHotkeys(

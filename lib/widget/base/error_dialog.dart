@@ -26,12 +26,11 @@ class ErrorDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme =
-        Provider.of<ThemeProvider>(context).activeTheme.alertDialogTheme;
+    final theme = Provider.of<ThemeProvider>(context).activeTheme;
     return AlertDialog(
       insetPadding: const EdgeInsets.all(10),
-      backgroundColor: theme.backgroundColor,
-      surfaceTintColor: theme.backgroundColor,
+      backgroundColor: theme.alertDialogTheme.backgroundColor,
+      surfaceTintColor: theme.alertDialogTheme.backgroundColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),

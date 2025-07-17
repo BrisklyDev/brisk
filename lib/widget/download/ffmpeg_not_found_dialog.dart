@@ -69,7 +69,7 @@ class FFmpegNotFoundDialog extends StatelessWidget {
             Text(
               loc.ffmpeg_notFound_descriptionHint,
               style: TextStyle(
-                color: theme.alertDialogTheme.textHintColor,
+                color: theme.textHintColor,
               ),
             ),
           ],
