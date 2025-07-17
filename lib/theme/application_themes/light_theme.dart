@@ -17,6 +17,10 @@ ApplicationTheme light = const ApplicationTheme(
   widgetTheme: WidgetTheme(
     iconColor: const Color.fromRGBO(89, 89, 89, 1.0),
     tooltipIconColor: Colors.black45,
+    toolTipColor: ToolTipColor(
+      backgroundColor: Color.fromRGBO(200, 200, 200, 1),
+      textColor: Color.fromRGBO(33, 33, 33, 1),
+    ),
     switchColor: SwitchColor(
       activeColor: Colors.green,
       focusColor: Colors.lightGreen,
