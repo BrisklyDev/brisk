@@ -4,6 +4,6 @@
 
 - Fixed download issue from google drive
 - Added searching through downloads via ctrl+f
-- Added all catppucin themes
+- Added all catppuccin themes
 - Added tokyo night theme
 - UI bug fixes
