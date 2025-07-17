@@ -29,7 +29,7 @@ class FileSavePathRuleEditorDialog extends StatefulWidget {
 
 class _FileSavePathRuleEditorDialogState
     extends State<FileSavePathRuleEditorDialog> {
-  final rules = SettingsCache.fileSavePathRules;
+  final rules = [...SettingsCache.fileSavePathRules];
   late Map<FileCondition, String> fileConditionMap;
   late List<String> conditions;
   late AppLocalizations loc;
@@ -78,7 +78,7 @@ class _FileSavePathRuleEditorDialogState
             child: Text(
               loc.settings_rules_edit,
               style: TextStyle(
-                color: theme.alertDialogTheme.textColor,
+                color: theme.textColor,
               ),
             ),
           ),
@@ -159,7 +159,7 @@ class _FileSavePathRuleEditorDialogState
                   Text(
                     "Rule ${idx + 1}",
                     style: TextStyle(
-                      color: theme.alertDialogTheme.textColor,
+                      color: theme.textColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -188,7 +188,7 @@ class _FileSavePathRuleEditorDialogState
                         Text(
                           "${loc.condition}:",
                           style: TextStyle(
-                            color: theme.alertDialogTheme.textHintColor,
+                            color: theme.textHintColor,
                           ),
                         ),
                         const SizedBox(height: 5),

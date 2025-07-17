@@ -25,7 +25,7 @@ class ExtensionSkipCaptureRuleEditorDialog extends StatefulWidget {
 
 class _ExtensionSkipCaptureRuleEditorDialogState
     extends State<ExtensionSkipCaptureRuleEditorDialog> {
-  final rules = SettingsCache.extensionSkipCaptureRules;
+  final rules = [...SettingsCache.extensionSkipCaptureRules];
   late Map<FileCondition, String> fileConditionMap;
   late List<String> conditions;
   late AppLocalizations loc;
@@ -153,7 +153,7 @@ class _ExtensionSkipCaptureRuleEditorDialogState
                   Text(
                     "Rule ${idx + 1}",
                     style: TextStyle(
-                      color: theme.alertDialogTheme.textColor,
+                      color: theme.textColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -182,7 +182,7 @@ class _ExtensionSkipCaptureRuleEditorDialogState
                         Text(
                           "${loc.condition}:",
                           style: TextStyle(
-                            color: theme.alertDialogTheme.textColor,
+                            color: theme.textColor,
                           ),
                         ),
                         const SizedBox(height: 5),
@@ -244,7 +244,7 @@ class _ExtensionSkipCaptureRuleEditorDialogState
                         Text(
                           "${loc.value}:",
                           style: TextStyle(
-                            color: theme.alertDialogTheme.textColor,
+                            color: theme.textColor,
                           ),
                         ),
                         const SizedBox(height: 5),
@@ -269,7 +269,7 @@ class _ExtensionSkipCaptureRuleEditorDialogState
                         Text(
                           "${loc.type}:",
                           style: TextStyle(
-                            color: theme.alertDialogTheme.textColor,
+                            color: theme.textColor,
                           ),
                         ),
                         const SizedBox(height: 5),
