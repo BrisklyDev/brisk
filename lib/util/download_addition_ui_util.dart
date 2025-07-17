@@ -37,6 +37,7 @@ class DownloadAdditionUiUtil {
   static Map<TextEditingController, TextEditingController>
       savedHeaderControllers = {};
   static Isolate? fileInfoExtractorIsolate;
+  static bool _errorDialogVisible = false;
 
   static void cancelRequest(BuildContext context) {
     fileInfoExtractorIsolate?.kill();
@@ -165,6 +166,8 @@ class DownloadAdditionUiUtil {
 
   static void showFileInfoErrorDialog(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
+    if (_errorDialogVisible) return;
+    _errorDialogVisible = true;
     showDialog(
       context: context,
       builder: (_) => ErrorDialog(
@@ -175,12 +178,15 @@ class DownloadAdditionUiUtil {
         description: loc.err_failedToRetrieveFileInfo_description,
         descriptionHint: loc.err_failedToRetrieveFileInfo_descriptionHint,
       ),
+    ).then(
+      (_) {
+        _errorDialogVisible = false;
+      },
     );
   }
 
   static onFileInfoRetrievalError(context) {
     safePop(context);
-    final loc = AppLocalizations.of(context)!;
     showFileInfoErrorDialog(context);
   }
 
