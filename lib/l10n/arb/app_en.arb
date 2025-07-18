@@ -181,6 +181,8 @@
   "installBrowserExtension_edge_step3_subtitle": "Type edge://extensions in the navigation bar and enable developer mode in the left menu",
   "installBrowserExtension_step4_title": "Load Extension",
   "installBrowserExtension_step4_subtitle": "Click on the 'Load unpacked' button and select the folder in which the package was extracted",
+  "installBrowserExtension_brave_warning_title": "Potential Brave Issues",
+  "installBrowserExtension_brave_warning_subtitle": "If the extension fails to capture downloads on Brave, paste the text below in the address bar and disable 'Enable extension network blocking'. Even if it is already set to 'Default (Disabled)', manually select the 'Disabled' option.",
   "confirmAction": "Confirm Action",
   "downloadDeletionConfirmation": "Are you sure you want to delete the selected downloads?",
   "deletionFromQueueConfirmation": "Are you sure you want to remove the selected downloads from the queue?",

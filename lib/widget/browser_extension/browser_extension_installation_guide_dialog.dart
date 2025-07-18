@@ -1,9 +1,11 @@
 import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/provider/theme_provider.dart';
 import 'package:brisk/theme/application_theme.dart';
+import 'package:brisk/widget/base/outlined_text_field.dart';
 import 'package:brisk/widget/base/rounded_outlined_button.dart';
 import 'package:brisk/widget/base/scrollable_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -26,11 +28,12 @@ class _BrowserExtensionInstallationGuideDialogState
     extends State<BrowserExtensionInstallationGuideDialog> {
   bool videoGuide = false;
   late ApplicationTheme theme;
+  late final AppLocalizations loc;
 
   @override
   Widget build(BuildContext context) {
     theme = Provider.of<ThemeProvider>(context).activeTheme;
-    final loc = AppLocalizations.of(context)!;
+    loc = AppLocalizations.of(context)!;
     return ScrollableDialog(
       width: 600,
       height: 380,
@@ -67,6 +70,8 @@ class _BrowserExtensionInstallationGuideDialogState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (widget.browserName == "brave") warningBrave(),
+            const SizedBox(height: 5),
             installationStep(
               step: 1,
               title: loc.downloadExtension,
@@ -118,7 +123,7 @@ class _BrowserExtensionInstallationGuideDialogState
                   style: installationStepDescriptionStyle,
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -145,7 +150,8 @@ class _BrowserExtensionInstallationGuideDialogState
   }
 
   String step3Subtitle(AppLocalizations loc) {
-    if (widget.browserName.toLowerCase() == "chrome") {
+    if (widget.browserName.toLowerCase() == "chrome" ||
+        widget.browserName.toLowerCase() == "brave") {
       return loc.installBrowserExtension_chrome_step3_subtitle;
     } else if (widget.browserName.toLowerCase() == "edge") {
       return loc.installBrowserExtension_edge_step3_subtitle;
@@ -156,7 +162,8 @@ class _BrowserExtensionInstallationGuideDialogState
   }
 
   String step1Subtitle(AppLocalizations loc) {
-    if (widget.browserName.toLowerCase() == "chrome") {
+    if (widget.browserName.toLowerCase() == "chrome" ||
+        widget.browserName.toLowerCase() == "brave") {
       return loc.installBrowserExtension_chrome_step1_subtitle;
     } else if (widget.browserName.toLowerCase() == "edge") {
       return loc.installBrowserExtension_edge_step1_subtitle;
@@ -164,6 +171,77 @@ class _BrowserExtensionInstallationGuideDialogState
       return loc.installBrowserExtension_opera_step1_subtitle;
     }
     return "";
+  }
+
+  Widget warningBrave() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 30,
+          child: Icon(
+            Icons.warning_rounded,
+            color: Colors.yellow,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                loc.installBrowserExtension_brave_warning_title,
+                style: TextStyle(
+                  fontSize: 15,
+                  color: theme.textColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                loc.installBrowserExtension_brave_warning_subtitle,
+                style: installationStepDescriptionStyle,
+              ),
+              const SizedBox(height: 5),
+              braveFingerprintModeAddressTextField(),
+              const SizedBox(height: 5),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  OutLinedTextField braveFingerprintModeAddressTextField() {
+    return OutLinedTextField(
+      controller: TextEditingController(
+        text: "brave://flags/#brave-show-strict-fingerprinting-mode",
+      ),
+      readOnly: true,
+      suffixIcon: IconButton(
+        onPressed: () async {
+          Clipboard.setData(
+            ClipboardData(
+                text: "brave://flags/#brave-show-strict-fingerprinting-mode"),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Color.fromRGBO(38, 38, 38, 1.0),
+              content: Text(
+                loc.copiedToClipboard,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
+              ),
+              duration: Duration(seconds: 1),
+            ),
+          );
+        },
+        icon: Icon(
+          Icons.copy_rounded,
+          color: Colors.white60,
+        ),
+      ),
+    );
   }
 
   Widget installationStep({

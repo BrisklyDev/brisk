@@ -77,6 +77,11 @@ class GetBrowserExtensionDialog extends StatelessWidget {
                 ),
                 const SizedBox(width: 25),
                 browserIconButton(
+                  "brave",
+                  () => onBrowserPressed(context, "brave"),
+                ),
+                const SizedBox(width: 25),
+                browserIconButton(
                   "chrome",
                   () => onBrowserPressed(context, "chrome"),
                 ),

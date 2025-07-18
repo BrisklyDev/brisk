@@ -1196,6 +1196,18 @@ abstract class AppLocalizations {
   /// **'Click on the \'Load unpacked\' button and select the folder in which the package was extracted'**
   String get installBrowserExtension_step4_subtitle;
 
+  /// No description provided for @installBrowserExtension_brave_warning_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Potential Brave Issues'**
+  String get installBrowserExtension_brave_warning_title;
+
+  /// No description provided for @installBrowserExtension_brave_warning_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'If the extension fails to capture downloads on Brave, paste the text below in the address bar and disable \'Enable extension network blocking\'. Even if it is already set to \'Default (Disabled)\', manually select the \'Disabled\' option.'**
+  String get installBrowserExtension_brave_warning_subtitle;
+
   /// No description provided for @confirmAction.
   ///
   /// In en, this message translates to:

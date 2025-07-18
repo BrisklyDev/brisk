@@ -566,6 +566,14 @@ class AppLocalizationsZh extends AppLocalizations {
       '点击\"加载已解压的扩展程序\"按钮，然后选择解压扩展包的文件夹';
 
   @override
+  String get installBrowserExtension_brave_warning_title =>
+      'Potential Brave Issues';
+
+  @override
+  String get installBrowserExtension_brave_warning_subtitle =>
+      'If the extension fails to capture downloads on Brave, paste the text below in the address bar and disable \'Enable extension network blocking\'. Even if it is already set to \'Default (Disabled)\', manually select the \'Disabled\' option.';
+
+  @override
   String get confirmAction => '确认操作';
 
   @override

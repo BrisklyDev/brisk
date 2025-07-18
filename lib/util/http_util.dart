@@ -214,6 +214,9 @@ Future<dynamic> getJson(String url) async {
 }
 
 Future<String?> getBrowserExtensionDownloadLink(String browser) async {
+  if (browser == 'brave') {
+    browser = 'chrome';
+  }
   final json = await getJson(
     "https://api.github.com/repos/BrisklyDev/brisk-browser-extension/releases/latest",
   );

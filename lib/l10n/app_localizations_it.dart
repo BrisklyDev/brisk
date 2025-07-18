@@ -599,6 +599,14 @@ class AppLocalizationsIt extends AppLocalizations {
       'Clicca sul pulsante \'Carica estensione non pacchettizzata\' e seleziona la cartella dove hai estratto il pacchetto';
 
   @override
+  String get installBrowserExtension_brave_warning_title =>
+      'Potential Brave Issues';
+
+  @override
+  String get installBrowserExtension_brave_warning_subtitle =>
+      'If the extension fails to capture downloads on Brave, paste the text below in the address bar and disable \'Enable extension network blocking\'. Even if it is already set to \'Default (Disabled)\', manually select the \'Disabled\' option.';
+
+  @override
   String get confirmAction => 'Conferma azione';
 
   @override
