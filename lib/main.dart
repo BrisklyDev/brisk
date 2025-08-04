@@ -108,8 +108,8 @@ Future<void> main(List<String> args) async {
       ),
     );
   }, (error, stack) {
-    print('Unhandled error: $error');
-    print(stack);
+    Logger.log(error);
+    Logger.log(stack);
   });
 }
 
