@@ -63,6 +63,7 @@ Future<void> main(List<String> args) async {
     await MigrationManager.runMigrations();
     await SettingsCache.init();
     await updateLaunchAtStartupSetting();
+    await NotificationManager.init();
     LocaleProvider.instance.setCurrentLocale();
     ApplicationThemeHolder.setActiveTheme();
     launchedAtStartup = args.contains(fromStartupArg);
