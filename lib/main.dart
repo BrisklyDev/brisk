@@ -210,7 +210,6 @@ class _MyHomePageState extends State<MyHomePage>
 
   @override
   void initState() {
-    NotificationManager.init();
     windowManager.addListener(this);
     windowManager.setPreventClose(true);
     trayManager.addListener(this);
