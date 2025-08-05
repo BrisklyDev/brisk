@@ -10,7 +10,7 @@ class NotificationManager {
   static const downloadFailureHeader = "Download Failed!";
   static bool _initialized = false;
 
-  static void init() async {
+  static Future<void> init() async {
     const LinuxInitializationSettings linuxInitSettings =
         LinuxInitializationSettings(
       defaultActionName: 'Open notification',
