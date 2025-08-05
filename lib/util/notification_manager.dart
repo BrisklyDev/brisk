@@ -8,7 +8,7 @@ class NotificationManager {
       FlutterLocalNotificationsPlugin();
   static const downloadCompletionHeader = "Download Complete";
   static const downloadFailureHeader = "Download Failed!";
-  static late bool _initialized;
+  static bool _initialized = false;
 
   static void init() async {
     const LinuxInitializationSettings linuxInitSettings =
