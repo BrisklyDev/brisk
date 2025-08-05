@@ -63,7 +63,6 @@ Future<void> main(List<String> args) async {
     await MigrationManager.runMigrations();
     await SettingsCache.init();
     await updateLaunchAtStartupSetting();
-    await NotificationManager.init();
     LocaleProvider.instance.setCurrentLocale();
     ApplicationThemeHolder.setActiveTheme();
     launchedAtStartup = args.contains(fromStartupArg);
@@ -221,6 +220,7 @@ class _MyHomePageState extends State<MyHomePage>
   void didChangeDependencies() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       HotKeyUtil.registerHotkeys(context);
+      NotificationManager.init();
       BrowserExtensionServer.setup(context);
       GitHubStarHandler.handleShowDialog(context);
       handleBriskUpdateCheck(context);
