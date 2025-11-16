@@ -19,6 +19,9 @@ class MigrationManager {
     Migration(7, "Add http client type"),
     Migration(8, "Add automaticFileSavePathCategorization"),
     Migration(9, "Change hotkey scope to inapp for linux"),
+
+    /// Intentional duplicate
+    Migration(10, "Change hotkey scope to inapp for linux"),
   ];
 
   static runMigrations() async {
@@ -62,6 +65,9 @@ class MigrationManager {
         await runMigrationV8();
         break;
       case 9:
+        await runMigrationV9();
+        break;
+      case 10:
         await runMigrationV9();
         break;
       default:
@@ -218,10 +224,11 @@ class MigrationManager {
   static Future<void> runMigrationV9() async {
     final scope = HiveUtil.instance.settingBox.values
         .where((setting) =>
-            setting.name == SettingOptions.downloadAdditionHotkeyScope)
+            setting.name == SettingOptions.downloadAdditionHotkeyScope.name)
         .firstOrNull;
     if (scope == null || isWindows) return;
     scope.value = HotKeyScope.inapp.name;
+    SettingsCache.downloadAdditionHotkeyScope = HotKeyScope.inapp;
     await scope.save();
   }
 }

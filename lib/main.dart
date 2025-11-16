@@ -60,8 +60,9 @@ Future<void> main(List<String> args) async {
     await FileUtil.setDefaultTempDir();
     await FileUtil.setDefaultSaveDir();
     await HiveUtil.instance.putInitialBoxValues();
-    await MigrationManager.runMigrations();
     await SettingsCache.init();
+    await SettingsCache.saveCachedSettingsToDB();
+    await MigrationManager.runMigrations();
     await updateLaunchAtStartupSetting();
     LocaleProvider.instance.setCurrentLocale();
     ApplicationThemeHolder.setActiveTheme();

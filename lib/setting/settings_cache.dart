@@ -13,11 +13,11 @@ import 'package:brisk/theme/application_theme_holder.dart';
 import 'package:brisk/util/file_extensions.dart';
 import 'package:brisk/util/launch_at_startup_util.dart';
 import 'package:brisk/util/parse_util.dart';
+import 'package:brisk/util/platform.dart';
 import 'package:brisk_download_engine/brisk_download_engine.dart';
 import 'package:flutter/services.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:rhttp/rhttp.dart';
 import '../util/file_util.dart';
 
 class SettingsCache {
@@ -94,7 +94,7 @@ class SettingsCache {
     ],
     SettingOptions.downloadAdditionHotkeyScope.name: [
       SettingType.general.name,
-      HotKeyScope.system.name,
+      isWindows ? HotKeyScope.system.name : HotKeyScope.inapp.name,
     ],
     SettingOptions.ffmpegPath.name: [
       SettingType.general.name,
