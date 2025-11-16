@@ -69,6 +69,12 @@ dependency_overrides:
       path: packages/window_manager
       ref: af74247d3c1616968ec281435f7410bcc7f9355c
 
+  hotkey_manager_linux:
+    git:
+      url: https://github.com/leanflutter/hotkey_manager.git
+      path: packages/hotkey_manager_linux
+      ref: 1b31e3ca4ab017ee72f54a7065b2073a88403d61
+
 flutter_launcher_icons:
   windows:
     generate: true
