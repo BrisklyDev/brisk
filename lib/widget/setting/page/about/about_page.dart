@@ -104,8 +104,8 @@ class _AboutPageState extends State<AboutPage> {
                   ),
                   const SizedBox(width: 30),
                   InkWell(
-                    onTap: () => launchUrlString(
-                        "https://github.com/AminBhst/brisk?tab=readme-ov-file#money_with_wings-donations"),
+                    onTap: () =>
+                        launchUrlString("https://buymeacoffee.com/aminbhst"),
                     onHover: (val) => setState(() => donationHover = val),
                     child: Text(
                       loc.settings_info_donate,
