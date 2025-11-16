@@ -53,7 +53,7 @@ ApplicationTheme celestialDark = const ApplicationTheme(
       borderHoverColor: Colors.green,
     ),
     pauseColor: const ButtonColor(
-      iconColor: Colors.transparent,
+      iconColor: Colors.white70,
       hoverIconColor: Colors.transparent,
       textColor: Colors.white70,
       hoverBackgroundColor: Color.fromRGBO(244, 67, 54, 0.5),
