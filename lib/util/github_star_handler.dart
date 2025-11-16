@@ -12,13 +12,13 @@ class GitHubStarHandler {
 
   static void handleShowDialog(BuildContext context) {
     if (neverShowAgainGeneralData.value || _dialogShown) return;
-    Future.delayed(Duration(minutes: 15), () {
+    Future.delayed(Duration(seconds: 5), () {
+      _dialogShown = true;
       showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) => GithubStarDialog(),
       );
-      _dialogShown = true;
     });
   }
 
