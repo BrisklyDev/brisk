@@ -446,7 +446,7 @@ class _DownloadInfoDialogState extends State<DownloadInfoDialog>
 
   void pickNewSaveLocation() async {
     final filePath = widget.downloadItem.filePath;
-    final initialDir = filePath.substring(0, filePath.lastIndexOf('\\'));
+    final initialDir = filePath.substring(0, filePath.lastIndexOf(path.separator));
     final location = await FilePicker.platform.saveFile(
       fileName: widget.downloadItem.fileName,
       initialDirectory: initialDir,
