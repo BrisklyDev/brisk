@@ -211,7 +211,6 @@ class _MyHomePageState extends State<MyHomePage>
 
   @override
   void initState() {
-    NotificationManager.init();
     windowManager.addListener(this);
     windowManager.setPreventClose(true);
     trayManager.addListener(this);
@@ -223,6 +222,7 @@ class _MyHomePageState extends State<MyHomePage>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       HotKeyUtil.registerHotkeys(context);
       BrowserExtensionServer.setup(context);
+      NotificationManager.init();
       GitHubStarHandler.handleShowDialog(context);
       handleBriskUpdateCheck(context);
       if (launchedAtStartup) {
