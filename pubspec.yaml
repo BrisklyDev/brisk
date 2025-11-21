@@ -62,14 +62,6 @@ dev_dependencies:
   hive_generator: ^2.0.1
   build_runner: ^2.4.8
 dependency_overrides:
-  #This package has known issue https://github.com/leanflutter/window_manager/issues/543 that occurs(crash) when hidden the window on macos
-  #TODO We need to pay attention to this update, when there is an update, we need to change the version of this package to the latest and remove this override
-  window_manager:
-    git:
-      url: https://github.com/leanflutter/window_manager.git
-      path: packages/window_manager
-      ref: af74247d3c1616968ec281435f7410bcc7f9355c
-
   hotkey_manager_linux:
     git:
       url: https://github.com/leanflutter/hotkey_manager.git

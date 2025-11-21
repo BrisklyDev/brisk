@@ -1,0 +1,9 @@
+name: window_manager_workspace
+homepage: https://github.com/leanflutter/window_manager
+publish_to: none
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dev_dependencies:
+  melos: ^6.2.0

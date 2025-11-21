@@ -1296,12 +1296,10 @@ packages:
   window_manager:
     dependency: "direct main"
     description:
-      path: "packages/window_manager"
-      ref: af74247d3c1616968ec281435f7410bcc7f9355c
-      resolved-ref: af74247d3c1616968ec281435f7410bcc7f9355c
-      url: "https://github.com/leanflutter/window_manager.git"
-    source: git
-    version: "0.4.3"
+      path: "window_manager/packages/window_manager"
+      relative: true
+    source: path
+    version: "0.5.1"
   window_to_front:
     dependency: "direct main"
     description:

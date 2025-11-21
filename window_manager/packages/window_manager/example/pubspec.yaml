@@ -1,0 +1,28 @@
+name: window_manager_example
+description: Demonstrates how to use the window_manager plugin.
+publish_to: "none"
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  bot_toast: ^4.1.3
+  cupertino_icons: ^1.0.2
+  flutter:
+    sdk: flutter
+  preference_list: ^0.0.2
+  tray_manager: ^0.2.3
+  window_manager:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  mostly_reasonable_lints: ^0.1.2
+
+flutter:
+  uses-material-design: true
+  assets:
+    - images/

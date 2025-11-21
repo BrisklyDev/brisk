@@ -1,0 +1,4 @@
+enum TitleBarStyle {
+  normal,
+  hidden,
+}
