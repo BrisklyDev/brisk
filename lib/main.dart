@@ -50,11 +50,11 @@ Future<void> main(List<String> args) async {
   }
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
+    tz.initializeTimeZones();
     await SingleInstanceHandler.init();
     await Logger.init();
     await migrateDatabaseLocation();
     await windowManager.ensureInitialized();
-    tz.initializeTimeZones();
     await HiveUtil.instance.initHive();
     await setupLaunchAtStartup();
     await FileUtil.setDefaultTempDir();
