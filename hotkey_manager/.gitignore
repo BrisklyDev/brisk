@@ -1,0 +1,6 @@
+.dart_tool/
+.idea/
+
+*.iml
+pubspec_overrides.yaml
+pubspec.lock

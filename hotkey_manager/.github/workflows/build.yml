@@ -1,0 +1,64 @@
+name: build
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.19.2"
+          channel: "stable"
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
+          sudo apt-get install -y keybinder-3.0
+      - uses: bluefireteam/melos-action@v3
+      - working-directory: ./packages/hotkey_manager/example
+        run: |
+          flutter build linux --release
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.19.2"
+          channel: "stable"
+      - uses: bluefireteam/melos-action@v3
+      - working-directory: ./packages/hotkey_manager/example
+        run: |
+          flutter build macos --release
+
+  build-web:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.19.2"
+          channel: "stable"
+      - uses: bluefireteam/melos-action@v3
+      - working-directory: ./packages/hotkey_manager/example
+        run: |
+          flutter build web --release
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.19.2"
+          channel: "stable"
+      - uses: bluefireteam/melos-action@v3
+      - working-directory: ./packages/hotkey_manager/example
+        run: |
+          flutter build windows --release

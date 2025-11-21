@@ -31,7 +31,8 @@ dependencies:
   hive_flutter: ^1.1.0
   hive: ^2.2.3
   number_inc_dec: ^0.8.0
-  hotkey_manager: ^0.2.3
+  hotkey_manager:
+    path: ./hotkey_manager/packages/hotkey_manager
   window_to_front: ^0.0.3
   package_info_plus: ^8.3.0
   tray_manager:
@@ -61,12 +62,6 @@ dev_dependencies:
   flutter_launcher_icons: "^0.14.3"
   hive_generator: ^2.0.1
   build_runner: ^2.4.8
-dependency_overrides:
-  hotkey_manager_linux:
-    git:
-      url: https://github.com/leanflutter/hotkey_manager.git
-      path: packages/hotkey_manager_linux
-      ref: 1b31e3ca4ab017ee72f54a7065b2073a88403d61
 
 flutter_launcher_icons:
   windows:

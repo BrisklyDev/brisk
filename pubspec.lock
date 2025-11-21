@@ -524,19 +524,17 @@ packages:
   hotkey_manager:
     dependency: "direct main"
     description:
-      name: hotkey_manager
-      sha256: "06f0655b76c8dd322fb7101dc615afbdbf39c3d3414df9e059c33892104479cd"
-      url: "https://pub.dev"
-    source: hosted
+      path: "hotkey_manager/packages/hotkey_manager"
+      relative: true
+    source: path
     version: "0.2.3"
   hotkey_manager_linux:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
-      path: "packages/hotkey_manager_linux"
-      ref: "1b31e3ca4ab017ee72f54a7065b2073a88403d61"
-      resolved-ref: "1b31e3ca4ab017ee72f54a7065b2073a88403d61"
-      url: "https://github.com/leanflutter/hotkey_manager.git"
-    source: git
+      name: hotkey_manager_linux
+      sha256: "83676bda8210a3377bc6f1977f193bc1dbdd4c46f1bdd02875f44b6eff9a8473"
+      url: "https://pub.dev"
+    source: hosted
     version: "0.2.0"
   hotkey_manager_macos:
     dependency: transitive

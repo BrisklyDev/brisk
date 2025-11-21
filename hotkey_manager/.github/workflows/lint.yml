@@ -1,0 +1,31 @@
+name: lint
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.19.2"
+          channel: "stable"
+      - uses: bluefireteam/melos-action@v3
+      - run: melos run analyze
+
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.19.2"
+          channel: "stable"
+          cache: true
+      - uses: bluefireteam/melos-action@v3
+      - run: melos run format-check
