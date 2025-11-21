@@ -1,11 +1,7 @@
 # Changelog
 
-## **:warning: Update is highly recommended due to important bug fixes**
+## :hammer_and_wrench: Bug fixes
 
-## :hammer_and_wrench: New Features and Improvements
-
-- Fixed download issue from google drive
-- Added searching through downloads via ctrl+f
-- Added all catppuccin themes
-- Added tokyo night theme
-- UI bug fixes
+- Fixed pick new location button not working on linux (#178)
+- Fixed a UI bug in Celestial Dark theme leading to an invisible pause button icon
+- Other minor bug fixes
