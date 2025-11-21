@@ -28,7 +28,6 @@ dependencies:
   flutter_local_notifications: ^19.0.0
   uuid: ^4.5.1
   url_launcher: ^6.3.1
-  window_manager: ^0.4.3
   hive_flutter: ^1.1.0
   hive: ^2.2.3
   number_inc_dec: ^0.8.0
@@ -37,6 +36,8 @@ dependencies:
   package_info_plus: ^8.3.0
   tray_manager:
     path: ./tray_manager/packages/tray_manager
+  window_manager:
+    path: ./window_manager/packages/window_manager
   launch_at_startup: ^0.5.1
   dartx: ^1.2.0
   encrypt: ^5.0.3
