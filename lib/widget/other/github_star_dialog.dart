@@ -49,6 +49,7 @@ class GithubStarDialog extends StatelessWidget {
                 GitHubStarHandler.timer?.cancel();
                 GitHubStarHandler.timer = null;
                 Navigator.of(context).pop();
+                GitHubStarHandler.setNeverShowAgain();
               },
               splashRadius: 20,
               icon: Icon(
@@ -77,14 +78,14 @@ class GithubStarDialog extends StatelessWidget {
         ),
       ),
       buttons: [
-        RoundedOutlinedButton.fromButtonColor(
-          theme.alertDialogTheme.declineButtonColor,
-          onPressed: () {
-            GitHubStarHandler.setNeverShowAgain();
-            Navigator.of(context).pop();
-          },
-          text: "Never show again",
-        ),
+        // RoundedOutlinedButton.fromButtonColor(
+        //   theme.alertDialogTheme.declineButtonColor,
+        //   onPressed: () {
+        //     GitHubStarHandler.setNeverShowAgain();
+        //     Navigator.of(context).pop();
+        //   },
+        //   text: "Never show again",
+        // ),
         const SizedBox(width: 10),
         RoundedOutlinedButton.fromButtonColor(
           theme.alertDialogTheme.acceptButtonColor,
