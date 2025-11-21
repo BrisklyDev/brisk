@@ -46,6 +46,12 @@
   <releases>
     <release version="2.3.8" date="2025-11-21">
     <description>
+      <p><em>🔧 Bug Fixes and Improvements</em></p>
+      <ul>
+        <li>Fixed pick new location button not working on linux</li>
+        <li>Fixed a UI bug in Celestial Dark theme leading to an invisible pause button icon</li>
+        <li>Other minor bug fixes</li>
+      </ul>
     </description>
     </release>
   </releases>
@@ -64,4 +70,3 @@
 
   <launchable type="desktop-id">io.github.BrisklyDev.Brisk.desktop</launchable>
 </component>
-
