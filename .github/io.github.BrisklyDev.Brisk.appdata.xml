@@ -44,16 +44,8 @@
   </screenshots>
 
   <releases>
-    <release version="2.3.7" date="2025-07-17">
+    <release version="2.3.8" date="2025-11-21">
     <description>
-      <p><em>🔧 Bug Fixes and Improvements</em></p>
-      <ul>
-        <li>Fixed download issue from google drive</li>
-        <li>Added searching through downloads via ctrl+f</li>
-        <li>Added all catppuccin themes</li>
-        <li>Added tokyo night theme</li>
-        <li>UI bug fixes</li>
-      </ul>
     </description>
     </release>
   </releases>
