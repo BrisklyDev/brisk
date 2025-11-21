@@ -43,7 +43,6 @@ import 'l10n/app_localizations.dart';
 import 'util/file_util.dart';
 import 'setting/settings_cache.dart';
 
-// TODO Fix resizing the window when a row is selected
 Future<void> main(List<String> args) async {
   if (!Platform.isWindows) {
     await SingleInstanceHandler.tryConnectSocket();
