@@ -21,8 +21,8 @@ String convertByteToReadableStr(int length) {
 }
 
 String convertByteTransferRateToReadableStr(double bytesTransferRate) {
-  final speedInMegaBytes = bytesTransferRate / 1048576;
-  final speedInKiloBytes = bytesTransferRate / 1024;
+  final speedInMegaBytes = bytesTransferRate / 1000000;
+  final speedInKiloBytes = bytesTransferRate / 1000;
 
   if (speedInMegaBytes > 1) {
     return '${speedInMegaBytes.toStringAsFixed(2)} MB/s';

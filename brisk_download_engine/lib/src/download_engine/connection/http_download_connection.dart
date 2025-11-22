@@ -645,8 +645,8 @@ class HttpDownloadConnection {
   String _getTransferRateStr(int timeBefore, int len) {
     final elapsedSec = (_tmpTime - timeBefore) / 1000;
     if (elapsedSec <= 0) return "";
-    final speedInMegaBytes = (len / 1048576) / elapsedSec;
-    final speedInKiloBytes = (len / 1024) / elapsedSec;
+    final speedInMegaBytes = (len / 1000000) / elapsedSec;
+    final speedInKiloBytes = (len / 1000) / elapsedSec;
     bytesTransferRate = len / elapsedSec;
 
     if (speedInMegaBytes > 1) {
