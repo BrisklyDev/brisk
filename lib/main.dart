@@ -17,7 +17,6 @@ import 'package:brisk/provider/theme_provider.dart';
 import 'package:brisk/theme/application_theme_holder.dart';
 import 'package:brisk/util/database_migration.dart';
 import 'package:brisk/util/download_addition_ui_util.dart';
-import 'package:brisk/util/github_star_handler.dart';
 import 'package:brisk/util/hot_key_util.dart';
 import 'package:brisk/util/launch_at_startup_util.dart';
 import 'package:brisk/util/notification_manager.dart';
@@ -222,7 +221,6 @@ class _MyHomePageState extends State<MyHomePage>
       HotKeyUtil.registerHotkeys(context);
       BrowserExtensionServer.setup(context);
       NotificationManager.init();
-      GitHubStarHandler.handleShowDialog(context);
       handleBriskUpdateCheck(context);
       if (launchedAtStartup) {
         Future.delayed(const Duration(milliseconds: 200), () {
