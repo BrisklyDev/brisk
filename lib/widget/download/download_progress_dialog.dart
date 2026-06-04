@@ -310,6 +310,8 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
           status = loc.status_assemblingFile;
         } else if (status == DownloadStatus.failed) {
           status = loc.status_downloadFailed;
+        } else if (status == DownloadStatus.networkError) {
+          status = loc.status_networkError;
         }
         return Text(
           status,

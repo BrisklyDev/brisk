@@ -47,6 +47,8 @@ class HttpDownloadEngine {
 
   static const _connectionResetTimerDurationSec = 4;
 
+  static const int _maxRetryBackoffMillis = 64000;
+
   static const buttonAvailabilityWaitSec = 2;
 
   /// A map of all stream channels related to the running download requests
@@ -70,6 +72,8 @@ class HttpDownloadEngine {
   /// new connections will be added on the fly despite the download being in a
   /// paused state.
   static final List<String> _connectionSpawnerIgnoreList = [];
+
+  static final Set<String> _networkErrorTerminatedDownloads = {};
 
   static Timer? _dynamicConnectionReuseTimer;
   static Timer? _dynamicConnectionSpawnerTimer;
@@ -134,20 +138,25 @@ class HttpDownloadEngine {
       if (engineChannel.downloadItem == null || engineChannel.paused) {
         return;
       }
-      final connectionsToReset = engineChannel.connectionChannels.values
+      final activeConns = engineChannel.connectionChannels.values
           .where(
             (conn) =>
                 conn.detailsStatus != DownloadStatus.paused &&
                 conn.detailsStatus != DownloadStatus.canceled &&
                 conn.detailsStatus != DownloadStatus.connectionComplete,
           )
-          .toList()
+          .toList();
+
+      final connectionsToReset = activeConns
           .where(
             (conn) =>
                 (conn.resetCount < downloadSettings!.maxConnectionRetryCount ||
                     downloadSettings!.maxConnectionRetryCount == -1) &&
                 conn.lastResponseTime +
-                        downloadSettings!.connectionRetryTimeoutMillis <
+                        _backoffDelayMillis(
+                          conn.resetCount,
+                          downloadSettings!.connectionRetryTimeoutMillis,
+                        ) <
                     _nowMillis,
           )
           .toList();
@@ -164,7 +173,42 @@ class HttpDownloadEngine {
         connection.sendMessage(message);
         connection.resetCount++;
       }
+
+      if (downloadSettings!.maxConnectionRetryCount == -1) return;
+      if (_networkErrorTerminatedDownloads.contains(downloadId)) return;
+      if (activeConns.isNotEmpty &&
+          activeConns.every(
+            (conn) =>
+                conn.resetCount >= downloadSettings!.maxConnectionRetryCount,
+          )) {
+        _networkErrorTerminatedDownloads.add(downloadId);
+        _terminateWithNetworkError(engineChannel.downloadItem!);
+      }
     });
+  }
+
+  static int _backoffDelayMillis(int retryCount, int baseMillis) {
+    if (retryCount == 0) return baseMillis;
+    final factor = 1 << retryCount;
+    return (baseMillis * factor).clamp(baseMillis, _maxRetryBackoffMillis);
+  }
+
+  static void _terminateWithNetworkError(DownloadItemModel downloadItem) {
+    final uid = downloadItem.uid;
+    _engineChannels[uid]?.logger?.warn(
+      "Max connection retries exceeded. Terminating download with network error.",
+    );
+    final conn =
+        _engineChannels[uid]?.connectionChannels.values.firstOrNull;
+    if (conn == null) return;
+    conn.sendMessage(
+      HttpDownloadIsolateMessage(
+        command: DownloadCommand.terminateWithNetworkError,
+        downloadItem: downloadItem,
+        settings: downloadSettings!,
+        connectionNumber: conn.connectionNumber,
+      ),
+    );
   }
 
   /// Manages connection reuse which allows for completed connections to receive
@@ -394,11 +438,21 @@ class HttpDownloadEngine {
         ),
         _engineChannels[uid]!.channel,
       );
+    } else if (message.networkError) {
+      message.downloadItem.status = DownloadStatus.networkError;
+      final progressMessage = DownloadProgressMessage(
+        downloadItem: message.downloadItem,
+        status: DownloadStatus.networkError,
+      );
+      _engineChannels[uid]?.sendMessage(progressMessage);
+      _engineChannels[uid]?.sendMessage(message);
+      _engineChannels.remove(uid);
     } else {
       _engineChannels[uid]?.sendMessage(message);
       _engineChannels.remove(uid);
     }
     _connectionSpawnerIgnoreList.remove(uid);
+    _networkErrorTerminatedDownloads.remove(uid);
     _connectionProgresses.remove(uid);
     _downloadProgresses.remove(uid);
   }

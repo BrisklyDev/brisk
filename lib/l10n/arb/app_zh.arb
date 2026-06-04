@@ -62,6 +62,7 @@
   "status_assemblingFile": "正在合并文件",
   "status_validatingFiles": "正在验证文件",
   "status_downloadFailed": "下载失败",
+  "status_networkError": "网络错误",
   "duplicateDownload_title": "重复下载",
   "duplicateDownload_description": "此下载已存在！\n请选择一个操作。",
   "btn_addNew": "添加新的",

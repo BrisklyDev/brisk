@@ -64,6 +64,7 @@
   "status_assemblingFile": "Ensamblando Archivo",
   "status_validatingFiles": "Validando Archivos",
   "status_downloadFailed": "Descarga Fallida",
+  "status_networkError": "Error de Red",
   "duplicateDownload_title": "Descarga Duplicada",
   "duplicateDownload_description": "¡Esta descarga ya existe!\nPor favor elige una acción.",
   "btn_addNew": "Agregar Nuevo",

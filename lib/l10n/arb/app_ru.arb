@@ -64,6 +64,7 @@
   "status_assemblingFile": "Сборка файла",
   "status_validatingFiles": "Проверка файлов",
   "status_downloadFailed": "Ошибка загрузки",
+  "status_networkError": "Ошибка сети",
   "duplicateDownload_title": "Дубликат загрузки",
   "duplicateDownload_description": "Эта загрузка уже существует!\nПожалуйста, выберите действие.",
   "btn_addNew": "Добавить новый",

@@ -203,6 +203,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get status_downloadFailed => 'Download Failed';
 
   @override
+  String get status_networkError => 'Network Error';
+
+  @override
   String get duplicateDownload_title => 'Duplicate Download';
 
   @override

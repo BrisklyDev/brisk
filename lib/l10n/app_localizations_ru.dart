@@ -203,6 +203,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get status_downloadFailed => 'Ошибка загрузки';
 
   @override
+  String get status_networkError => 'Ошибка сети';
+
+  @override
   String get duplicateDownload_title => 'Дубликат загрузки';
 
   @override

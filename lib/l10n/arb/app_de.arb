@@ -62,6 +62,7 @@
   "status_assemblingFile": "Datei wird zusammengesetzt",
   "status_validatingFiles": "Dateien werden überprüft",
   "status_downloadFailed": "Download fehlgeschlagen",
+  "status_networkError": "Netzwerkfehler",
   "duplicateDownload_title": "Doppelter Download",
   "duplicateDownload_description": "Dieser Download existiert bereits!\nBitte wählen Sie eine Aktion.",
   "btn_addNew": "Neu hinzufügen",

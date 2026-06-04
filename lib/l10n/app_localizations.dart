@@ -10,6 +10,7 @@ import 'app_localizations_en.dart';
 import 'app_localizations_es.dart';
 import 'app_localizations_fa.dart';
 import 'app_localizations_it.dart';
+import 'app_localizations_ro.dart';
 import 'app_localizations_ru.dart';
 import 'app_localizations_tr.dart';
 import 'app_localizations_zh.dart';
@@ -105,6 +106,7 @@ abstract class AppLocalizations {
     Locale('es'),
     Locale('fa'),
     Locale('it'),
+    Locale('ro'),
     Locale('ru'),
     Locale('tr'),
     Locale('zh')
@@ -493,6 +495,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Download Failed'**
   String get status_downloadFailed;
+
+  /// No description provided for @status_networkError.
+  ///
+  /// In en, this message translates to:
+  /// **'Network Error'**
+  String get status_networkError;
 
   /// No description provided for @duplicateDownload_title.
   ///
@@ -1711,6 +1719,7 @@ class _AppLocalizationsDelegate
         'es',
         'fa',
         'it',
+        'ro',
         'ru',
         'tr',
         'zh'
@@ -1733,6 +1742,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsFa();
     case 'it':
       return AppLocalizationsIt();
+    case 'ro':
+      return AppLocalizationsRo();
     case 'ru':
       return AppLocalizationsRu();
     case 'tr':

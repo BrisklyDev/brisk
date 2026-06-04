@@ -208,6 +208,7 @@ class DownloadConnectionInvoker {
         break;
       case DownloadCommand.terminate: // TODO add sink.close()
       case DownloadCommand.terminateAndEnginePanic:
+      case DownloadCommand.terminateWithNetworkError:
         for (final conn in _connections[uid]!.values) {
           await conn.pause(null);
         }
@@ -217,6 +218,8 @@ class DownloadConnectionInvoker {
           TerminatedMessage(
             enginePanic:
                 data.command == DownloadCommand.terminateAndEnginePanic,
+            networkError:
+                data.command == DownloadCommand.terminateWithNetworkError,
             downloadItem: data.downloadItem,
           ),
         );

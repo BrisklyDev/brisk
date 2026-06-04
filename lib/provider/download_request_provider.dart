@@ -138,7 +138,8 @@ class DownloadRequestProvider with ChangeNotifier {
         progress.downloadItem.fileName,
       );
     }
-    if (progress.status == DownloadStatus.failed &&
+    if ((progress.status == DownloadStatus.failed ||
+            progress.status == DownloadStatus.networkError) &&
         SettingsCache.notificationOnDownloadFailure) {
       NotificationManager.showNotification(
         NotificationManager.downloadFailureHeader,
@@ -181,7 +182,8 @@ class DownloadRequestProvider with ChangeNotifier {
   bool isUpdateEligible(String status) {
     return _previousUpdateTime + 2000 < _nowMillis ||
         status == DownloadStatus.assembleComplete ||
-        status == DownloadStatus.paused;
+        status == DownloadStatus.paused ||
+        status == DownloadStatus.networkError;
   }
 
   void insertRows(List<DownloadProgressMessage> progressData) {

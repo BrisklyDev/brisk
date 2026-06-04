@@ -202,6 +202,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get status_downloadFailed => '下载失败';
 
   @override
+  String get status_networkError => '网络错误';
+
+  @override
   String get duplicateDownload_title => '重复下载';
 
   @override

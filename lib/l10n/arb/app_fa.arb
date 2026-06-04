@@ -62,6 +62,7 @@
   "status_assemblingFile": "در حال آماده سازی فایل",
   "status_validatingFiles": "در حال اعتبارسنجی فایل\u200Cها",
   "status_downloadFailed": "دانلود ناموفق",
+  "status_networkError": "خطای شبکه",
   "duplicateDownload_title": "دانلود تکراری",
   "duplicateDownload_description": "این دانلود تکراری است! لطفاً یک اقدام را انتخاب کنید",
   "btn_addNew": "افزودن جدید",

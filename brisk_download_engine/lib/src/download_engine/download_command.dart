@@ -9,5 +9,6 @@ enum DownloadCommand {
   forceCancel,
   terminate,
   terminateAndEnginePanic,
+  terminateWithNetworkError,
   resetConnection,
 }

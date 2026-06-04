@@ -64,6 +64,7 @@
   "status_assemblingFile": "Se asamblează fișierul",
   "status_validatingFiles": "Se validează fișierele",
   "status_downloadFailed": "Descărcare eșuată",
+  "status_networkError": "Eroare de rețea",
   "duplicateDownload_title": "Descărcare duplicat",
   "duplicateDownload_description": "Această descărcare există deja!\nTe rugăm să alegi o acțiune.",
   "btn_addNew": "Adaugă una nouă",

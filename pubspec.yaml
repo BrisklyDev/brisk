@@ -56,6 +56,10 @@ dependencies:
   flutter_markdown: ^0.7.4+1
   flutter_emoji: ^2.5.1
 
+dependency_overrides:
+  hotkey_manager_linux:
+    path: ./hotkey_manager/packages/hotkey_manager_linux
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

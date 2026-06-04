@@ -203,6 +203,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get status_downloadFailed => 'İndirme Başarısız';
 
   @override
+  String get status_networkError => 'Ağ Hatası';
+
+  @override
   String get duplicateDownload_title => 'Yinelenen İndirme';
 
   @override

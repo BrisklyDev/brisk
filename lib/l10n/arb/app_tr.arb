@@ -63,6 +63,7 @@
   "status_assemblingFile": "Dosya Birleştiriliyor",
   "status_validatingFiles": "Dosyalar Doğrulanıyor",
   "status_downloadFailed": "İndirme Başarısız",
+  "status_networkError": "Ağ Hatası",
   "duplicateDownload_title": "Yinelenen İndirme",
   "duplicateDownload_description": "Bu indirme zaten mevcut!\nLütfen bir işlem seçin.",
   "btn_addNew": "Yeni Ekle",

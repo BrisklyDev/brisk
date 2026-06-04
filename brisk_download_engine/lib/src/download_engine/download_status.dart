@@ -10,4 +10,5 @@ class DownloadStatus {
    static const canceled = "Canceled";
    static const assembleComplete = "Complete";
    static const validatingFiles = "Validating files...";
+   static const networkError = "Network Error";
 }

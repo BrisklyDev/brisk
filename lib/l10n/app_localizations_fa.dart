@@ -203,6 +203,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get status_downloadFailed => 'دانلود ناموفق';
 
   @override
+  String get status_networkError => 'خطای شبکه';
+
+  @override
   String get duplicateDownload_title => 'دانلود تکراری';
 
   @override

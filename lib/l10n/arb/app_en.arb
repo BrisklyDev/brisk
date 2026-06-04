@@ -64,6 +64,7 @@
   "status_assemblingFile": "Assembling File",
   "status_validatingFiles": "Validating Files",
   "status_downloadFailed": "Download Failed",
+  "status_networkError": "Network Error",
   "duplicateDownload_title": "Duplicate Download",
   "duplicateDownload_description": "This download already exists!\nPlease choose an action.",
   "btn_addNew": "Add New",
