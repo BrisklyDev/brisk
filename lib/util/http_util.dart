@@ -21,7 +21,7 @@ const Map<String, String> contentType_MultiPartByteRanges = {
 
 const Map<String, String> userAgentHeader = {
   "User-Agent":
-      "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
 };
 
 bool checkDownloadPauseSupport(Map<String, String> headers) {
@@ -167,6 +167,7 @@ Future<FileInfo?> sendFileInfoRequest(
         if (filename != null) {
           downloadItem.fileName = filename;
         }
+        print(streamedResponse.statusCode.toString());
         if (headers["content-length"] == null ||
             !streamedResponse.statusCode.toString().startsWith("2")) {
           if (ignoreException) {
@@ -192,6 +193,7 @@ Future<FileInfo?> sendFileInfoRequest(
         }
       }
     }).onError((e) {
+      print(e);
       completer.completeError(
         Exception("Could not retrieve result from the given URL"),
       );
