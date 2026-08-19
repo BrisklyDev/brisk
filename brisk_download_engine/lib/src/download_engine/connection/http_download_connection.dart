@@ -5,7 +5,6 @@ import 'package:brisk_download_engine/brisk_download_engine.dart';
 import 'package:brisk_download_engine/src/download_engine/client/custom_base_client.dart';
 import 'package:brisk_download_engine/src/download_engine/engine/http_download_engine.dart';
 import 'package:brisk_download_engine/src/download_engine/message/connection_segment_message.dart';
-import 'package:brisk_download_engine/src/download_engine/message/engine_panic_message.dart';
 import 'package:brisk_download_engine/src/download_engine/message/internal_messages.dart';
 import 'package:brisk_download_engine/src/download_engine/message/log_message.dart';
 import 'package:brisk_download_engine/src/download_engine/segment/segment.dart';
@@ -263,7 +262,7 @@ class HttpDownloadConnection {
     totalDownloadProgress =
         totalConnectionReceivedBytes / downloadItem.fileSize;
     if (downloadProgress > 1) {
-      final excessBytes = totalConnectionReceivedBytes - segment.length;
+      final excessBytes = totalRequestReceivedBytes - segment.length;
       totalDownloadProgress =
           (totalConnectionReceivedBytes - excessBytes) / downloadItem.fileSize;
     }
@@ -417,12 +416,9 @@ class HttpDownloadConnection {
       await _onByteExceeded();
       return;
     }
-    if (receivedBytesMatchEndByte && endByte != downloadItem.fileSize) {
-      // _onByteExactMatch();
-      logger?.info(
-        "Received bytes match endByte! But we're doing NOTHING about it!",
-      );
-      // return;
+    if (receivedBytesMatchEndByte) {
+      await _onByteExactMatch();
+      return;
     }
     if (tempReceivedBytes > dynamicFlushThreshold) {
       flushBuffer();
@@ -430,18 +426,11 @@ class HttpDownloadConnection {
     notifyProgress();
   }
 
-  void _onByteExactMatch() async {
+  Future<void> _onByteExactMatch() async {
     logger?.info(
       "Received bytes match endByte! "
       "closing the connection and flushing the buffer...",
     );
-    if (endByte == downloadItem.fileSize) {
-      logger?.info("Connection corresponds to the last segment!");
-      totalRequestReceivedBytes += 3;
-      totalConnectionReceivedBytes += 3;
-      totalDownloadProgress =
-          totalConnectionReceivedBytes / downloadItem.fileSize;
-    }
     await terminateConnection();
     flushBuffer();
     _setDownloadComplete();
@@ -467,22 +456,24 @@ class HttpDownloadConnection {
     if (buffer.isEmpty) return;
     isWritingTempFile = true;
     final bytes = writeToUin8List(buffer);
+    final fileStartByte = tempFileStartByte;
+    final fileEndByte = tempFileEndByte;
     final filePath = join(
       tempDirectory.path,
-      "$connectionNumber#$tempFileStartByte-$tempFileEndByte",
+      "$connectionNumber#$fileStartByte-$fileEndByte",
     );
     previousBufferEndByte += bytes.lengthInBytes;
     final file = File(filePath)
       ..writeAsBytesSync(mode: FileMode.writeOnly, bytes);
 
-    if (tempFileStartByte > downloadItem.fileSize) {
+    final finalEndByte = downloadItem.fileSize - 1;
+    if (downloadItem.fileSize <= 0 || fileStartByte > finalEndByte) {
       logger?.error(
-        "Fatal:: conn$connectionNumber::$segment "
+        "Temp file starts beyond content length:: conn$connectionNumber::$segment "
         "byteExceed?$receivedBytesExceededEndByte "
         "TotalReqRec:$totalRequestReceivedBytes "
         "prevbufs:$previousBufferEndByte",
       );
-      _sendEnginePanic();
     }
     connectionCachedTempFiles.add(file);
     logger?.info(
@@ -494,13 +485,10 @@ class HttpDownloadConnection {
     sendLogBuffer();
   }
 
-  void _sendEnginePanic() {
-    logger?.info("Sending engine panic to the engine");
-    progressCallback!(EnginePanicMessage(downloadItem));
-  }
-
   void _onTempFileWriteComplete(File file) {
-    totalRequestWrittenBytes += file.lengthSync();
+    final fileLength = file.lengthSync();
+    totalRequestWrittenBytes += fileLength;
+    totalConnectionWrittenBytes += fileLength;
     totalConnectionWriteProgress =
         totalConnectionWrittenBytes / downloadItem.fileSize;
     totalRequestWriteProgress = totalRequestReceivedBytes / segment.length;
@@ -546,7 +534,9 @@ class HttpDownloadConnection {
     }
 
     for (final file in tempFilesToDelete) {
-      totalConnectionReceivedBytes -= file.lengthSync();
+      final fileLength = file.lengthSync();
+      totalConnectionReceivedBytes -= fileLength;
+      totalConnectionWrittenBytes -= fileLength;
       file.deleteSync();
       connectionCachedTempFiles.removeWhere((f) => f.path == file.path);
       logger?.info("Deleted file ${basename(file.path)}");
@@ -563,6 +553,8 @@ class HttpDownloadConnection {
       final file = File(newTempFilePath)..writeAsBytesSync(newBufferToWrite);
       connectionCachedTempFiles.add(file);
       totalConnectionReceivedBytes += newBufferToWrite.lengthInBytes;
+      totalConnectionWrittenBytes += newBufferToWrite.lengthInBytes;
+      totalRequestReceivedBytes = segment.length;
       totalRequestWrittenBytes = segment.length;
       logger?.info("Final file size ${file.lengthSync()}");
     }
@@ -588,16 +580,13 @@ class HttpDownloadConnection {
       str.writeln(basename(e.path));
     });
     logger?.info(str.toString());
+    final firstFile = basename(tempFiles.first.path);
+    if (getStartByteFromTempFileName(firstFile) != startByte) {
+      return false;
+    }
     if (tempFiles.length == 1) {
-      final file = basename(tempFiles[0].path);
-      final fileEndByte = getEndByteFromTempFileName(file);
-      if (endByte == downloadItem.fileSize &&
-          fileEndByte == downloadItem.fileSize - 1) {
-        return true;
-      }
-      if (endByte != fileEndByte) {
-        return false;
-      }
+      final fileEndByte = getEndByteFromTempFileName(firstFile);
+      return endByte == fileEndByte;
     }
     for (var i = 0; i < tempFiles.length; i++) {
       if (i == 0) continue;
@@ -607,22 +596,13 @@ class HttpDownloadConnection {
       final fileEndByte = getEndByteFromTempFile(file);
       final prevFileEndByte = getEndByteFromTempFile(prevFile);
       final isLastFile = i == tempFiles.length - 1;
-      if (isLastFile && fileEndByte == this.endByte - 1) {
-        logger?.info("ATTENTION:: ConnNum$connectionNumber is weird");
-      }
       if (fileStartByte != prevFileEndByte + 1) {
         logger?.info(
           "IsDownloadComplete::Found inconsistent ranges : ${basename(prevFile.path)} != ${basename(file.path)}",
         );
       }
-      if (isLastFile) {
-        if (endByte == downloadItem.fileSize &&
-            fileEndByte == downloadItem.fileSize - 1) {
-          return true;
-        }
-        if (fileEndByte != endByte) {
-          return false;
-        }
+      if (isLastFile && fileEndByte != endByte) {
+        return false;
       }
     }
     return true;
@@ -848,8 +828,8 @@ class HttpDownloadConnection {
 
   bool isStartNotAllowed(bool connectionReset, bool connectionReuse) {
     if (startByte >= endByte ||
-        startByte > downloadItem.fileSize ||
-        endByte > downloadItem.fileSize) {
+        startByte >= downloadItem.fileSize ||
+        endByte >= downloadItem.fileSize) {
       logger?.warn("Invalid requested byte ranges $segment. Skipping...");
       return true;
     }
@@ -974,12 +954,11 @@ class HttpDownloadConnection {
   /// Determines if the user is permitted to hit the start (Resume) button or not
   bool get isStartButtonEnabled => paused;
 
-  /// The endByte is non-inclusive. We therefore add 1 to prevent premature buffer flush
   bool get receivedBytesMatchEndByte =>
-      startByte + totalRequestReceivedBytes + 1 == endByte;
+      totalRequestReceivedBytes == segment.length;
 
   bool get receivedBytesExceededEndByte =>
-      startByte + totalRequestReceivedBytes + 1 > endByte;
+      totalRequestReceivedBytes > segment.length;
 
   int get startByte => segment.startByte;
 

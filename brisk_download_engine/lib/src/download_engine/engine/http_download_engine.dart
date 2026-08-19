@@ -196,10 +196,9 @@ class HttpDownloadEngine {
   static void _terminateWithNetworkError(DownloadItemModel downloadItem) {
     final uid = downloadItem.uid;
     _engineChannels[uid]?.logger?.warn(
-      "Max connection retries exceeded. Terminating download with network error.",
-    );
-    final conn =
-        _engineChannels[uid]?.connectionChannels.values.firstOrNull;
+          "Max connection retries exceeded. Terminating download with network error.",
+        );
+    final conn = _engineChannels[uid]?.connectionChannels.values.firstOrNull;
     if (conn == null) return;
     conn.sendMessage(
       HttpDownloadIsolateMessage(
@@ -957,9 +956,16 @@ class HttpDownloadEngine {
     });
   }
 
-  /// Analyzes the temp files and returns the missing temp byte ranges
+  /// Analyzes the temp files and returns the missing temp byte ranges.
+  ///
+  /// [DownloadItemModel.fileSize] is a byte count, while [Segment.endByte] is an
+  /// inclusive byte index. Therefore the last valid byte is always fileSize - 1.
   static List<Segment> _findMissingByteRanges(DownloadItemModel downloadItem) {
-    final contentLength = downloadItem.fileSize;
+    if (downloadItem.fileSize <= 0) {
+      return [];
+    }
+
+    final finalEndByte = downloadItem.fileSize - 1;
     List<File>? tempFiles;
     final tempDirPath = join(
       downloadSettings!.baseTempDir.path,
@@ -971,41 +977,30 @@ class HttpDownloadEngine {
     }
 
     if (tempFiles == null || tempFiles.isEmpty) {
-      return [Segment(0, downloadItem.fileSize)];
+      return [Segment(0, finalEndByte)];
     }
 
     tempFiles.sort(sortByByteRanges);
-    String prevFileName = "";
-    List<Segment> missingBytes = [];
-    for (var i = 0; i < tempFiles.length; i++) {
-      final tempFile = tempFiles[i];
+    final missingBytes = <Segment>[];
+    var nextExpectedStartByte = 0;
+    for (final tempFile in tempFiles) {
       final tempFileName = basename(tempFile.path);
-      if (prevFileName == "") {
-        prevFileName = tempFileName;
-        final startByte = getStartByteFromTempFileName(tempFileName);
-        if (startByte != 0) {
-          missingBytes.add(Segment(0, startByte - 1));
-        }
-        continue;
-      }
-
       final startByte = getStartByteFromTempFileName(tempFileName);
       final endByte = getEndByteFromTempFileName(tempFileName);
-      final prevEndByte = getEndByteFromTempFileName(prevFileName);
 
-      if (prevEndByte + 1 != startByte) {
-        final missingStartByte = prevEndByte + 1;
-        final missingEndByte = startByte - 1;
-        missingBytes.add(Segment(missingStartByte, missingEndByte));
+      if (startByte > nextExpectedStartByte) {
+        missingBytes.add(Segment(nextExpectedStartByte, startByte - 1));
       }
-      prevFileName = tempFileName;
+      if (endByte >= nextExpectedStartByte) {
+        nextExpectedStartByte = endByte + 1;
+      }
+      if (nextExpectedStartByte > finalEndByte) {
+        break;
+      }
+    }
 
-      /// endByte is always contentLength - 1, but just to be sure we also add
-      /// the endByte != contentLength
-      if (i == tempFiles.length - 1 &&
-          (endByte != contentLength - 1 && endByte != contentLength)) {
-        missingBytes.add(Segment(endByte + 1, contentLength));
-      }
+    if (nextExpectedStartByte <= finalEndByte) {
+      missingBytes.add(Segment(nextExpectedStartByte, finalEndByte));
     }
     return missingBytes..sort((a, b) => a.startByte.compareTo(b.startByte));
   }
@@ -1060,7 +1055,12 @@ class HttpDownloadEngine {
         );
         tempFilesToDelete.add(file);
       }
-      if (start > downloadItem.fileSize || end > downloadItem.fileSize) {
+      final finalEndByte = downloadItem.fileSize - 1;
+      if (downloadItem.fileSize <= 0 ||
+          start < 0 ||
+          end < start ||
+          start > finalEndByte ||
+          end > finalEndByte) {
         logger?.info(
           "Found byte range exceeding contentLength :: ${basename(file.path)} :: size ${file.length()}",
         );
@@ -1348,10 +1348,21 @@ class HttpDownloadEngine {
   }
 
   static double _calculateTotalDownloadProgress(String uid) {
-    return _connectionProgresses[uid]!
-        .values
-        .map((e) => e.totalDownloadProgress)
+    return calculateTotalProgressFromConnectionProgresses(
+      _connectionProgresses[uid]!.values,
+    );
+  }
+
+  static double calculateTotalProgressFromConnectionProgresses(
+    Iterable<DownloadProgressMessage> progresses,
+  ) {
+    if (progresses.isEmpty) return 0;
+    final downloadItem = progresses.first.downloadItem;
+    if (downloadItem.fileSize <= 0) return 0;
+    final totalReceivedBytes = progresses
+        .map((progress) => progress.totalReceivedBytes)
         .reduce((first, second) => first + second);
+    return totalReceivedBytes / downloadItem.fileSize;
   }
 
   /// TODO fix
