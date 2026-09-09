@@ -183,23 +183,27 @@ class DownloadSegmentTree {
   /// Splits and breaks down the lowest level nodes to new download segments.
   /// May throw an exception which is highly recommended to be handled.
   /// Refer to the docs of [splitSegmentNode] for more information.
-  void split() {
-    SegmentNode node = lowestLevelLeftNode;
-    splitSegmentNode(node);
-    if (node == root) {
-      return;
+  List<SegmentNode> split({int? maxSplits}) {
+    if (maxSplits != null && maxSplits <= 0) {
+      return [];
     }
-    SegmentNode? currentNeighbor = node.rightNeighbor!;
-    while (currentNeighbor != null) {
-      if (currentNeighbor.segmentStatus == SegmentStatus.complete) {
-        currentNeighbor = currentNeighbor.rightNeighbor;
+    final splitNodes = <SegmentNode>[];
+    final nodesToSplit = lowestLevelNodes
+        .where((node) => node.segmentStatus != SegmentStatus.complete)
+        .toList();
+    for (final node in nodesToSplit) {
+      if (maxSplits != null && splitNodes.length >= maxSplits) {
+        break;
+      }
+      if (!lowestLevelNodes.contains(node)) {
         continue;
       }
-      splitSegmentNode(currentNeighbor);
-      node.rightChild!.rightNeighbor = currentNeighbor.leftChild;
-      node = currentNeighbor;
-      currentNeighbor = currentNeighbor.rightNeighbor;
+      final splitSuccessful = splitSegmentNode(node);
+      if (splitSuccessful) {
+        splitNodes.add(node.leftChild!);
+      }
     }
+    return splitNodes;
   }
 
   SegmentNode get lowestLevelLeftNode {
@@ -258,6 +262,19 @@ class DownloadSegmentTree {
   /// It is HIGHLY recommended to call this method as well as other methods that
   /// rely in this to always be called in a try-catch block.
   bool splitSegmentNode(SegmentNode node, {setConnectionNumber = true}) {
+    final nodeIndex = lowestLevelNodes.indexWhere(
+      (s) => s.segment == node.segment,
+    );
+    if (nodeIndex == -1 || node.leftChild != null || node.rightChild != null) {
+      final str = StringBuffer();
+      str.writeln("Failed to find leaf node index ${node.segment}");
+      for (final element in lowestLevelNodes) {
+        str.writeln("LowestNode: ${element.segment}");
+      }
+      print(str.toString());
+      throw Exception(str.toString());
+    }
+
     final nodeSegment = node.segment;
     final splitByte =
         ((nodeSegment.endByte - nodeSegment.startByte) / 2).floor();
@@ -280,28 +297,25 @@ class DownloadSegmentTree {
         segRight.length < 8192) {
       return false;
     }
+
+    final previousLeftNeighbor = node.leftNeighbor;
+    final previousRightNeighbor = node.rightNeighbor;
     node.rightChild = SegmentNode(segment: segRight, parent: node);
     node.leftChild = SegmentNode(segment: segLeft, parent: node);
-    node.leftChild!.rightNeighbor = node.rightChild;
-    node.rightChild!.leftNeighbor = node.leftChild;
-    node.leftChild!.connectionNumber = node.connectionNumber;
+    node.leftChild!
+      ..leftNeighbor = previousLeftNeighbor
+      ..rightNeighbor = node.rightChild
+      ..connectionNumber = node.connectionNumber;
+    node.rightChild!
+      ..leftNeighbor = node.leftChild
+      ..rightNeighbor = previousRightNeighbor;
+    previousLeftNeighbor?.rightNeighbor = node.leftChild;
+    previousRightNeighbor?.leftNeighbor = node.rightChild;
     if (setConnectionNumber) {
-      this.maxConnectionNumber++;
+      maxConnectionNumber++;
       node.rightChild!.connectionNumber = maxConnectionNumber;
     }
-    final nodeIndex = lowestLevelNodes.indexWhere(
-      (s) => s.segment == node.segment,
-    );
     node.setLastUpdateMillis();
-    if (nodeIndex == -1) {
-      final str = StringBuffer();
-      str.writeln("Failed to find node index ${node.segment}");
-      lowestLevelNodes.forEach(
-        (element) => str.writeln("LowestNode: ${element.segment}"),
-      );
-      print(str.toString());
-      throw Exception(str.toString());
-    }
     lowestLevelNodes.removeAt(nodeIndex);
     lowestLevelNodes.insert(nodeIndex, node.leftChild!);
     lowestLevelNodes.insert(nodeIndex + 1, node.rightChild!);

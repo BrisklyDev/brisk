@@ -75,6 +75,8 @@ class HttpDownloadConnection {
 
   bool terminatedOnError = false;
 
+  bool _ignoreIncomingChunks = false;
+
   String connectionStatus = "";
 
   int totalRequestWrittenBytes = 0;
@@ -200,6 +202,7 @@ class HttpDownloadConnection {
     totalRequestReceivedBytes = 0;
     connectionStatus = DownloadStatus.connecting;
     previousBufferEndByte = 0;
+    _ignoreIncomingChunks = false;
   }
 
   init(
@@ -216,6 +219,7 @@ class HttpDownloadConnection {
     reset = false;
     terminatedOnCompletion = false;
     terminatedOnError = false;
+    _ignoreIncomingChunks = false;
     totalRequestReceivedBytes = 0;
   }
 
@@ -402,21 +406,33 @@ class HttpDownloadConnection {
   /// flushed to the disk. This process continues until the download has been
   /// finished. The buffer will be emptied after each flush
   Future<void> doProcessChunk(List<int> chunk) async {
-    if (chunk.isEmpty) return;
+    if (chunk.isEmpty || _ignoreIncomingChunks) return;
+    final remainingSegmentBytes = segment.length - totalRequestReceivedBytes;
+    if (remainingSegmentBytes <= 0) {
+      _ignoreIncomingChunks = true;
+      logger?.warn("Dropping chunk received after segment boundary");
+      return;
+    }
+    final chunkExceededSegmentEnd = chunk.length > remainingSegmentBytes;
+    final chunkToProcess = chunkExceededSegmentEnd
+        ? chunk.sublist(0, remainingSegmentBytes)
+        : chunk;
     updateStatus(DownloadStatus.downloading);
     lastResponseTimeMillis = _nowMillis;
     pauseButtonEnabled = downloadItem.supportsPause;
     connectionStatus = transferRate;
-    calculateTransferRate(chunk);
+    calculateTransferRate(chunkToProcess);
     calculateDynamicFlushThreshold();
-    buffer.add(chunk);
-    _updateReceivedBytes(chunk);
+    buffer.add(chunkToProcess);
+    _updateReceivedBytes(chunkToProcess);
     updateDownloadProgress();
-    if (receivedBytesExceededEndByte) {
+    if (chunkExceededSegmentEnd) {
+      _ignoreIncomingChunks = true;
       await _onByteExceeded();
       return;
     }
     if (receivedBytesMatchEndByte) {
+      _ignoreIncomingChunks = true;
       await _onByteExactMatch();
       return;
     }
@@ -427,6 +443,7 @@ class HttpDownloadConnection {
   }
 
   Future<void> _onByteExactMatch() async {
+    _ignoreIncomingChunks = true;
     logger?.info(
       "Received bytes match endByte! "
       "closing the connection and flushing the buffer...",
@@ -439,6 +456,7 @@ class HttpDownloadConnection {
   }
 
   Future<void> _onByteExceeded() async {
+    _ignoreIncomingChunks = true;
     logger?.info("Received bytes exceeded endByte");
     await terminateConnection();
     flushBuffer();
@@ -752,10 +770,12 @@ class HttpDownloadConnection {
   }
 
   Future<void> terminateConnection() async {
+    _ignoreIncomingChunks = true;
     try {
       logger?.info("Terminating connection...");
-      await client?.cancelRequest();
       await downloadSub?.cancel();
+      downloadSub = null;
+      await client?.cancelRequest();
       logger?.info("Connection Terminated");
     } catch (_) {}
   }
@@ -768,7 +788,14 @@ class HttpDownloadConnection {
   /// Flushes the remaining bytes in the buffer and completes the download.
   void onDownloadComplete() {
     logger?.info("onDownloadComplete paused $paused reset $reset");
-    if (paused || reset || terminatedOnCompletion || terminatedOnError) return;
+    if (_ignoreIncomingChunks ||
+        paused ||
+        reset ||
+        terminatedOnCompletion ||
+        terminatedOnError) {
+      return;
+    }
+    _ignoreIncomingChunks = true;
     bytesTransferRate = 0;
     downloadProgress = totalRequestReceivedBytes / segment.length;
     totalDownloadProgress =
@@ -789,6 +816,10 @@ class HttpDownloadConnection {
   /// Therefore, we handle the mentioned exception here in a way that [onDownloadComplete] will be called
   /// only when a download is actually completed.
   void onError(dynamic error, [dynamic s]) async {
+    if (_ignoreIncomingChunks) {
+      logger?.info("Ignoring stream error after incoming chunks were closed");
+      return;
+    }
     logger?.error("onError::: error : $error \n $s");
     clearBuffer();
     terminatedOnError = true;

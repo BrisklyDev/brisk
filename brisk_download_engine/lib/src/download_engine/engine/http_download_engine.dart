@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
+import 'dart:typed_data';
 import 'package:brisk_download_engine/brisk_download_engine.dart';
 import 'package:brisk_download_engine/src/download_engine/channel/engine_channel.dart';
 import 'package:brisk_download_engine/src/download_engine/channel/http_download_connection_channel.dart';
@@ -217,7 +218,7 @@ class HttpDownloadEngine {
     if (_dynamicConnectionReuseTimer != null) {
       return;
     }
-    _dynamicConnectionSpawnerTimer = Timer.periodic(
+    _dynamicConnectionReuseTimer = Timer.periodic(
       Duration(seconds: _connectionReuseTimerDurationSec),
       (_) => _runDynamicConnectionReuse(),
     );
@@ -308,11 +309,18 @@ class HttpDownloadEngine {
     final engineChannel = _engineChannels[downloadUid]!;
     final logger = engineChannel.logger;
     if (engineChannel.segmentTree == null) return;
+    final remainingConnectionSlots = _remainingConnectionSlots(engineChannel);
+    if (remainingConnectionSlots <= 0) {
+      return;
+    }
+    List<SegmentNode> splitSegmentNodes;
     try {
       logger?.info(
         "Pre-split segment tree:\n${engineChannel.segmentTree.toString()}",
       );
-      engineChannel.segmentTree!.split();
+      splitSegmentNodes = engineChannel.segmentTree!.split(
+        maxSplits: remainingConnectionSlots,
+      );
       logger?.info(
         "Post-split segment tree:\n${engineChannel.segmentTree.toString()}",
       );
@@ -320,15 +328,25 @@ class HttpDownloadEngine {
       logger?.error("_refreshConnectionSegments:: Fatal! $e");
       return;
     }
+    if (splitSegmentNodes.isEmpty) {
+      return;
+    }
     logger?.info("refreshing connection segments...");
     logger?.info("Segment tree :\n${engineChannel.segmentTree.toString()}");
-    final segmentNodes = engineChannel.segmentTree!.lowestLevelNodes;
-    engineChannel.connectionChannels.forEach((connNum, connectionChannel) {
-      final relatedSegmentNode =
-          segmentNodes.where((s) => s.connectionNumber == connNum).firstOrNull;
-      if (relatedSegmentNode == null) {
-        logger?.error("Fatal error occurred! relatedSegmentNode is null!");
-        return;
+    for (final relatedSegmentNode in splitSegmentNodes) {
+      final connNum = relatedSegmentNode.connectionNumber;
+      final connectionChannel = engineChannel.connectionChannels[connNum];
+      if (connectionChannel == null) {
+        logger?.error("Fatal error occurred! related connection is null!");
+        continue;
+      }
+      final currentSegment = connectionChannel.segment;
+      if (currentSegment != null &&
+          !_segmentsOverlap(relatedSegmentNode.segment, currentSegment)) {
+        logger?.error(
+          "Fatal error occurred! refresh segment ${relatedSegmentNode.segment} does not overlap connection $connNum segment $currentSegment",
+        );
+        continue;
       }
       final data = HttpDownloadIsolateMessage(
         command: DownloadCommand.refreshSegment,
@@ -344,7 +362,25 @@ class HttpDownloadEngine {
       logger?.info(
         "Command ${data.command} with segment ${relatedSegmentNode.segment} sent to connection $connNum",
       );
-    });
+    }
+  }
+
+  static int _remainingConnectionSlots(
+    EngineChannel<HttpDownloadConnectionChannel> engineChannel,
+  ) {
+    final remainingByChannels = downloadSettings!.totalConnections -
+        engineChannel.connectionChannels.length -
+        engineChannel.pendingHandshakes.length;
+    final remainingByCreated =
+        downloadSettings!.totalConnections - engineChannel.createdConnections;
+    return remainingByChannels < remainingByCreated
+        ? remainingByChannels
+        : remainingByCreated;
+  }
+
+  static bool _segmentsOverlap(Segment first, Segment second) {
+    return first.startByte <= second.endByte &&
+        second.startByte <= first.endByte;
   }
 
   static bool isDownloadNearCompletion(String downloadUid) {
@@ -1030,7 +1066,11 @@ class HttpDownloadEngine {
       ..downloadItem.status = DownloadStatus.validatingFiles;
     _engineChannels[downloadItem.uid]!.sendMessage(progress);
     logger?.info("Validating temp files integrity...");
-    List<File> tempFilesToDelete = [];
+    final tempFilesToDelete = <String, File>{};
+    void markTempFileForDeletion(File file) {
+      tempFilesToDelete[file.path] = file;
+    }
+
     final tempPath = join(downloadSettings!.baseTempDir.path, downloadItem.uid);
     final tempDir = Directory(tempPath);
     final tempFiles = getTempFilesSorted(tempDir);
@@ -1053,7 +1093,7 @@ class HttpDownloadEngine {
         logger?.info(
           "Found bad length :: ${basename(file.path)} :: size ${file.lengthSync()}",
         );
-        tempFilesToDelete.add(file);
+        markTempFileForDeletion(file);
       }
       final finalEndByte = downloadItem.fileSize - 1;
       if (downloadItem.fileSize <= 0 ||
@@ -1064,7 +1104,7 @@ class HttpDownloadEngine {
         logger?.info(
           "Found byte range exceeding contentLength :: ${basename(file.path)} :: size ${file.length()}",
         );
-        tempFilesToDelete.add(file);
+        markTempFileForDeletion(file);
       }
       if (i == tempFiles.length - 1) {
         continue;
@@ -1073,19 +1113,19 @@ class HttpDownloadEngine {
       final startNext = getStartByteFromTempFile(nextFile);
       // Cases where there is a single missing byte
       if (startNext - end == 2) {
-        tempFilesToDelete.add(file);
+        markTempFileForDeletion(file);
         if (i - 1 < 0) {
-          tempFilesToDelete.add(tempFiles[i + 1]);
+          markTempFileForDeletion(tempFiles[i + 1]);
         } else {
-          tempFilesToDelete.add(tempFiles[i - 1]);
+          markTempFileForDeletion(tempFiles[i - 1]);
         }
       }
       if (checkForMissingTempFile && startNext - 1 != end) {
         logger?.info(
           "Found inconsistent temp file :: ${basename(file.path)} == ${basename(nextFile.path)} :: size ${file.lengthSync()} == ${nextFile.lengthSync()}",
         );
-        tempFilesToDelete.add(file);
-        tempFilesToDelete.add(nextFile);
+        markTempFileForDeletion(file);
+        markTempFileForDeletion(nextFile);
       }
       try {
         for (int j = i + 1; j < segments.length; j++) {
@@ -1103,23 +1143,40 @@ class HttpDownloadEngine {
           if (currentOverlapsWithOther || otherOverlapsWithCurrent) {
             logger?.info(
                 "Found overlapping temp files: ${basename(file.path)} === ${basename(other.file!.path)}");
-            tempFilesToDelete.add(file);
-            tempFilesToDelete.add(other.file!);
+            markTempFileForDeletion(file);
+            markTempFileForDeletion(other.file!);
           }
         }
       } catch (_) {}
     }
     logger?.info("==== Total bad temp files ====");
-    for (final badFile in tempFilesToDelete) {
+    for (final badFile in tempFilesToDelete.values) {
       logger?.info("Bad temp file :: $badFile");
     }
     bool badTempFilesExisted = false;
     if (deleteCorruptedTempFiles) {
-      for (final file in tempFilesToDelete) {
+      for (final file in tempFilesToDelete.values) {
         badTempFilesExisted = true;
         logger?.info("Deleting bad temp file ${basename(file.path)}...");
+        if (!file.existsSync()) {
+          logger?.warn(
+            "Skipping bad temp file ${basename(file.path)} because it was already deleted.",
+          );
+          continue;
+        }
         try {
           file.deleteSync();
+        } on FileSystemException catch (e) {
+          if (e.osError?.errorCode == 2) {
+            logger?.warn(
+              "Skipping bad temp file ${basename(file.path)} because it was already deleted.",
+            );
+            continue;
+          }
+          logger?.error(
+            "Failed to delete file ${basename(file.path)}! $e \nSending engine panic!",
+          );
+          _terminateAndRestartEngine(downloadItem);
         } catch (e) {
           logger?.error(
             "Failed to delete file ${basename(file.path)}! $e \nSending engine panic!",
@@ -1178,15 +1235,13 @@ class HttpDownloadEngine {
       fileToWrite.createSync(recursive: true);
     }
     logger?.info("Creating file...");
-    for (int i = 0; i < tempFiles.length; i++) {
-      progress.assembleProgress = i / tempFiles.length;
-      progressChannel.sink.add(progress);
-      var file = tempFiles[i];
-      final bytes = file.readAsBytesSync();
-      fileToWrite.writeAsBytesSync(bytes, mode: FileMode.writeOnlyAppend);
-    }
-    final assembleSuccessful =
-        fileToWrite.lengthSync() == downloadItem.fileSize;
+    final assembleSuccessful = _writeTempFilesToOutput(
+      tempFiles,
+      fileToWrite,
+      downloadItem.fileSize,
+      progress,
+      progressChannel,
+    );
     if (assembleSuccessful) {
       _connectionIsolates[downloadItem.uid]?.values.forEach((isolate) {
         isolate.kill();
@@ -1209,6 +1264,53 @@ class HttpDownloadEngine {
       _engineChannels.remove(downloadItem.uid);
     }
     return assembleSuccessful;
+  }
+
+  static bool _writeTempFilesToOutput(
+    List<File> tempFiles,
+    File fileToWrite,
+    int expectedFileSize,
+    DownloadProgressMessage progress,
+    IsolateChannel progressChannel,
+  ) {
+    const bufferSize = 8 * 1024 * 1024;
+    const progressIntervalMillis = 500;
+    final buffer = Uint8List(bufferSize);
+    var assembledBytes = 0;
+    var lastProgressMillis = 0;
+    RandomAccessFile? output;
+    try {
+      output = fileToWrite.openSync(mode: FileMode.writeOnly);
+      for (final tempFile in tempFiles) {
+        final input = tempFile.openSync(mode: FileMode.read);
+        try {
+          while (true) {
+            final bytesRead = input.readIntoSync(buffer);
+            if (bytesRead <= 0) {
+              break;
+            }
+            output.writeFromSync(buffer, 0, bytesRead);
+            assembledBytes += bytesRead;
+            final now = DateTime.now().millisecondsSinceEpoch;
+            if (now - lastProgressMillis >= progressIntervalMillis) {
+              lastProgressMillis = now;
+              progress.assembleProgress = assembledBytes / expectedFileSize;
+              progressChannel.sink.add(progress);
+            }
+          }
+        } finally {
+          input.closeSync();
+        }
+      }
+      progress.assembleProgress = 1;
+      progressChannel.sink.add(progress);
+    } catch (_) {
+      return false;
+    } finally {
+      output?.closeSync();
+    }
+    return assembledBytes == expectedFileSize &&
+        fileToWrite.lengthSync() == expectedFileSize;
   }
 
   static void _setConnectionProgresses(DownloadProgressMessage progress) {

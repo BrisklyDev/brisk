@@ -5,6 +5,8 @@ import 'package:brisk_download_engine/src/download_engine/connection/http_downlo
 import 'package:brisk_download_engine/src/download_engine/engine/http_download_engine.dart';
 import 'package:brisk_download_engine/src/download_engine/segment/download_segment_tree.dart';
 import 'package:brisk_download_engine/src/download_engine/segment/segment.dart';
+import 'package:brisk_download_engine/src/download_engine/segment/segment_status.dart';
+import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
 void main() {
@@ -49,6 +51,75 @@ void main() {
       expect(tree.root.segment.length, fileSize);
     });
 
+    test('segment tree splits unfinished leaves after connection reuse', () {
+      const fileSize = 130079008;
+      final tree = DownloadSegmentTree.buildFromMissingBytes(
+        fileSize,
+        8,
+        [Segment(0, fileSize - 1)],
+      );
+      tree.split();
+
+      final completedLeft = tree.root.leftChild!;
+      final activeRight = tree.root.rightChild!;
+      completedLeft.segmentStatus = SegmentStatus.complete;
+      activeRight.segmentStatus = SegmentStatus.inUse;
+      activeRight.connectionNumber = 1;
+
+      final reusedConnectionSplit = tree.splitSegmentNode(
+        activeRight,
+        setConnectionNumber: false,
+      );
+      expect(reusedConnectionSplit, isTrue);
+      activeRight
+        ..segmentStatus = SegmentStatus.outdated
+        ..leftChild!.segmentStatus = SegmentStatus.complete
+        ..rightChild!.segmentStatus = SegmentStatus.inUse;
+      activeRight.rightChild!.connectionNumber = 0;
+
+      expect(() => tree.split(), returnsNormally);
+
+      expect(completedLeft.leftChild, isNull);
+      expect(completedLeft.rightChild, isNull);
+      expect(
+        tree.lowestLevelNodes.map((node) => node.segment).toList(),
+        [
+          Segment(0, 65039503),
+          Segment(65039504, 97559255),
+          Segment(97559256, 113819131),
+          Segment(113819132, 130079007),
+        ],
+      );
+    });
+
+    test('segment tree split respects maxSplits', () {
+      const fileSize = 116045672;
+      final tree = DownloadSegmentTree.buildFromMissingBytes(
+        fileSize,
+        8,
+        [Segment(0, fileSize - 1)],
+      );
+
+      var splitNodes = tree.split(maxSplits: 1);
+      expect(splitNodes.length, 1);
+      expect(tree.lowestLevelNodes.length, 2);
+
+      for (final node in tree.lowestLevelNodes) {
+        node.segmentStatus = SegmentStatus.inUse;
+      }
+      splitNodes = tree.split(maxSplits: 2);
+      expect(splitNodes.length, 2);
+      expect(tree.lowestLevelNodes.length, 4);
+
+      for (final node in tree.lowestLevelNodes) {
+        node.segmentStatus = SegmentStatus.inUse;
+      }
+      splitNodes = tree.split(maxSplits: 1);
+      expect(splitNodes.length, 1);
+      expect(tree.lowestLevelNodes.length, 5);
+      expect(tree.maxConnectionNumber, 4);
+    });
+
     test('connection completion predicates use inclusive segment length', () {
       const fileSize = 130079008;
       final segment = Segment(129706678, fileSize - 1);
@@ -74,6 +145,35 @@ void main() {
 
       expect(valid.isStartNotAllowed(false, false), isFalse);
       expect(invalid.isStartNotAllowed(false, false), isTrue);
+    });
+
+    test('connection clips overrun chunk and ignores later chunks', () async {
+      final tempDir =
+          Directory.systemTemp.createTempSync('brisk_chunk_boundary_test_');
+      try {
+        final connection = _connection(
+          32,
+          Segment(10, 19),
+          tempDir: tempDir,
+          uid: 'boundary-test',
+        );
+        final messages = <dynamic>[];
+        connection.progressCallback = messages.add;
+        connection.tempDirectory.createSync(recursive: true);
+
+        await connection.doProcessChunk(List<int>.filled(15, 1));
+        await connection.doProcessChunk(List<int>.filled(8, 2));
+
+        final files =
+            connection.tempDirectory.listSync().whereType<File>().toList();
+        expect(files, hasLength(1));
+        expect(p.basename(files.single.path), '0#10-19');
+        expect(files.single.lengthSync(), 10);
+        expect(connection.totalRequestReceivedBytes, 10);
+        expect(connection.receivedBytesMatchEndByte, isTrue);
+      } finally {
+        tempDir.deleteSync(recursive: true);
+      }
     });
 
     test('total progress uses byte counts instead of summed fractions', () {
@@ -126,9 +226,15 @@ void main() {
   });
 }
 
-HttpDownloadConnection _connection(int fileSize, Segment segment) {
+HttpDownloadConnection _connection(
+  int fileSize,
+  Segment segment, {
+  Directory? tempDir,
+  String uid = '',
+}) {
   return HttpDownloadConnection(
     downloadItem: DownloadItemModel(
+      uid: uid,
       fileName: 'file.bin',
       downloadUrl: 'https://example.com/file.bin',
       progress: 0,
@@ -137,7 +243,7 @@ HttpDownloadConnection _connection(int fileSize, Segment segment) {
     segment: segment,
     connectionNumber: 0,
     settings: ConnectionSettings(
-      baseTempDir: Directory.systemTemp,
+      baseTempDir: tempDir ?? Directory.systemTemp,
       connectionRetryTimeoutMillis: 1000,
       maxConnectionRetryCount: 1,
       loggerEnabled: false,
