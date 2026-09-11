@@ -74,7 +74,7 @@ ApplicationTheme light = const ApplicationTheme(
       borderHoverColor: Colors.green,
     ),
     pauseColor: ButtonColor(
-      iconColor: Colors.transparent,
+      iconColor: Colors.white,
       hoverIconColor: Colors.transparent,
       textColor: Colors.white,
       hoverBackgroundColor: const Color.fromRGBO(244, 67, 54, 0.9),
@@ -219,10 +219,10 @@ ApplicationTheme light = const ApplicationTheme(
     cancelColor: ButtonColor(
       iconColor: Colors.transparent,
       hoverIconColor: Colors.transparent,
-      textColor: Colors.white70,
+      textColor: Colors.black,
       hoverBackgroundColor: const Color.fromRGBO(244, 67, 54, 1),
       hoverTextColor: Colors.white,
-      backgroundColor: const Color.fromRGBO(45, 45, 45, 0.5),
+      backgroundColor: Colors.transparent,
       borderColor: Colors.transparent,
       borderHoverColor: Colors.red,
     ),
