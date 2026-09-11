@@ -887,4 +887,14 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String get extension_restart_failed =>
       'Eșec la repornirea serverului extensiei!';
+
+  @override
+  String get donationPrompt_title => 'Îți place Brisk?';
+
+  @override
+  String get donationPrompt_description =>
+      'Îți place Brisk? Sprijinul tău ajută la finanțarea dezvoltării continue, a îmbunătățirilor și a funcțiilor noi.';
+
+  @override
+  String get donationPrompt_neverShowAgain => 'Nu mai afișa';
 }

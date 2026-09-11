@@ -294,5 +294,8 @@
   "btn_hideAdvancedOptions": "Ascunde opțiuni avansate",
   "settings_automaticFileSavePathCategorization": "Categorisire automată a căii de salvare a fișierelor",
   "extension_restart_success": "Serverul extensiei a fost repornit cu succes!",
-  "extension_restart_failed": "Eșec la repornirea serverului extensiei!"
+  "extension_restart_failed": "Eșec la repornirea serverului extensiei!",
+  "donationPrompt_title": "Îți place Brisk?",
+  "donationPrompt_description": "Îți place Brisk? Sprijinul tău ajută la finanțarea dezvoltării continue, a îmbunătățirilor și a funcțiilor noi.",
+  "donationPrompt_neverShowAgain": "Nu mai afișa"
 }

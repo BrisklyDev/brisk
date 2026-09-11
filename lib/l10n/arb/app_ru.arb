@@ -289,5 +289,8 @@
   "settings_engine_clientType_performance": "Производительный (Beta)",
   "btn_showAdvancedOptions": "Показать расширенные опции",
   "btn_hideAdvancedOptions": "Скрыть расширенные опции",
-  "settings_automaticFileSavePathCategorization": "Автоматическая категоризация пути сохранения файлов"
+  "settings_automaticFileSavePathCategorization": "Автоматическая категоризация пути сохранения файлов",
+  "donationPrompt_title": "Нравится Brisk?",
+  "donationPrompt_description": "Нравится Brisk? Ваша поддержка помогает финансировать дальнейшую разработку, улучшения и новые функции.",
+  "donationPrompt_neverShowAgain": "Больше не показывать"
 }

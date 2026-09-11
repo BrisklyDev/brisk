@@ -883,4 +883,14 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get extension_restart_failed => 'Failed to restart extension server!';
+
+  @override
+  String get donationPrompt_title => 'Нравится Brisk?';
+
+  @override
+  String get donationPrompt_description =>
+      'Нравится Brisk? Ваша поддержка помогает финансировать дальнейшую разработку, улучшения и новые функции.';
+
+  @override
+  String get donationPrompt_neverShowAgain => 'Больше не показывать';
 }

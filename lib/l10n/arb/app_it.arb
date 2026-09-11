@@ -281,5 +281,8 @@
   "ffmpeg_installationNotSupported_description": "L'installazione automatica non è supportata in macOS.",
   "ffmpeg_installationNotSupported_descriptionHint": "Installa FFmpeg usando Homebrew o qualsiasi altro gestore pacchetti disponibile.",
   "btn_installLater": "Lo installerò più avanti",
-  "btn_installAutomatically": "Installa automaticamente"
+  "btn_installAutomatically": "Installa automaticamente",
+  "donationPrompt_title": "Ti piace Brisk?",
+  "donationPrompt_description": "Ti piace Brisk? Il tuo supporto aiuta a finanziare lo sviluppo continuo, i miglioramenti e le nuove funzionalità.",
+  "donationPrompt_neverShowAgain": "Non mostrare più"
 }

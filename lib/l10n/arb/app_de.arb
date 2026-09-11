@@ -260,5 +260,8 @@
   "copiedToClipboard": "In die Zwischenablage kopiert",
   "addUrlFromClipboardHotkey": "Hotkey: URL aus Zwischenablage einfügen",
   "tray_showWindow": "Fenster anzeigen",
-  "tray_exitApp": "App beenden"
+  "tray_exitApp": "App beenden",
+  "donationPrompt_title": "Gefällt dir Brisk?",
+  "donationPrompt_description": "Gefällt dir Brisk? Deine Unterstützung hilft, die Weiterentwicklung, Verbesserungen und neue Funktionen zu finanzieren.",
+  "donationPrompt_neverShowAgain": "Nicht mehr anzeigen"
 }

@@ -260,5 +260,8 @@
   "copiedToClipboard": "در کلیپ‌بورد کپی شد",
   "addUrlFromClipboardHotkey": "کلید میانبر اضافه کردن دانلود از کلیپبورد",
   "tray_showWindow": "نمایش پنجره",
-  "tray_exitApp": "خروج از برنامه"
+  "tray_exitApp": "خروج از برنامه",
+  "donationPrompt_title": "از Brisk لذت می‌برید؟",
+  "donationPrompt_description": "از Brisk لذت می‌برید؟ حمایت شما به تأمین هزینه توسعه مداوم، بهبودها و قابلیت‌های جدید کمک می‌کند.",
+  "donationPrompt_neverShowAgain": "دیگر نمایش داده نشود"
 }

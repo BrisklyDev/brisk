@@ -14,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:brisk/util/download_engine_util.dart';
+import 'package:brisk/util/donation_reminder.dart';
 import 'package:stream_channel/stream_channel.dart';
 import 'package:brisk/util/readability_util.dart';
 import 'package:brisk/setting/settings_cache.dart';
@@ -86,6 +87,9 @@ class DownloadRequestProvider with ChangeNotifier {
 
   void _handleDownloadProgressMessage(DownloadProgressMessage progress) async {
     final id = progress.downloadItem.id!;
+    final isNewCompletion =
+        progress.status == DownloadStatus.assembleComplete &&
+            downloads[id]?.status != DownloadStatus.assembleComplete;
     downloads[id] = progress;
     if (progress.status == DownloadStatus.downloading ||
         progress.status == DownloadStatus.validatingFiles ||
@@ -106,6 +110,9 @@ class DownloadRequestProvider with ChangeNotifier {
       PlutoGridUtil.removeCachedRow(id);
     }
     _updateDownloadRequest(progress, dl);
+    if (isNewCompletion) {
+      unawaited(DonationReminder.recordSuccessfulDownload());
+    }
     if (progress.status == DownloadStatus.assembleComplete) {
       if (dl.subtitles.isNotEmpty && await FFmpeg.isInstalled()) {
         await FFmpeg.addSoftSubsToDownloadedFile(dl);
