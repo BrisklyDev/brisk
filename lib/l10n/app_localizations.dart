@@ -1701,6 +1701,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to restart extension server!'**
   String get extension_restart_failed;
+
+  /// No description provided for @donationPrompt_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoying Brisk?'**
+  String get donationPrompt_title;
+
+  /// No description provided for @donationPrompt_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoying Brisk? Your support helps fund continued development, improvements, and new features.'**
+  String get donationPrompt_description;
+
+  /// No description provided for @donationPrompt_neverShowAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Never show again'**
+  String get donationPrompt_neverShowAgain;
 }
 
 class _AppLocalizationsDelegate

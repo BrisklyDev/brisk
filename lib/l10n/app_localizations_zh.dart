@@ -841,4 +841,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get extension_restart_failed => 'Failed to restart extension server!';
+
+  @override
+  String get donationPrompt_title => '喜欢 Brisk 吗？';
+
+  @override
+  String get donationPrompt_description => '喜欢 Brisk 吗？您的支持有助于持续开发、改进和推出新功能。';
+
+  @override
+  String get donationPrompt_neverShowAgain => '不再显示';
 }

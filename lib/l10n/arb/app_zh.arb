@@ -232,5 +232,8 @@
   "copiedToClipboard": "已复制到剪贴板",
   "addUrlFromClipboardHotkey": "从剪贴板添加 URL 快捷键",
   "tray_showWindow": "显示窗口",
-  "tray_exitApp": "退出"
-} 
+  "tray_exitApp": "退出",
+  "donationPrompt_title": "喜欢 Brisk 吗？",
+  "donationPrompt_description": "喜欢 Brisk 吗？您的支持有助于持续开发、改进和推出新功能。",
+  "donationPrompt_neverShowAgain": "不再显示"
+}

@@ -294,5 +294,8 @@
   "btn_hideAdvancedOptions": "Hide Advanced Options",
   "settings_automaticFileSavePathCategorization": "Automatic file save path categorization",
   "extension_restart_success": "Extension server restarted successfully!",
-  "extension_restart_failed": "Failed to restart extension server!"
+  "extension_restart_failed": "Failed to restart extension server!",
+  "donationPrompt_title": "Enjoying Brisk?",
+  "donationPrompt_description": "Enjoying Brisk? Your support helps fund continued development, improvements, and new features.",
+  "donationPrompt_neverShowAgain": "Never show again"
 }

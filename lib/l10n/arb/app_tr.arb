@@ -280,5 +280,8 @@
   "ffmpeg_installationNotSupported_description": "Otomatik kurulum macOS için desteklenmiyor.",
   "ffmpeg_installationNotSupported_descriptionHint": "Lütfen Homebrew veya başka bir paket yöneticisi kullanarak FFmpeg'i yükleyin.",
   "btn_installLater": "Daha Sonra Yükleyeceğim",
-  "btn_installAutomatically": "Otomatik Olarak Yükle"
+  "btn_installAutomatically": "Otomatik Olarak Yükle",
+  "donationPrompt_title": "Brisk'i beğeniyor musunuz?",
+  "donationPrompt_description": "Brisk'i beğeniyor musunuz? Desteğiniz geliştirme çalışmalarının, iyileştirmelerin ve yeni özelliklerin devam etmesine yardımcı olur.",
+  "donationPrompt_neverShowAgain": "Bir daha gösterme"
 }

@@ -877,4 +877,14 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get extension_restart_failed => 'Failed to restart extension server!';
+
+  @override
+  String get donationPrompt_title => 'Brisk\'i beğeniyor musunuz?';
+
+  @override
+  String get donationPrompt_description =>
+      'Brisk\'i beğeniyor musunuz? Desteğiniz geliştirme çalışmalarının, iyileştirmelerin ve yeni özelliklerin devam etmesine yardımcı olur.';
+
+  @override
+  String get donationPrompt_neverShowAgain => 'Bir daha gösterme';
 }

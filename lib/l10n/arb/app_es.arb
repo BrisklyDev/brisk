@@ -289,5 +289,8 @@
   "settings_engine_clientType_performance": "Rendimiento (Beta)",
   "btn_showAdvancedOptions": "Mostrar Opciones Avanzadas",
   "btn_hideAdvancedOptions": "Ocultar Opciones Avanzadas",
-  "settings_automaticFileSavePathCategorization": "Categorización automática de ruta de guardado de archivos"
+  "settings_automaticFileSavePathCategorization": "Categorización automática de ruta de guardado de archivos",
+  "donationPrompt_title": "¿Te gusta Brisk?",
+  "donationPrompt_description": "¿Te gusta Brisk? Tu apoyo ayuda a financiar el desarrollo continuo, las mejoras y nuevas funciones.",
+  "donationPrompt_neverShowAgain": "No volver a mostrar"
 }

@@ -3,7 +3,6 @@ import 'package:brisk_download_engine/src/download_engine/segment/segment.dart';
 import 'package:dartx/dartx.dart';
 import 'package:path/path.dart';
 
-
 /// [first] : either the first file name or the sum of the previous reduce operation
 int addTempFilesLengthReduce(String first, String secondFileName) {
   if (first.isInt) {
@@ -84,11 +83,7 @@ List<File> getTempFilesSorted(
 bool isTempFileInByteRange(File file, int startByte, int endByte) {
   final tempStartByte = getStartByteFromTempFile(file);
   final tempEndByte = getEndByteFromTempFile(file);
-  return (tempStartByte >= startByte &&
-          tempStartByte < endByte &&
-          tempEndByte <= endByte &&
-          tempEndByte > startByte) ||
-      (tempStartByte < endByte && tempEndByte > endByte);
+  return tempStartByte <= endByte && tempEndByte >= startByte;
 }
 
 int getStartByteFromTempFile(File tempFile) {

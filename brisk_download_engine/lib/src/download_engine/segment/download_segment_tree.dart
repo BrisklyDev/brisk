@@ -5,7 +5,7 @@ import 'package:dartx/dartx.dart';
 /// A tree implementation of download segments. Used for dynamic segmentation
 /// of the download byte ranges associated with their designated connections.
 /// When a download initially begins, it is started with one root node with
-/// startByte=0 and endByte=contentLength. As the engine adds new connections,
+/// startByte=0 and endByte=contentLength - 1. As the engine adds new connections,
 /// the tree is further broken down into smaller segments, each associated with
 /// a download connection.
 ///
@@ -38,14 +38,29 @@ class DownloadSegmentTree {
     int maxNumberOfConnections,
     List<Segment> segments,
   ) {
+    final finalEndByte = contentLength - 1;
+    final normalizedSegments = segments
+        .map((segment) {
+          final endByte =
+              segment.endByte > finalEndByte ? finalEndByte : segment.endByte;
+          return Segment(segment.startByte, endByte);
+        })
+        .where(
+          (segment) =>
+              segment.startByte <= finalEndByte &&
+              segment.endByte >= segment.startByte,
+        )
+        .toList();
     final tree = DownloadSegmentTree(
-      SegmentNode(segment: Segment(0, contentLength)),
+      SegmentNode(segment: Segment(0, finalEndByte)),
     );
-    final first = segments[0];
-    if (segments.length == 1 &&
+    if (normalizedSegments.isEmpty) {
+      return tree;
+    }
+    final first = normalizedSegments[0];
+    if (normalizedSegments.length == 1 &&
         first.startByte == 0 &&
-        (first.endByte == contentLength ||
-            first.endByte == contentLength - 1)) {
+        first.endByte == finalEndByte) {
       return tree;
     }
     if (first.startByte != 0) {
@@ -62,7 +77,7 @@ class DownloadSegmentTree {
       ..connectionNumber = 0
       ..createRightChild(
         tree.root.leftChild!.segment.endByte + 1,
-        contentLength,
+        finalEndByte,
         segmentStatus: SegmentStatus.outdated,
         connectionNumber: 1,
       );
@@ -74,12 +89,12 @@ class DownloadSegmentTree {
       ..remove(tree.root)
       ..add(tree.root.leftChild!)
       ..add(tree.root.rightChild!);
-    if (first.startByte == 0 && segments.length == 1) {
+    if (first.startByte == 0 && normalizedSegments.length == 1) {
       tree.root.rightChild!.segmentStatus = SegmentStatus.complete;
       return tree;
     }
 
-    var missingSegments = [...segments];
+    var missingSegments = [...normalizedSegments];
     if (first.startByte == 0) {
       /// because it has already been assigned to a SegmentNode
       missingSegments.removeAt(0);
@@ -99,10 +114,9 @@ class DownloadSegmentTree {
           currentMissing.startByte,
           currentMissing.endByte,
           connectionNumber: currentMaxConnectionNumber,
-          segmentStatus:
-              exceededMaxConnectionNumber
-                  ? SegmentStatus.inQueue
-                  : SegmentStatus.initial,
+          segmentStatus: exceededMaxConnectionNumber
+              ? SegmentStatus.inQueue
+              : SegmentStatus.initial,
         );
         missingSegments.remove(currentMissing);
       } else {
@@ -114,11 +128,10 @@ class DownloadSegmentTree {
       }
       iterationRoot.createRightChild(
         iterationRoot.leftChild!.segment.endByte + 1,
-        contentLength,
-        segmentStatus:
-            exceededMaxConnectionNumber
-                ? SegmentStatus.inQueue
-                : SegmentStatus.outdated,
+        finalEndByte,
+        segmentStatus: exceededMaxConnectionNumber
+            ? SegmentStatus.inQueue
+            : SegmentStatus.outdated,
       );
       iterationRoot
         ..rightChild?.leftNeighbor = iterationRoot.leftChild
@@ -130,7 +143,7 @@ class DownloadSegmentTree {
         ..insert(index + 1, iterationRoot.rightChild!);
       if (missingSegments.isEmpty) {
         iterationRoot.rightChild!.segmentStatus = SegmentStatus.complete;
-        if (iterationRoot.rightChild!.segment.startByte >= contentLength) {
+        if (iterationRoot.rightChild!.segment.startByte > finalEndByte) {
           tree.lowestLevelNodes.remove(iterationRoot.rightChild);
           iterationRoot.rightChild = null;
         }
@@ -140,10 +153,9 @@ class DownloadSegmentTree {
       }
       iterationRoot = iterationRoot.rightChild!;
     }
-    var initialNodes =
-        tree.lowestLevelNodes
-            .where((node) => node.segmentStatus == SegmentStatus.initial)
-            .toList();
+    var initialNodes = tree.lowestLevelNodes
+        .where((node) => node.segmentStatus == SegmentStatus.initial)
+        .toList();
     if (initialNodes.length == maxNumberOfConnections) {
       return tree;
     }
@@ -152,10 +164,9 @@ class DownloadSegmentTree {
         initialNodes.maxBy((node) => node.connectionNumber)!.connectionNumber;
     loop:
     while (connectionNumber <= maxNumberOfConnections) {
-      initialNodes =
-          tree.lowestLevelNodes
-              .where((node) => node.segmentStatus == SegmentStatus.initial)
-              .toList();
+      initialNodes = tree.lowestLevelNodes
+          .where((node) => node.segmentStatus == SegmentStatus.initial)
+          .toList();
       for (final node in initialNodes) {
         if (connectionNumber + 1 >= maxNumberOfConnections) {
           break loop;
@@ -172,23 +183,27 @@ class DownloadSegmentTree {
   /// Splits and breaks down the lowest level nodes to new download segments.
   /// May throw an exception which is highly recommended to be handled.
   /// Refer to the docs of [splitSegmentNode] for more information.
-  void split() {
-    SegmentNode node = lowestLevelLeftNode;
-    splitSegmentNode(node);
-    if (node == root) {
-      return;
+  List<SegmentNode> split({int? maxSplits}) {
+    if (maxSplits != null && maxSplits <= 0) {
+      return [];
     }
-    SegmentNode? currentNeighbor = node.rightNeighbor!;
-    while (currentNeighbor != null) {
-      if (currentNeighbor.segmentStatus == SegmentStatus.complete) {
-        currentNeighbor = currentNeighbor.rightNeighbor;
+    final splitNodes = <SegmentNode>[];
+    final nodesToSplit = lowestLevelNodes
+        .where((node) => node.segmentStatus != SegmentStatus.complete)
+        .toList();
+    for (final node in nodesToSplit) {
+      if (maxSplits != null && splitNodes.length >= maxSplits) {
+        break;
+      }
+      if (!lowestLevelNodes.contains(node)) {
         continue;
       }
-      splitSegmentNode(currentNeighbor);
-      node.rightChild!.rightNeighbor = currentNeighbor.leftChild;
-      node = currentNeighbor;
-      currentNeighbor = currentNeighbor.rightNeighbor;
+      final splitSuccessful = splitSegmentNode(node);
+      if (splitSuccessful) {
+        splitNodes.add(node.leftChild!);
+      }
     }
+    return splitNodes;
   }
 
   SegmentNode get lowestLevelLeftNode {
@@ -200,11 +215,10 @@ class DownloadSegmentTree {
   }
 
   SegmentNode? searchNode(Segment targetSegment) {
-    final nodeInLowestLevelList =
-        lowestLevelNodes
-            .where((node) => node.segment == targetSegment)
-            .toList()
-            .firstOrNull;
+    final nodeInLowestLevelList = lowestLevelNodes
+        .where((node) => node.segment == targetSegment)
+        .toList()
+        .firstOrNull;
     if (nodeInLowestLevelList != null) {
       return nodeInLowestLevelList;
     }
@@ -231,15 +245,13 @@ class DownloadSegmentTree {
     return null;
   }
 
-  List<SegmentNode>? get inUseNodes =>
-      lowestLevelNodes
-          .where((node) => node.segmentStatus == SegmentStatus.inUse)
-          .toList();
+  List<SegmentNode>? get inUseNodes => lowestLevelNodes
+      .where((node) => node.segmentStatus == SegmentStatus.inUse)
+      .toList();
 
-  List<SegmentNode>? get inQueueNodes =>
-      lowestLevelNodes
-          .where((node) => node.segmentStatus == SegmentStatus.inQueue)
-          .toList();
+  List<SegmentNode>? get inQueueNodes => lowestLevelNodes
+      .where((node) => node.segmentStatus == SegmentStatus.inQueue)
+      .toList();
 
   /// Splits the given [node] into 2 child segments.
   /// e.g.          [0-1000] ==> [node]
@@ -250,6 +262,19 @@ class DownloadSegmentTree {
   /// It is HIGHLY recommended to call this method as well as other methods that
   /// rely in this to always be called in a try-catch block.
   bool splitSegmentNode(SegmentNode node, {setConnectionNumber = true}) {
+    final nodeIndex = lowestLevelNodes.indexWhere(
+      (s) => s.segment == node.segment,
+    );
+    if (nodeIndex == -1 || node.leftChild != null || node.rightChild != null) {
+      final str = StringBuffer();
+      str.writeln("Failed to find leaf node index ${node.segment}");
+      for (final element in lowestLevelNodes) {
+        str.writeln("LowestNode: ${element.segment}");
+      }
+      print(str.toString());
+      throw Exception(str.toString());
+    }
+
     final nodeSegment = node.segment;
     final splitByte =
         ((nodeSegment.endByte - nodeSegment.startByte) / 2).floor();
@@ -272,28 +297,25 @@ class DownloadSegmentTree {
         segRight.length < 8192) {
       return false;
     }
+
+    final previousLeftNeighbor = node.leftNeighbor;
+    final previousRightNeighbor = node.rightNeighbor;
     node.rightChild = SegmentNode(segment: segRight, parent: node);
     node.leftChild = SegmentNode(segment: segLeft, parent: node);
-    node.leftChild!.rightNeighbor = node.rightChild;
-    node.rightChild!.leftNeighbor = node.leftChild;
-    node.leftChild!.connectionNumber = node.connectionNumber;
+    node.leftChild!
+      ..leftNeighbor = previousLeftNeighbor
+      ..rightNeighbor = node.rightChild
+      ..connectionNumber = node.connectionNumber;
+    node.rightChild!
+      ..leftNeighbor = node.leftChild
+      ..rightNeighbor = previousRightNeighbor;
+    previousLeftNeighbor?.rightNeighbor = node.leftChild;
+    previousRightNeighbor?.leftNeighbor = node.rightChild;
     if (setConnectionNumber) {
-      this.maxConnectionNumber++;
+      maxConnectionNumber++;
       node.rightChild!.connectionNumber = maxConnectionNumber;
     }
-    final nodeIndex = lowestLevelNodes.indexWhere(
-      (s) => s.segment == node.segment,
-    );
     node.setLastUpdateMillis();
-    if (nodeIndex == -1) {
-      final str = StringBuffer();
-      str.writeln("Failed to find node index ${node.segment}");
-      lowestLevelNodes.forEach(
-        (element) => str.writeln("LowestNode: ${element.segment}"),
-      );
-      print(str.toString());
-      throw Exception(str.toString());
-    }
     lowestLevelNodes.removeAt(nodeIndex);
     lowestLevelNodes.insert(nodeIndex, node.leftChild!);
     lowestLevelNodes.insert(nodeIndex + 1, node.rightChild!);

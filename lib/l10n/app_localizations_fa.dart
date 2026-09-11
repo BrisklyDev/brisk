@@ -874,4 +874,14 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get extension_restart_failed => 'Failed to restart extension server!';
+
+  @override
+  String get donationPrompt_title => 'از Brisk لذت می‌برید؟';
+
+  @override
+  String get donationPrompt_description =>
+      'از Brisk لذت می‌برید؟ حمایت شما به تأمین هزینه توسعه مداوم، بهبودها و قابلیت‌های جدید کمک می‌کند.';
+
+  @override
+  String get donationPrompt_neverShowAgain => 'دیگر نمایش داده نشود';
 }
