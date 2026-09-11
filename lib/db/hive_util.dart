@@ -43,6 +43,8 @@ class HiveUtil {
     migrationBox = await Hive.openBox<Migration>("migrations");
   }
 
+  Future<void> deleteDatabase() async => await Hive.deleteFromDisk();
+
   static Setting? getSetting(SettingOptions option) {
     return HiveUtil.instance.settingBox.values
         .where((setting) => setting.name == option.name)
