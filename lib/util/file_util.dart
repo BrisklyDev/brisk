@@ -28,11 +28,11 @@ class FileUtil {
     Directory tempDir =
         Platform.isLinux ? await linuxDefaultTempDir : await defaultTempDir;
     defaultTempFileDir = tempDir;
+    await tempDir.create(recursive: true);
     if (savePath?.value != defaultTempFileDir.path) {
       completer.complete(tempDir);
       return completer.future;
     }
-    tempDir.createSync(recursive: true);
     completer.complete(tempDir);
     return completer.future;
   }
