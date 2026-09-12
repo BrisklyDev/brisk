@@ -44,13 +44,13 @@
   </screenshots>
 
   <releases>
-    <release version="2.3.8" date="2025-11-21">
+    <release version="2.3.9" date="2026-9-12">
     <description>
       <p><em>🔧 Bug Fixes and Improvements</em></p>
       <ul>
-        <li>Fixed pick new location button not working on linux</li>
-        <li>Fixed a UI bug in Celestial Dark theme leading to an invisible pause button icon</li>
-        <li>Other minor bug fixes</li>
+        <li>Download engine bug fixes and improvement</li>
+        <li>Fixed failed to retrieve file info error on some websites</li>
+        <li>UI fixes for light theme</li>
       </ul>
     </description>
     </release>
