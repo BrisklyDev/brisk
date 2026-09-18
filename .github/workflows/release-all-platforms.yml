@@ -51,7 +51,7 @@ jobs:
       - name: Install flutter
         uses: subosito/flutter-action@v2.14.0
         with:
-          flutter-version: "3.32.0"
+          flutter-version: "3.38.3"
           channel: 'stable'
           cache: true
           cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
@@ -137,7 +137,7 @@ jobs:
       - name: Install flutter
         uses: subosito/flutter-action@v2.14.0
         with:
-          flutter-version: "3.32.0"
+          flutter-version: "3.38.3"
           channel: 'stable'
           cache: true
           cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:' 
@@ -199,7 +199,7 @@ jobs:
       - name: Install flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.32.0"
+          flutter-version: "3.38.3"
           channel: 'stable'
           cache: true
           cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
@@ -365,7 +365,7 @@ jobs:
       - name: Install flutter
         uses: subosito/flutter-action@v2.14.0
         with:
-          flutter-version: "3.32.0"
+          flutter-version: "3.38.3"
           channel: 'stable'
           cache: true
           cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
