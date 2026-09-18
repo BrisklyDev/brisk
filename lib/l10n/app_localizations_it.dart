@@ -235,10 +235,10 @@ class AppLocalizationsIt extends AppLocalizations {
       'In alcuni casi, un nuovo tentativo alcune volte può risolvere il problema.\nAltrimenti, assicurati che la risorsa che devi raggiungere sia valida.';
 
   @override
-  String get retrievingFileInformation => 'Recupero info sul file...';
+  String get retrievingFileInformation => 'Recupero info file...';
 
   @override
-  String get fetchingSubtitles => 'Fetching subtitles...';
+  String get fetchingSubtitles => 'Recupero sottotitoli...';
 
   @override
   String get settings_title => 'Impostazioni';
@@ -542,8 +542,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get installationGuide => 'Guida all\'installazione';
 
   @override
-  String get installBrowserExtension_title =>
-      'Installa l\'estensione del browser';
+  String get installBrowserExtension_title => 'Installa estensione browser';
 
   @override
   String get installTheBrowserExtension_description =>
@@ -603,22 +602,22 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get installBrowserExtension_brave_warning_title =>
-      'Potential Brave Issues';
+      'Potenziali problemi Brave';
 
   @override
   String get installBrowserExtension_brave_warning_subtitle =>
-      'If the extension fails to capture downloads on Brave, paste the text below in the address bar and disable \'Enable extension network blocking\'. Even if it is already set to \'Default (Disabled)\', manually select the \'Disabled\' option.';
+      'Se l\'estensione non riesce ad acquisire i download in Brave, incolla il testo seguente nella barra indirizzi e disattiva \'Abilita blocco rete estensione\'. Anche se è già impostato su \'Predefinito (disabilitato)\', seleziona manualmente l\'opzione \'Disabilitato\'.';
 
   @override
   String get confirmAction => 'Conferma azione';
 
   @override
   String get downloadDeletionConfirmation =>
-      'Sei sicuro di voler eliminare i download selezionati?';
+      'Vuoi eliminare i download selezionati?';
 
   @override
   String get deletionFromQueueConfirmation =>
-      'Sei sicuro di voler rimuovere i download selezionati dalla coda?';
+      'Vuoi rimuovere dalla coda i download selezionati?';
 
   @override
   String get deleteDownloadedFiles => 'Elimina i file scaricati';
@@ -852,37 +851,38 @@ class AppLocalizationsIt extends AppLocalizations {
   String get btn_installAutomatically => 'Installa automaticamente';
 
   @override
-  String get settings_engine => 'Download Engine';
+  String get settings_engine => 'Motore download';
 
   @override
-  String get settings_engine_clientType => 'HTTP client type';
+  String get settings_engine_clientType => 'Tipo client HTTP';
 
   @override
   String get settings_engine_clientType_tooltip =>
-      'The client type used for downloads:\n\nStandard – Balanced and stable\nPerformance – Faster but uses more CPU';
+      'Il tipo di client usato per i download:\n\nStandard: bilanciato e stabile\nPrestazioni: più veloce ma usa più CPU';
 
   @override
   String get settings_engine_clientType_standard => 'Standard';
 
   @override
-  String get settings_engine_clientType_performance => 'Performance (Beta)';
+  String get settings_engine_clientType_performance => 'Prestazioni (beta)';
 
   @override
-  String get btn_showAdvancedOptions => 'Show Advanced Options';
+  String get btn_showAdvancedOptions => 'Visualizza opzioni avanzate';
 
   @override
-  String get btn_hideAdvancedOptions => 'Hide Advanced Options';
+  String get btn_hideAdvancedOptions => 'Nascondi opzioni avanzate';
 
   @override
   String get settings_automaticFileSavePathCategorization =>
-      'Automatic file save path categorization';
+      'Classificazione automatica percorso salvataggio file';
 
   @override
   String get extension_restart_success =>
-      'Extension server restarted successfully!';
+      'Server estensione riavviato correttamente!';
 
   @override
-  String get extension_restart_failed => 'Failed to restart extension server!';
+  String get extension_restart_failed =>
+      'Impossibile riavviare il server estensione!';
 
   @override
   String get donationPrompt_title => 'Ti piace Brisk?';
@@ -892,5 +892,5 @@ class AppLocalizationsIt extends AppLocalizations {
       'Ti piace Brisk? Il tuo supporto aiuta a finanziare lo sviluppo continuo, i miglioramenti e le nuove funzionalità.';
 
   @override
-  String get donationPrompt_neverShowAgain => 'Non mostrare più';
+  String get donationPrompt_neverShowAgain => 'Non visualizzare più';
 }
