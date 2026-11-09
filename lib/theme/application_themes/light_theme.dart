@@ -55,6 +55,7 @@ ApplicationTheme light = const ApplicationTheme(
     ),
   ),
   downloadProgressDialogTheme: DownloadProgressDialogTheme(
+    segmentProgressColor: const Color.fromRGBO(30, 136, 229, 1),
     totalProgressColor: ProgressIndicatorColor(
       backgroundColor: const Color.fromRGBO(229, 229, 229, 1.0),
       color: Colors.green,

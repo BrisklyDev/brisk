@@ -41,6 +41,7 @@ ApplicationTheme signatureBlue = const ApplicationTheme(
     borderColor: Colors.transparent,
   ),
   downloadProgressDialogTheme: DownloadProgressDialogTheme(
+    segmentProgressColor: const Color.fromRGBO(79, 172, 254, 1),
     connectionProgressColor: ProgressIndicatorColor(
       color: Colors.indigoAccent,
       backgroundColor: const Color.fromRGBO(71, 100, 117, 0.5),

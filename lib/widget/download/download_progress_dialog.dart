@@ -6,6 +6,7 @@ import 'package:brisk/util/readability_util.dart';
 import 'package:brisk/widget/base/rounded_outlined_button.dart';
 import 'package:brisk/widget/base/scrollable_dialog.dart';
 import 'package:brisk/widget/download/queue_schedule_handler.dart';
+import 'package:brisk/widget/download/segment_progress_bar.dart';
 import 'package:brisk_download_engine/brisk_download_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +28,8 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
   late DownloadRequestProvider provider;
   late AppLocalizations loc;
 
+  List<SegmentProgress> lastSegments = [];
+
   @override
   Widget build(BuildContext context) {
     provider = Provider.of<DownloadRequestProvider>(context, listen: false);
@@ -39,7 +42,7 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
       height: showDetails
           ? resolveDialogHeight(size) + 200
           : resolveDialogHeight(size),
-      scrollButtonVisible: size.height < (showDetails ? 550 : 365),
+      scrollButtonVisible: size.height < (showDetails ? 564 : 379),
       scrollViewWidth: 550,
       scrollviewHeight: 300,
       title: Padding(
@@ -92,6 +95,8 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
             ),
             const SizedBox(height: 5),
             totalDownloadProgressIndicator(),
+            const SizedBox(height: 6),
+            segmentProgressIndicator(),
             const SizedBox(height: 15),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -111,7 +116,8 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
                     showDetails = !showDetails;
                   });
                 },
-                backgroundColor: theme.widgetTheme.showHideButtonColor.backgroundColor,
+                backgroundColor:
+                    theme.widgetTheme.showHideButtonColor.backgroundColor,
                 borderColor: Colors.transparent,
                 hoverBackgroundColor:
                     theme.widgetTheme.showHideButtonColor.hoverBackgroundColor,
@@ -326,7 +332,7 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
   }
 
   double resolveDialogHeight(Size size) {
-    double height = 300;
+    double height = 314;
     return height;
   }
 
@@ -442,6 +448,63 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
             fontWeight: FontWeight.bold,
           )),
     );
+  }
+
+  /// Shows how the file is split between connections and how each part is
+  /// progressing.
+  Widget segmentProgressIndicator() {
+    return Selector<DownloadRequestProvider,
+        (List<SegmentProgress>, double, int, bool)>(
+      selector: (_, provider) {
+        final request = provider.downloads[widget.downloadId];
+        if (request == null) return (const [], 0, 0, false);
+        return (
+          request.segmentProgresses,
+          request.downloadProgress,
+          request.downloadItem.fileSize,
+          request.status == DownloadStatus.assembleComplete ||
+              request.downloadItem.status == DownloadStatus.assembleComplete,
+        );
+      },
+      builder: (_, tuple, __) {
+        final (segments, progress, fileSize, completed) = tuple;
+        if (segments.isNotEmpty) {
+          lastSegments = segments;
+        }
+        final dialogTheme = theme.downloadProgressDialogTheme;
+        final colors = dialogTheme.totalProgressColor;
+        return SegmentProgressBar(
+          segments: lastSegments.isNotEmpty
+              ? lastSegments
+              : fallbackSegments(fileSize, progress),
+          fileSize: fileSize,
+          fillColor: dialogTheme.segmentProgressColor,
+          backgroundColor: colors.backgroundColor,
+          dividerColor: theme.alertDialogTheme.backgroundColor,
+          completed: completed,
+          completeColor: dialogTheme.segmentProgressColor,
+        );
+      },
+    );
+  }
+
+  /// Used when no segment data has been received from the engine yet, e.g.
+  /// for completed downloads or ones that have not been started in this
+  /// session. Shows the whole file as a single segment.
+  List<SegmentProgress> fallbackSegments(int fileSize, double progress) {
+    if (fileSize <= 0) return [];
+    if (!progress.isFinite) progress = 0;
+    progress = progress.clamp(0.0, 1.0);
+    return [
+      SegmentProgress(
+        startByte: 0,
+        endByte: fileSize - 1,
+        connectionNumber: 0,
+        receivedBytes: (fileSize * progress).floor(),
+        complete: progress >= 1,
+        active: false,
+      ),
+    ];
   }
 
   Selector<DownloadRequestProvider, (String, double)>

@@ -2,14 +2,24 @@ import 'package:brisk_download_engine/src/download_engine/connection/http_downlo
 import 'package:brisk_download_engine/src/download_engine/connection/m3u8_download_connection.dart';
 import 'package:brisk_download_engine/src/download_engine/model/download_item_model.dart';
 import 'package:brisk_download_engine/src/download_engine/model/m3u8.dart';
+import 'package:brisk_download_engine/src/download_engine/message/segment_progress.dart';
 import 'package:brisk_download_engine/src/download_engine/segment/segment.dart';
 
 class DownloadProgressMessage {
   List<DownloadProgressMessage> connectionProgresses = [];
+
+  /// Snapshot of how the file's byte range is currently split between
+  /// connections, ordered by start byte. Only populated on the overall
+  /// download progress message of HTTP downloads.
+  List<SegmentProgress> segmentProgresses = [];
   DownloadItemModel downloadItem;
   int totalSegments;
   double downloadProgress;
   int totalReceivedBytes;
+
+  /// Bytes received by a connection for its current [segment], counted from
+  /// the segment's start byte. Only set on connection progress messages.
+  int segmentReceivedBytes;
   double totalDownloadProgress;
   String transferRate;
   double bytesTransferRate;
@@ -48,6 +58,7 @@ class DownloadProgressMessage {
     this.buttonAvailability = const ButtonAvailability(false, false),
     this.bytesTransferRate = 0,
     this.totalReceivedBytes = 0,
+    this.segmentReceivedBytes = 0,
     this.totalDownloadProgress = 0,
     this.segmentLength = 0,
     this.connectionStatus = "",
@@ -75,6 +86,7 @@ class DownloadProgressMessage {
       bytesTransferRate: connection.bytesTransferRate,
       totalDownloadProgress: connection.totalDownloadProgress,
       totalReceivedBytes: connection.totalConnectionReceivedBytes,
+      segmentReceivedBytes: connection.totalRequestReceivedBytes,
       connectionStatus: connection.connectionStatus,
       connectionNumber: connection.connectionNumber,
       segment: connection.segment,
