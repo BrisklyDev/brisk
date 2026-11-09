@@ -456,7 +456,8 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
     return Selector<DownloadRequestProvider,
         (List<SegmentProgress>, double, int, bool)>(
       selector: (_, provider) {
-        final request = provider.downloads[widget.downloadId]!;
+        final request = provider.downloads[widget.downloadId];
+        if (request == null) return (const [], 0, 0, false);
         return (
           request.segmentProgresses,
           request.downloadProgress,
@@ -492,6 +493,8 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
   /// session. Shows the whole file as a single segment.
   List<SegmentProgress> fallbackSegments(int fileSize, double progress) {
     if (fileSize <= 0) return [];
+    if (!progress.isFinite) progress = 0;
+    progress = progress.clamp(0.0, 1.0);
     return [
       SegmentProgress(
         startByte: 0,

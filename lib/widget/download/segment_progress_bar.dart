@@ -38,18 +38,20 @@ class SegmentProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      width: double.infinity,
-      child: CustomPaint(
-        painter: _SegmentProgressPainter(
-          segments: segments,
-          fileSize: fileSize,
-          fillColor: fillColor,
-          backgroundColor: backgroundColor,
-          dividerColor: dividerColor,
-          completed: completed,
-          completeColor: completeColor,
+    return LayoutBuilder(
+      builder: (context, constraints) => SizedBox(
+        height: height,
+        width: constraints.hasBoundedWidth ? constraints.maxWidth : 0,
+        child: CustomPaint(
+          painter: _SegmentProgressPainter(
+            segments: segments,
+            fileSize: fileSize,
+            fillColor: fillColor,
+            backgroundColor: backgroundColor,
+            dividerColor: dividerColor,
+            completed: completed,
+            completeColor: completeColor,
+          ),
         ),
       ),
     );
@@ -80,6 +82,7 @@ class _SegmentProgressPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    if (size.isEmpty || !size.isFinite) return;
     final bounds = Offset.zero & size;
     final radius = Radius.circular(size.height / 2);
     canvas.save();
@@ -101,11 +104,16 @@ class _SegmentProgressPainter extends CustomPainter {
     double toX(int byte) => byte / fileSize * size.width;
 
     for (final segment in segments) {
-      final x0 = toX(segment.startByte);
-      final x1 = toX(segment.endByte + 1);
-      final fraction = segment.length <= 0
-          ? 0.0
-          : (segment.receivedBytes / segment.length).clamp(0.0, 1.0);
+      // Ignore malformed segments and clip to the file's byte range so bad
+      // values can never produce an invalid rect or clamp range.
+      final length = segment.length;
+      if (length <= 0) continue;
+      final start = segment.startByte.clamp(0, fileSize);
+      final end = (segment.endByte + 1).clamp(0, fileSize);
+      if (end <= start) continue;
+      final x0 = toX(start);
+      final x1 = toX(end);
+      final fraction = (segment.receivedBytes / length).clamp(0.0, 1.0);
       final fillEnd = x0 + (x1 - x0) * fraction;
       if (fillEnd > x0) {
         canvas.drawRect(
@@ -116,9 +124,9 @@ class _SegmentProgressPainter extends CustomPainter {
       // Highlight the leading edge of segments that are being downloaded so
       // it is clear which parts are currently moving.
       if (segment.active && fraction < 1) {
-        final headStart = (fillEnd - _headWidth).clamp(x0, x1);
+        final headStart = (fillEnd - _headWidth).clamp(x0, fillEnd);
         canvas.drawRect(
-          Rect.fromLTRB(headStart, 0, fillEnd.clamp(x0, x1), size.height),
+          Rect.fromLTRB(headStart, 0, fillEnd, size.height),
           headPaint,
         );
       }

@@ -782,6 +782,15 @@ class HttpDownloadEngine {
   /// the progress of each, used by the UI to visualize the byte range
   /// allocation of connections. Does not modify the tree.
   static void _setSegmentProgresses(DownloadProgressMessage progress) {
+    try {
+      _doSetSegmentProgresses(progress);
+    } catch (e) {
+      // Visualization data must never break progress handling.
+      progress.segmentProgresses = [];
+    }
+  }
+
+  static void _doSetSegmentProgresses(DownloadProgressMessage progress) {
     final uid = progress.downloadItem.uid;
     final tree = _engineChannels[uid]?.segmentTree;
     if (tree == null) return;
@@ -798,11 +807,13 @@ class HttpDownloadEngine {
           connSegment.startByte == segment.startByte;
       int received = 0;
       if (complete) {
-        received = segment.length;
+        received = segment.length < 0 ? 0 : segment.length;
       } else if (active) {
         // Use the absolute byte count. The connection's progress ratio can be
         // stale relative to its segment right after a segment refresh.
-        received = conn!.segmentReceivedBytes.clamp(0, segment.length);
+        received = segment.length <= 0
+            ? 0
+            : conn!.segmentReceivedBytes.clamp(0, segment.length);
       }
       return SegmentProgress(
         startByte: segment.startByte,
