@@ -429,6 +429,7 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
           "$completedSizeStr ${loc.of_} $totalSizeStr",
           style: TextStyle(
             color: theme.textColor,
+            fontFeatures: const [FontFeature.tabularFigures()],
           ),
         );
       },
