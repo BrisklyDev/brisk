@@ -773,8 +773,46 @@ class HttpDownloadEngine {
         ..flushTimer?.cancel();
     }
     _setConnectionProgresses(downloadProgress);
+    _setSegmentProgresses(downloadProgress);
     _downloadProgresses[downloadUid] = downloadProgress;
     engineChannel.sendMessage(downloadProgress);
+  }
+
+  /// Builds a read-only snapshot of the segment tree's lowest level nodes and
+  /// the progress of each, used by the UI to visualize the byte range
+  /// allocation of connections. Does not modify the tree.
+  static void _setSegmentProgresses(DownloadProgressMessage progress) {
+    final uid = progress.downloadItem.uid;
+    final tree = _engineChannels[uid]?.segmentTree;
+    if (tree == null) return;
+    final connProgresses = _connectionProgresses[uid] ?? {};
+    final nodes = [...tree.lowestLevelNodes]
+      ..sort((a, b) => a.segment.startByte.compareTo(b.segment.startByte));
+    progress.segmentProgresses = nodes.map((node) {
+      final segment = node.segment;
+      final complete = node.segmentStatus == SegmentStatus.complete;
+      final conn = connProgresses[node.connectionNumber];
+      final connSegment = conn?.segment;
+      final active = !complete &&
+          connSegment != null &&
+          connSegment.startByte == segment.startByte;
+      int received = 0;
+      if (complete) {
+        received = segment.length;
+      } else if (active) {
+        // Use the absolute byte count. The connection's progress ratio can be
+        // stale relative to its segment right after a segment refresh.
+        received = conn!.segmentReceivedBytes.clamp(0, segment.length);
+      }
+      return SegmentProgress(
+        startByte: segment.startByte,
+        endByte: segment.endByte,
+        connectionNumber: node.connectionNumber,
+        receivedBytes: received,
+        complete: complete,
+        active: active && conn!.status == DownloadStatus.downloading,
+      );
+    }).toList();
   }
 
   static void _addToReuseQueue(String downloadUid, int connectionNumber) {

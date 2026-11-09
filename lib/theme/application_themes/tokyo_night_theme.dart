@@ -50,6 +50,7 @@ ApplicationTheme tokyoNight = const ApplicationTheme(
     itemTextColor: Color.fromRGBO(192, 202, 245, 1),
   ),
   downloadProgressDialogTheme: const DownloadProgressDialogTheme(
+    segmentProgressColor: Color.fromRGBO(122, 162, 247, 1),
     connectionProgressColor: ProgressIndicatorColor(
       backgroundColor: Color.fromRGBO(30, 33, 45, 1.0),
       color: Colors.blueAccent,

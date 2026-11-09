@@ -201,6 +201,10 @@ class DownloadProgressDialogTheme {
   final Color validatingFilesStatusProgressColor;
   final ProgressIndicatorColor totalProgressColor;
   final ProgressIndicatorColor connectionProgressColor;
+
+  /// Fill color of the segment progress bar. Should differ from
+  /// [totalProgressColor].
+  final Color segmentProgressColor;
   final ButtonColor pauseColor;
   final ButtonColor resumeColor;
 
@@ -215,6 +219,7 @@ class DownloadProgressDialogTheme {
       color: Colors.indigoAccent,
       backgroundColor: Color.fromRGBO(47, 44, 44, 0.95),
     ),
+    this.segmentProgressColor = const Color.fromRGBO(77, 166, 255, 1),
     this.assemblingStatusProgressColor = Colors.green,
     this.validatingFilesStatusProgressColor = Colors.blueAccent,
   });

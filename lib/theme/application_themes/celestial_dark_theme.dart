@@ -42,6 +42,7 @@ ApplicationTheme celestialDark = const ApplicationTheme(
     borderColor: Colors.transparent,
   ),
   downloadProgressDialogTheme: DownloadProgressDialogTheme(
+    segmentProgressColor: const Color.fromRGBO(77, 166, 255, 1),
     resumeColor: const ButtonColor(
       iconColor: Colors.transparent,
       backgroundColor: Color.fromRGBO(24, 150, 91, 1.0),

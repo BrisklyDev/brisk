@@ -3,6 +3,7 @@ library;
 export 'src/download_engine/setting/download_settings.dart';
 export 'src/download_engine/model/download_item_model.dart';
 export 'src/download_engine/message/download_progress_message.dart';
+export 'src/download_engine/message/segment_progress.dart';
 export 'src/download_engine/message/download_isolate_message.dart';
 export 'src/download_engine/message/button_availability_message.dart';
 export 'src/download_engine/setting/proxy_setting.dart';

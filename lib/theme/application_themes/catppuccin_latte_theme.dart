@@ -55,6 +55,7 @@ ApplicationTheme catppuccinLatte = const ApplicationTheme(
     itemTextColor: Color.fromRGBO(76, 79, 105, 1),
   ),
   downloadProgressDialogTheme: const DownloadProgressDialogTheme(
+    segmentProgressColor: Color.fromRGBO(32, 159, 181, 1),
     totalProgressColor: ProgressIndicatorColor(
       backgroundColor: Color.fromRGBO(204, 208, 218, 1),
       color: Color.fromRGBO(64, 160, 43, 1),

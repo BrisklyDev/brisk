@@ -51,6 +51,7 @@ ApplicationTheme catppuccinFrappe = const ApplicationTheme(
     itemTextColor: Color.fromRGBO(198, 208, 245, 1),
   ),
   downloadProgressDialogTheme: const DownloadProgressDialogTheme(
+    segmentProgressColor: Color.fromRGBO(133, 193, 220, 1),
     totalProgressColor: ProgressIndicatorColor(
       backgroundColor: Color.fromRGBO(69, 71, 90, 1),
       color: Colors.green,

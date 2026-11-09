@@ -51,6 +51,7 @@ ApplicationTheme catppuccinMacchiato = const ApplicationTheme(
     itemTextColor: Color.fromRGBO(202, 211, 245, 1),
   ),
   downloadProgressDialogTheme: const DownloadProgressDialogTheme(
+    segmentProgressColor: Color.fromRGBO(125, 196, 228, 1),
     totalProgressColor: ProgressIndicatorColor(
       backgroundColor: Color.fromRGBO(69, 71, 90, 1),
       color: Colors.green,

@@ -43,6 +43,7 @@ ApplicationTheme catppuccinMocha = const ApplicationTheme(
     borderColor: Colors.transparent,
   ),
   downloadProgressDialogTheme: const DownloadProgressDialogTheme(
+    segmentProgressColor: Color.fromRGBO(116, 199, 236, 1),
     totalProgressColor: ProgressIndicatorColor(
       backgroundColor: Color.fromRGBO(69, 71, 90, 1),
       color: Colors.green,
