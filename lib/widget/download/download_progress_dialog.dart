@@ -42,7 +42,8 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
       height: showDetails
           ? resolveDialogHeight(size) + 200
           : resolveDialogHeight(size),
-      scrollButtonVisible: size.height < (showDetails ? 564 : 379),
+      scrollButtonVisible:
+          size.height < (showDetails ? 550 : 365) + (showSegmentBar ? 14 : 0),
       scrollViewWidth: 550,
       scrollviewHeight: 300,
       title: Padding(
@@ -95,8 +96,10 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
             ),
             const SizedBox(height: 5),
             totalDownloadProgressIndicator(),
-            const SizedBox(height: 6),
-            segmentProgressIndicator(),
+            if (showSegmentBar) ...[
+              const SizedBox(height: 6),
+              segmentProgressIndicator(),
+            ],
             const SizedBox(height: 15),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -332,7 +335,7 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
   }
 
   double resolveDialogHeight(Size size) {
-    double height = 314;
+    double height = showSegmentBar ? 314 : 300;
     return height;
   }
 
@@ -449,6 +452,12 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
             fontWeight: FontWeight.bold,
           )),
     );
+  }
+
+  bool get showSegmentBar {
+    final content =
+        provider.downloads[widget.downloadId]?.downloadItem.m3u8Content;
+    return content == null || content.isEmpty;
   }
 
   /// Shows how the file is split between connections and how each part is
