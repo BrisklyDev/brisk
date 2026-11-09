@@ -4,6 +4,7 @@ import 'package:brisk/model/general_data.dart';
 import 'package:brisk/model/migration.dart';
 import 'package:brisk/model/setting.dart';
 import 'package:brisk/setting/settings_cache.dart';
+import 'package:brisk/util/parse_util.dart';
 import 'package:brisk/util/platform.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 
@@ -22,6 +23,11 @@ class MigrationManager {
 
     /// Intentional duplicate
     Migration(10, "Change hotkey scope to inapp for linux"),
+
+    /// Version 11 ("Add automatic download") was briefly used in development
+    /// and then removed. It is skipped so databases that already ran it still
+    /// run the migration below.
+    Migration(11, "Add automatic download capture behaviour"),
   ];
 
   static runMigrations() async {
@@ -69,6 +75,9 @@ class MigrationManager {
         break;
       case 10:
         await runMigrationV9();
+        break;
+      case 11:
+        await runMigrationV11();
         break;
       default:
         break;
@@ -230,5 +239,16 @@ class MigrationManager {
     scope.value = HotKeyScope.inapp.name;
     SettingsCache.downloadAdditionHotkeyScope = HotKeyScope.inapp;
     await scope.save();
+  }
+
+  static Future<void> runMigrationV11() async {
+    final settingBox = HiveUtil.instance.settingBox;
+    final name = SettingOptions.automaticDownloadCaptureBehaviour.name;
+    final captureBehaviour = Setting(
+      name: name,
+      value: SettingsCache.defaultSettings[name]![1],
+      settingType: SettingsCache.defaultSettings[name]![0],
+    );
+    await settingBox.add(captureBehaviour);
   }
 }
