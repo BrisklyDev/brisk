@@ -286,7 +286,22 @@ class AppLocalizationsFa extends AppLocalizations {
       'نمایش پنجره پیشرفت دانلود هنگام شروع دانلود جدید';
 
   @override
-  String get settings_behavior_automaticDownload => 'شروع خودکار دانلود';
+  String get settings_behavior_automaticDownloadCaptureBehavior =>
+      'رفتار دریافت خودکار دانلود';
+
+  @override
+  String
+      get settings_behavior_automaticDownloadCaptureBehavior_askForConfirmation =>
+          'همیشه بپرس';
+
+  @override
+  String
+      get settings_behavior_automaticDownloadCaptureBehavior_addDownloadItem =>
+          'افزودن آیتم دانلود';
+
+  @override
+  String get settings_behavior_automaticDownloadCaptureBehavior_startDownload =>
+      'شروع دانلود';
 
   @override
   String get settings_behavior_appClosureBehavior => 'رفتار هنگام بستن برنامه';

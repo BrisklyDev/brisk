@@ -1,4 +1,5 @@
 import 'package:brisk/constants/app_closure_behaviour.dart';
+import 'package:brisk/constants/automatic_download_capture_behaviour.dart';
 import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/widget/setting/base/settings_group.dart';
 import 'package:brisk/widget/setting/base/switch_setting.dart';
@@ -40,11 +41,18 @@ class _BehaviourSettingsGroupState extends State<BehaviourSettingsGroup> {
               setState(() => SettingsCache.openDownloadProgressWindow = val),
         ),
         const SizedBox(height: 5),
-        SwitchSetting(
-          text: loc.settings_behavior_automaticDownload,
-          switchValue: SettingsCache.automaticDownload,
-          onChanged: (val) =>
-              setState(() => SettingsCache.automaticDownload = val),
+        DropDownSetting(
+          dropDownItemTextWidth: size.width * 0.17,
+          value: _captureBehaviourToDropDownTxt(
+            SettingsCache.automaticDownloadCaptureBehaviour,
+          ),
+          text: loc.settings_behavior_automaticDownloadCaptureBehavior,
+          onChanged: _onCaptureBehaviourDropDownChanged,
+          items: [
+            loc.settings_behavior_automaticDownloadCaptureBehavior_askForConfirmation,
+            loc.settings_behavior_automaticDownloadCaptureBehavior_addDownloadItem,
+            loc.settings_behavior_automaticDownloadCaptureBehavior_startDownload,
+          ],
         ),
         const SizedBox(height: 5),
         DropDownSetting(
@@ -101,6 +109,42 @@ class _BehaviourSettingsGroupState extends State<BehaviourSettingsGroup> {
         return loc.settings_behavior_appClosureBehavior_exit;
       case AppClosureBehaviour.minimizeToTray:
         return loc.settings_behavior_appClosureBehavior_minimizeToTray;
+    }
+  }
+
+  String _captureBehaviourToDropDownTxt(
+      AutomaticDownloadCaptureBehaviour behaviour) {
+    switch (behaviour) {
+      case AutomaticDownloadCaptureBehaviour.askForConfirmation:
+        return loc
+            .settings_behavior_automaticDownloadCaptureBehavior_askForConfirmation;
+      case AutomaticDownloadCaptureBehaviour.addDownloadItem:
+        return loc
+            .settings_behavior_automaticDownloadCaptureBehavior_addDownloadItem;
+      case AutomaticDownloadCaptureBehaviour.startDownload:
+        return loc
+            .settings_behavior_automaticDownloadCaptureBehavior_startDownload;
+    }
+  }
+
+  void _onCaptureBehaviourDropDownChanged(String? value) {
+    if (value == null || value.isEmpty) return;
+    final behaviour = _captureBehaviourDropDownTxtToBehaviour(value);
+    setState(
+      () => SettingsCache.automaticDownloadCaptureBehaviour = behaviour,
+    );
+  }
+
+  AutomaticDownloadCaptureBehaviour _captureBehaviourDropDownTxtToBehaviour(
+      String txt) {
+    if (txt ==
+        loc.settings_behavior_automaticDownloadCaptureBehavior_addDownloadItem) {
+      return AutomaticDownloadCaptureBehaviour.addDownloadItem;
+    } else if (txt ==
+        loc.settings_behavior_automaticDownloadCaptureBehavior_startDownload) {
+      return AutomaticDownloadCaptureBehaviour.startDownload;
+    } else {
+      return AutomaticDownloadCaptureBehaviour.askForConfirmation;
     }
   }
 

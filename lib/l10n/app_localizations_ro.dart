@@ -291,8 +291,22 @@ class AppLocalizationsRo extends AppLocalizations {
       'Afișează fereastra de progres când începe o descărcare nouă';
 
   @override
-  String get settings_behavior_automaticDownload =>
-      'Pornește automat descărcarea';
+  String get settings_behavior_automaticDownloadCaptureBehavior =>
+      'Comportament la capturarea automată a descărcărilor';
+
+  @override
+  String
+      get settings_behavior_automaticDownloadCaptureBehavior_askForConfirmation =>
+          'Întreabă de fiecare dată';
+
+  @override
+  String
+      get settings_behavior_automaticDownloadCaptureBehavior_addDownloadItem =>
+          'Adaugă element de descărcare';
+
+  @override
+  String get settings_behavior_automaticDownloadCaptureBehavior_startDownload =>
+      'Pornește descărcarea';
 
   @override
   String get settings_behavior_appClosureBehavior =>

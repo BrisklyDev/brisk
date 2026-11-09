@@ -290,8 +290,22 @@ class AppLocalizationsEs extends AppLocalizations {
       'Mostrar ventana de progreso cuando inicie una nueva descarga';
 
   @override
-  String get settings_behavior_automaticDownload =>
-      'Iniciar la descarga automáticamente';
+  String get settings_behavior_automaticDownloadCaptureBehavior =>
+      'Comportamiento de captura automática de descargas';
+
+  @override
+  String
+      get settings_behavior_automaticDownloadCaptureBehavior_askForConfirmation =>
+          'Preguntar Siempre';
+
+  @override
+  String
+      get settings_behavior_automaticDownloadCaptureBehavior_addDownloadItem =>
+          'Añadir elemento de descarga';
+
+  @override
+  String get settings_behavior_automaticDownloadCaptureBehavior_startDownload =>
+      'Iniciar descarga';
 
   @override
   String get settings_behavior_appClosureBehavior =>

@@ -7,7 +7,9 @@ import 'package:brisk/constants/download_type.dart';
 import 'package:brisk/constants/file_type.dart';
 import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/model/isolate/isolate_args.dart';
+import 'package:brisk/util/download_engine_util.dart';
 import 'package:brisk/util/ffmpeg.dart';
+import 'package:brisk/constants/automatic_download_capture_behaviour.dart';
 import 'package:brisk/setting/settings_cache.dart';
 import 'package:brisk/util/ui_util.dart';
 import 'package:brisk/widget/base/info_dialog.dart';
@@ -493,14 +495,32 @@ class DownloadAdditionUiUtil {
             baseSaveDir: Directory(rule.savePath),
             useTypeBasedSubDirs: false,
           );
-    if (SettingsCache.automaticDownload) {
-      _startDownloadAutomatically(context, item);
-      return;
+    switch (SettingsCache.automaticDownloadCaptureBehaviour) {
+      case AutomaticDownloadCaptureBehaviour.askForConfirmation:
+        showDialog(
+          context: context,
+          builder: (_) => DownloadInfoDialog(item, newDownload: true),
+          barrierDismissible: false,
+        );
+        break;
+      case AutomaticDownloadCaptureBehaviour.addDownloadItem:
+        _addDownloadItemAutomatically(context, item);
+        break;
+      case AutomaticDownloadCaptureBehaviour.startDownload:
+        _startDownloadAutomatically(context, item);
+        break;
     }
-    showDialog(
-      context: context,
-      builder: (_) => DownloadInfoDialog(item, newDownload: true),
-      barrierDismissible: false,
+  }
+
+  static void _addDownloadItemAutomatically(
+    BuildContext context,
+    DownloadItem item,
+  ) async {
+    item.fileName = path.basename(item.filePath);
+    await HiveUtil.instance.addDownloadItem(item);
+    if (!context.mounted) return;
+    Provider.of<DownloadRequestProvider>(context, listen: false).insertRows(
+      [DownloadProgressMessage(downloadItem: buildFromDownloadItem(item))],
     );
   }
 

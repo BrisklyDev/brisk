@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:brisk/constants/app_closure_behaviour.dart';
+import 'package:brisk/constants/automatic_download_capture_behaviour.dart';
 import 'package:brisk/constants/file_duplication_behaviour.dart';
 import 'package:brisk/constants/setting_options.dart';
 import 'package:brisk/constants/setting_type.dart';
@@ -29,7 +30,8 @@ class SettingsCache {
   static late bool notificationOnDownloadFailure;
   static late bool launchOnStartUp;
   static late bool openDownloadProgressWindow;
-  static late bool automaticDownload;
+  static late AutomaticDownloadCaptureBehaviour
+      automaticDownloadCaptureBehaviour;
   static late bool enableWindowToFront;
   static late bool loggerEnabled;
   static late String locale;
@@ -113,9 +115,9 @@ class SettingsCache {
       SettingType.general.name,
       "true",
     ],
-    SettingOptions.automaticDownload.name: [
+    SettingOptions.automaticDownloadCaptureBehaviour.name: [
       SettingType.general.name,
-      "false",
+      AutomaticDownloadCaptureBehaviour.askForConfirmation.name,
     ],
     SettingOptions.temporaryPath.name: [
       SettingType.file.name,
@@ -266,8 +268,9 @@ class SettingsCache {
         case SettingOptions.openDownloadProgressWindow:
           openDownloadProgressWindow = parseBool(value);
           break;
-        case SettingOptions.automaticDownload:
-          automaticDownload = parseBool(value);
+        case SettingOptions.automaticDownloadCaptureBehaviour:
+          automaticDownloadCaptureBehaviour =
+              parseAutomaticDownloadCaptureBehaviour(value);
           break;
         case SettingOptions.temporaryPath:
           temporaryDir = Directory(value);
@@ -391,8 +394,8 @@ class SettingsCache {
           setting.value =
               parseBoolStr(SettingsCache.openDownloadProgressWindow);
           break;
-        case SettingOptions.automaticDownload:
-          setting.value = parseBoolStr(SettingsCache.automaticDownload);
+        case SettingOptions.automaticDownloadCaptureBehaviour:
+          setting.value = SettingsCache.automaticDownloadCaptureBehaviour.name;
           break;
         case SettingOptions.loggerEnabled:
           setting.value = parseBoolStr(SettingsCache.loggerEnabled);

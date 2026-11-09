@@ -10,7 +10,7 @@ enum SettingOptions {
   downloadAdditionHotkeyScope,
   ffmpegPath,
   openDownloadProgressWindow,
-  automaticDownload,
+  automaticDownloadCaptureBehaviour,
   enableWindowToFront,
   extensionPort,
   temporaryPath,

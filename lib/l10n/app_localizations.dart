@@ -654,11 +654,30 @@ abstract class AppLocalizations {
   /// **'Show progress window when a new download starts'**
   String get settings_behavior_showProgressOnNewDownload;
 
-  /// No description provided for @settings_behavior_automaticDownload.
+  /// No description provided for @settings_behavior_automaticDownloadCaptureBehavior.
   ///
   /// In en, this message translates to:
-  /// **'Start download automatically'**
-  String get settings_behavior_automaticDownload;
+  /// **'Automatic Download Capture Behavior'**
+  String get settings_behavior_automaticDownloadCaptureBehavior;
+
+  /// No description provided for @settings_behavior_automaticDownloadCaptureBehavior_askForConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Always Ask'**
+  String
+      get settings_behavior_automaticDownloadCaptureBehavior_askForConfirmation;
+
+  /// No description provided for @settings_behavior_automaticDownloadCaptureBehavior_addDownloadItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Download Item'**
+  String get settings_behavior_automaticDownloadCaptureBehavior_addDownloadItem;
+
+  /// No description provided for @settings_behavior_automaticDownloadCaptureBehavior_startDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Download'**
+  String get settings_behavior_automaticDownloadCaptureBehavior_startDownload;
 
   /// No description provided for @settings_behavior_appClosureBehavior.
   ///

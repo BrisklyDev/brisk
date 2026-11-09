@@ -288,8 +288,22 @@ class AppLocalizationsPt extends AppLocalizations {
       'Mostrar a janela de progresso ao iniciar um download';
 
   @override
-  String get settings_behavior_automaticDownload =>
-      'Iniciar o download automaticamente';
+  String get settings_behavior_automaticDownloadCaptureBehavior =>
+      'Comportamento de captura automática de downloads';
+
+  @override
+  String
+      get settings_behavior_automaticDownloadCaptureBehavior_askForConfirmation =>
+          'Sempre perguntar';
+
+  @override
+  String
+      get settings_behavior_automaticDownloadCaptureBehavior_addDownloadItem =>
+          'Adicionar item de download';
+
+  @override
+  String get settings_behavior_automaticDownloadCaptureBehavior_startDownload =>
+      'Iniciar download';
 
   @override
   String get settings_behavior_appClosureBehavior => 'Ao fechar o aplicativo';

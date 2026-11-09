@@ -288,8 +288,22 @@ class AppLocalizationsEn extends AppLocalizations {
       'Show progress window when a new download starts';
 
   @override
-  String get settings_behavior_automaticDownload =>
-      'Start download automatically';
+  String get settings_behavior_automaticDownloadCaptureBehavior =>
+      'Automatic Download Capture Behavior';
+
+  @override
+  String
+      get settings_behavior_automaticDownloadCaptureBehavior_askForConfirmation =>
+          'Always Ask';
+
+  @override
+  String
+      get settings_behavior_automaticDownloadCaptureBehavior_addDownloadItem =>
+          'Add Download Item';
+
+  @override
+  String get settings_behavior_automaticDownloadCaptureBehavior_startDownload =>
+      'Start Download';
 
   @override
   String get settings_behavior_appClosureBehavior => 'App Closure Behavior';
