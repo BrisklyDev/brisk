@@ -1,7 +1,10 @@
 # Changelog
 
-## :hammer_and_wrench: Bug fixes
+## :sparkles: New Features
 
-- Download engine bug fixes and improvement
-- Fixed failed to retrieve file info error on some websites
-- UI fixes for light theme
+- **Automatic Download Capture**: Automatically add or start downloads when captured, without requiring manual confirmation.
+
+## :art: UI Features
+
+- **Segment Progress Bar**: New progress bar displaying the exact download progress of individual segments.
+- **Expandable Sidebar**: Improved sidebar with a new expanded mode for easier navigation.

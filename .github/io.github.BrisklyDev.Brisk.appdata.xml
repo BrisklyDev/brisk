@@ -44,15 +44,17 @@
   </screenshots>
 
   <releases>
-    <release version="2.3.9" date="2026-9-12">
-    <description>
-      <p><em>🔧 Bug Fixes and Improvements</em></p>
-      <ul>
-        <li>Download engine bug fixes and improvement</li>
-        <li>Fixed failed to retrieve file info error on some websites</li>
-        <li>UI fixes for light theme</li>
-      </ul>
-    </description>
+    <release version="2.4.0" date="2026-11-09">
+      <description>
+        <ul>
+          <li>Added automatic download capture with options to add or start downloads automatically</li>
+          <li>Added a progress bar showing individual segment download progress</li>
+          <li>Improved sidebar with a new expanded mode</li>
+          <li>Download engine bug fixes and improvements</li>
+          <li>Fixed file info retrieval errors on certain websites</li>
+          <li>Fixed light theme UI issues</li>
+        </ul>
+      </description>
     </release>
   </releases>
 
