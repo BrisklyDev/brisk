@@ -4,7 +4,6 @@ import 'package:brisk/provider/pluto_grid_util.dart';
 import 'package:brisk/provider/settings_provider.dart';
 import 'package:brisk/provider/theme_provider.dart';
 import 'package:brisk/util/ui_util.dart';
-import 'package:brisk/widget/base/default_tooltip.dart';
 import 'package:brisk/widget/setting/setting_dialog.dart';
 import 'package:brisk/widget/side_menu/side_menu_expansion_tile.dart';
 import 'package:brisk/widget/side_menu/side_menu_item.dart';
@@ -32,147 +31,174 @@ class _SideMenuState extends State<SideMenu> {
     final queueProvider = Provider.of<QueueProvider>(context);
     final sideMenuTheme =
         Provider.of<ThemeProvider>(context).activeTheme.sideMenuTheme;
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery.sizeOf(context);
+    final minimized = minimizedSideMenu(size);
     final loc = AppLocalizations.of(context)!;
+    final iconColor = sideMenuTheme.tabIconColor;
     return Container(
-      width: minimizedSideMenuWidth,
+      width: sideMenuWidth(size),
       height: double.infinity,
       color: sideMenuTheme.backgroundColor,
       child: Material(
         type: MaterialType.transparency,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Padding(
-              padding: const EdgeInsetsDirectional.only(
-                start: 5,
-                top: 20,
-                bottom: 10,
-              ),
-              child: SvgPicture.asset(
-                "assets/icons/logo-basic.svg",
-                height: 25,
-                width: 25,
-                colorFilter: ColorFilter.mode(
-                  sideMenuTheme.briskLogoColor,
-                  BlendMode.srcIn,
-                ),
+            SizedBox(
+              height: topMenuHeight,
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: minimizedSideMenuWidth,
+                    child: Center(
+                      child: SvgPicture.asset(
+                        "assets/icons/logo-basic.svg",
+                        height: 28,
+                        width: 28,
+                        colorFilter: ColorFilter.mode(
+                          sideMenuTheme.briskLogoColor,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (!minimized)
+                    Text(
+                      "Brisk",
+                      style: TextStyle(
+                        color: iconColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                ],
               ),
             ),
             const SizedBox(height: 8),
-            SideMenuExpansionTile(
-              title: 'Downloads',
-              active: selectedTab == 0,
-              icon: DefaultTooltip(
-                message: loc.allDownloads,
-                child: Icon(
-                  Icons.download_rounded,
-                  color: sideMenuTheme.tabIconColor,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SideMenuExpansionTile(
+                      title: loc.allDownloads,
+                      active: selectedTab == 0,
+                      icon: Icon(
+                        Icons.download_rounded,
+                        size: 24,
+                        color: iconColor,
+                      ),
+                      onTap: () => onDownloadsPressed(queueProvider),
+                      children: [
+                        SideMenuListTileItem(
+                          text: loc.settings_fileCategory_archive,
+                          icon: SvgPicture.asset(
+                            'assets/icons/archive.svg',
+                            colorFilter: ColorFilter.mode(
+                                Colors.lightBlue, BlendMode.srcIn),
+                          ),
+                          size: 32,
+                          onTap: () =>
+                              setGridFileTypeFilter(DLFileType.compressed),
+                          active: selectedExpansionTileItemTab == 4,
+                        ),
+                        SideMenuListTileItem(
+                          text: loc.settings_fileCategory_video,
+                          size: 34,
+                          icon: SvgPicture.asset(
+                            'assets/icons/video_2.svg',
+                            colorFilter: ColorFilter.mode(
+                                Colors.pinkAccent, BlendMode.srcIn),
+                          ),
+                          onTap: () => setGridFileTypeFilter(DLFileType.video),
+                          active: selectedExpansionTileItemTab == 1,
+                        ),
+                        SideMenuListTileItem(
+                          text: loc.settings_fileCategory_program,
+                          icon: SvgPicture.asset(
+                            'assets/icons/program.svg',
+                            colorFilter: ColorFilter.mode(
+                                Colors.indigoAccent, BlendMode.srcIn),
+                          ),
+                          size: 30,
+                          onTap: () =>
+                              setGridFileTypeFilter(DLFileType.program),
+                          active: selectedExpansionTileItemTab == 3,
+                        ),
+                        SideMenuListTileItem(
+                          text: loc.settings_fileCategory_document,
+                          icon: SvgPicture.asset(
+                            'assets/icons/document.svg',
+                            colorFilter: ColorFilter.mode(
+                                const Color(0xFF4CAF50), BlendMode.srcIn),
+                          ),
+                          onTap: () =>
+                              setGridFileTypeFilter(DLFileType.documents),
+                          active: selectedExpansionTileItemTab == 2,
+                        ),
+                        SideMenuListTileItem(
+                          text: loc.settings_fileCategory_music,
+                          icon: SvgPicture.asset(
+                            'assets/icons/music.svg',
+                            colorFilter: ColorFilter.mode(
+                                Colors.cyanAccent, BlendMode.srcIn),
+                          ),
+                          onTap: () => setGridFileTypeFilter(DLFileType.music),
+                          active: selectedExpansionTileItemTab == 0,
+                        )
+                      ],
+                    ),
+                    SideMenuItem(
+                      onTap: () => setUnfinishedGridFilter(queueProvider),
+                      leading: SvgPicture.asset(
+                        'assets/icons/unfinished.svg',
+                        width: 24,
+                        height: 24,
+                        colorFilter:
+                            ColorFilter.mode(iconColor, BlendMode.srcIn),
+                      ),
+                      title: loc.unfinishedDownloads,
+                      active: selectedTab == 1,
+                    ),
+                    SideMenuItem(
+                      onTap: () => setFinishedFilter(queueProvider),
+                      leading: Icon(
+                        Icons.download_done_rounded,
+                        size: 24,
+                        color: iconColor,
+                      ),
+                      title: loc.finishedDownloads,
+                      active: selectedTab == 2,
+                    ),
+                    SideMenuItem(
+                      onTap: () => onQueueTabPressed(queueProvider),
+                      leading: Icon(
+                        Icons.queue,
+                        size: 22,
+                        color: iconColor,
+                      ),
+                      title: loc.downloadQueues,
+                      active: selectedTab == 3,
+                    ),
+                  ],
                 ),
               ),
-              onTap: () => onDownloadsPressed(queueProvider),
-              children: [
-                SideMenuListTileItem(
-                  text: 'Archive',
-                  icon: SvgPicture.asset(
-                    'assets/icons/archive.svg',
-                    colorFilter:
-                        ColorFilter.mode(Colors.lightBlue, BlendMode.srcIn),
-                  ),
-                  size: 32,
-                  onTap: () => setGridFileTypeFilter(DLFileType.compressed),
-                  active: selectedExpansionTileItemTab == 4,
-                ),
-                SideMenuListTileItem(
-                  text: 'Videos',
-                  size: 34,
-                  icon: SvgPicture.asset(
-                    'assets/icons/video_2.svg',
-                    colorFilter:
-                        ColorFilter.mode(Colors.pinkAccent, BlendMode.srcIn),
-                  ),
-                  onTap: () => setGridFileTypeFilter(DLFileType.video),
-                  active: selectedExpansionTileItemTab == 1,
-                ),
-                SideMenuListTileItem(
-                  text: 'Programs',
-                  icon: SvgPicture.asset(
-                    'assets/icons/program.svg',
-                    colorFilter:
-                        ColorFilter.mode(Colors.indigoAccent, BlendMode.srcIn),
-                  ),
-                  size: 30,
-                  onTap: () => setGridFileTypeFilter(DLFileType.program),
-                  active: selectedExpansionTileItemTab == 3,
-                ),
-                SideMenuListTileItem(
-                  text: 'Documents',
-                  icon: SvgPicture.asset(
-                    'assets/icons/document.svg',
-                    colorFilter: ColorFilter.mode(
-                        const Color(0xFF4CAF50), BlendMode.srcIn),
-                  ),
-                  onTap: () => setGridFileTypeFilter(DLFileType.documents),
-                  active: selectedExpansionTileItemTab == 2,
-                ),
-                SideMenuListTileItem(
-                  text: 'Music',
-                  icon: SvgPicture.asset(
-                    'assets/icons/music.svg',
-                    colorFilter:
-                        ColorFilter.mode(Colors.cyanAccent, BlendMode.srcIn),
-                  ),
-                  onTap: () => setGridFileTypeFilter(DLFileType.music),
-                  active: selectedExpansionTileItemTab == 0,
-                )
-              ],
             ),
-            SideMenuItem(
-              onTap: () => setUnfinishedGridFilter(queueProvider),
-              leading: DefaultTooltip(
-                message: loc.unfinishedDownloads,
-                child: SvgPicture.asset(
-                  'assets/icons/unfinished.svg',
-                  colorFilter: ColorFilter.mode(
-                      sideMenuTheme.tabIconColor, BlendMode.srcIn),
-                ),
-              ),
-              title: "Unfinished",
-              active: selectedTab == 1,
-            ),
-            SideMenuItem(
-              onTap: () => setFinishedFilter(queueProvider),
-              leading: DefaultTooltip(
-                message: loc.finishedDownloads,
-                child: Icon(
-                  Icons.download_done_rounded,
-                  color: sideMenuTheme.tabIconColor,
-                ),
-              ),
-              title: "Finished",
-              active: selectedTab == 2,
-            ),
-            SideMenuItem(
-              onTap: () => onQueueTabPressed(queueProvider),
-              leading: DefaultTooltip(
-                message: loc.downloadQueues,
-                child: Icon(
-                  Icons.queue,
-                  color: sideMenuTheme.tabIconColor,
-                ),
-              ),
-              title: "Queues",
-              active: selectedTab == 3,
-            ),
-            const Spacer(),
             Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: IconButton(
-                iconSize: 30,
-                onPressed: () => onSettingPressed(context),
-                icon: Icon(
-                  Icons.settings,
+              padding: const EdgeInsets.only(bottom: 16, top: 8),
+              child: SideMenuTile(
+                onTap: () => onSettingPressed(context),
+                leading: Icon(
+                  Icons.settings_rounded,
+                  size: 26,
                   color: sideMenuTheme.settingIconColor,
                 ),
+                title: loc.settings_title,
+                tooltip: loc.settings_title,
+                height: 50,
+                activeColor: sideMenuTheme.activeTabBackgroundColor,
+                hoverColor: sideMenuTheme.tabHoverColor,
+                textColor: sideMenuTheme.settingIconColor,
               ),
             ),
           ],

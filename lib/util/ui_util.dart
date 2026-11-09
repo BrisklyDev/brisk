@@ -8,11 +8,20 @@ void safePop(BuildContext context) {
 
 const double topMenuHeight = 62;
 
-double minimizedSideMenuWidth = 110;
+/// Width of the side menu when only icons are shown.
+const double minimizedSideMenuWidth = 80;
+
+/// Width of the side menu when icons and labels are shown.
+const double expandedSideMenuWidth = 240;
+
+/// Window width at which the side menu expands to show labels.
+const double sideMenuExpandBreakpoint = 1300;
+
+bool minimizedSideMenu(Size size) => size.width < sideMenuExpandBreakpoint;
+
+double sideMenuWidth(Size size) =>
+    minimizedSideMenu(size) ? minimizedSideMenuWidth : expandedSideMenuWidth;
 
 double resolveWindowWidth(Size size) {
-  return size.width - minimizedSideMenuWidth;
+  return size.width - sideMenuWidth(size);
 }
-
-bool minimizedSideMenu(Size size) => true;
-
