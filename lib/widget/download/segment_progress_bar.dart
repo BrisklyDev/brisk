@@ -124,20 +124,20 @@ class _SegmentProgressPainter extends CustomPainter {
       }
     }
 
-    // Draw split points. Splits between two completed segments are faded,
-    // since they no longer affect what is being downloaded.
-    final strongDivider = Paint()..color = dividerColor;
-    final fadedDivider = Paint()..color = dividerColor.withAlpha(90);
+    final dividerPaint = Paint()..color = dividerColor;
     for (int i = 1; i < segments.length; i++) {
+      final previous = segments[i - 1];
+      if (previous.complete || previous.receivedBytes >= previous.length) {
+        continue;
+      }
       final x = toX(segments[i].startByte);
-      final bothComplete = segments[i].complete && segments[i - 1].complete;
       canvas.drawRect(
         Rect.fromCenter(
           center: Offset(x, size.height / 2),
           width: _dividerWidth,
           height: size.height,
         ),
-        bothComplete ? fadedDivider : strongDivider,
+        dividerPaint,
       );
     }
     canvas.restore();
