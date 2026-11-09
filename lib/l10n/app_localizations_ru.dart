@@ -289,6 +289,10 @@ class AppLocalizationsRu extends AppLocalizations {
       'Показывать окно выполнения при запуске новой загрузки';
 
   @override
+  String get settings_behavior_automaticDownload =>
+      'Автоматически начинать загрузку';
+
+  @override
   String get settings_behavior_appClosureBehavior =>
       'Поведение при закрытии приложения';
 

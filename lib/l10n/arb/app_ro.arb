@@ -90,6 +90,7 @@
   "settings_behavior": "Comportament",
   "settings_behavior_launchAtStartup": "Lansează la pornirea sistemului",
   "settings_behavior_showProgressOnNewDownload": "Afișează fereastra de progres când începe o descărcare nouă",
+  "settings_behavior_automaticDownload": "Pornește automat descărcarea",
   "settings_behavior_appClosureBehavior": "Comportament la închiderea aplicației",
   "settings_behavior_appClosureBehavior_alwaysAsk": "Întreabă de fiecare dată",
   "settings_behavior_appClosureBehavior_exit": "Ieșire",

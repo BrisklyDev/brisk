@@ -88,6 +88,7 @@
   "settings_behavior": "Davranış",
   "settings_behavior_launchAtStartup": "Başlangıçta Çalıştır",
   "settings_behavior_showProgressOnNewDownload": "Yeni indirme başladığında ilerleme penceresini göster",
+  "settings_behavior_automaticDownload": "İndirmeyi otomatik başlat",
   "settings_behavior_appClosureBehavior": "Uygulama Kapanış Davranışı",
   "settings_behavior_appClosureBehavior_alwaysAsk": "Her Zaman Sor",
   "settings_behavior_appClosureBehavior_exit": "Çık",

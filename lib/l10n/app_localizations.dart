@@ -654,6 +654,12 @@ abstract class AppLocalizations {
   /// **'Show progress window when a new download starts'**
   String get settings_behavior_showProgressOnNewDownload;
 
+  /// No description provided for @settings_behavior_automaticDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Start download automatically'**
+  String get settings_behavior_automaticDownload;
+
   /// No description provided for @settings_behavior_appClosureBehavior.
   ///
   /// In en, this message translates to:

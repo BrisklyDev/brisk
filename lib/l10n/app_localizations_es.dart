@@ -290,6 +290,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Mostrar ventana de progreso cuando inicie una nueva descarga';
 
   @override
+  String get settings_behavior_automaticDownload =>
+      'Iniciar la descarga automáticamente';
+
+  @override
   String get settings_behavior_appClosureBehavior =>
       'Comportamiento al Cerrar la Aplicación';
 

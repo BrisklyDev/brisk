@@ -89,6 +89,7 @@
   "settings_behavior": "Comportamiento",
   "settings_behavior_launchAtStartup": "Iniciar al arranque del sistema",
   "settings_behavior_showProgressOnNewDownload": "Mostrar ventana de progreso cuando inicie una nueva descarga",
+  "settings_behavior_automaticDownload": "Iniciar la descarga automáticamente",
   "settings_behavior_appClosureBehavior": "Comportamiento al Cerrar la Aplicación",
   "settings_behavior_appClosureBehavior_alwaysAsk": "Preguntar Siempre",
   "settings_behavior_appClosureBehavior_exit": "Salir",

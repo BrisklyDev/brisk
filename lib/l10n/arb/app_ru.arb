@@ -89,6 +89,7 @@
   "settings_behavior": "Поведение",
   "settings_behavior_launchAtStartup": "Запускать при старте системы",
   "settings_behavior_showProgressOnNewDownload": "Показывать окно выполнения при запуске новой загрузки",
+  "settings_behavior_automaticDownload": "Автоматически начинать загрузку",
   "settings_behavior_appClosureBehavior": "Поведение при закрытии приложения",
   "settings_behavior_appClosureBehavior_alwaysAsk": "Всегда спрашивать",
   "settings_behavior_appClosureBehavior_exit": "Выход",

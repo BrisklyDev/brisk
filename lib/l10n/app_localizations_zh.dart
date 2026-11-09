@@ -281,6 +281,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings_behavior_showProgressOnNewDownload => '开始新下载时显示进度窗口';
 
   @override
+  String get settings_behavior_automaticDownload => '自动开始下载';
+
+  @override
   String get settings_behavior_appClosureBehavior => '应用关闭行为';
 
   @override

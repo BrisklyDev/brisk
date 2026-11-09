@@ -289,6 +289,10 @@ class AppLocalizationsIt extends AppLocalizations {
       'All\'avvio di un nuovo download visualizza finestra progresso';
 
   @override
+  String get settings_behavior_automaticDownload =>
+      'Avvia automaticamente il download';
+
+  @override
   String get settings_behavior_appClosureBehavior =>
       'Comportamento chiusura app';
 

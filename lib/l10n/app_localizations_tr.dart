@@ -287,6 +287,9 @@ class AppLocalizationsTr extends AppLocalizations {
       'Yeni indirme başladığında ilerleme penceresini göster';
 
   @override
+  String get settings_behavior_automaticDownload => 'İndirmeyi otomatik başlat';
+
+  @override
   String get settings_behavior_appClosureBehavior =>
       'Uygulama Kapanış Davranışı';
 

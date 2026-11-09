@@ -40,6 +40,13 @@ class _BehaviourSettingsGroupState extends State<BehaviourSettingsGroup> {
               setState(() => SettingsCache.openDownloadProgressWindow = val),
         ),
         const SizedBox(height: 5),
+        SwitchSetting(
+          text: loc.settings_behavior_automaticDownload,
+          switchValue: SettingsCache.automaticDownload,
+          onChanged: (val) =>
+              setState(() => SettingsCache.automaticDownload = val),
+        ),
+        const SizedBox(height: 5),
         DropDownSetting(
           dropDownItemTextWidth: size.width * 0.17,
           value:

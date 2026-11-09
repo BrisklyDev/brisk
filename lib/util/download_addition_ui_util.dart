@@ -12,12 +12,12 @@ import 'package:brisk/setting/settings_cache.dart';
 import 'package:brisk/util/ui_util.dart';
 import 'package:brisk/widget/base/info_dialog.dart';
 import 'package:brisk/widget/download/download_info_dialog.dart';
+import 'package:brisk/widget/download/download_progress_dialog.dart';
 import 'package:brisk/widget/download/ffmpeg_not_found_dialog.dart';
 import 'package:brisk/widget/download/multi_download_addition_dialog.dart';
 import 'package:brisk_download_engine/brisk_download_engine.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -30,6 +30,7 @@ import 'package:brisk/widget/base/error_dialog.dart';
 import 'package:brisk/widget/download/ask_duplication_action.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:window_to_front/window_to_front.dart';
+import 'package:path/path.dart' as path;
 import 'file_util.dart';
 import 'http_util.dart';
 
@@ -492,11 +493,35 @@ class DownloadAdditionUiUtil {
             baseSaveDir: Directory(rule.savePath),
             useTypeBasedSubDirs: false,
           );
+    if (SettingsCache.automaticDownload) {
+      _startDownloadAutomatically(context, item);
+      return;
+    }
     showDialog(
       context: context,
       builder: (_) => DownloadInfoDialog(item, newDownload: true),
       barrierDismissible: false,
     );
+  }
+
+  static void _startDownloadAutomatically(
+    BuildContext context,
+    DownloadItem item,
+  ) async {
+    item.fileName = path.basename(item.filePath);
+    await HiveUtil.instance.addDownloadItem(item);
+    if (!context.mounted) return;
+    final provider =
+        Provider.of<DownloadRequestProvider>(context, listen: false);
+    provider.addRequest(item);
+    if (SettingsCache.openDownloadProgressWindow) {
+      showDialog(
+        context: context,
+        builder: (_) => DownloadProgressDialog(item.key),
+        barrierDismissible: false,
+      );
+    }
+    provider.startDownload(item.key);
   }
 
   static Future<FileInfo> retrieveFileInfo(ReceivePort receivePort) async {

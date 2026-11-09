@@ -87,6 +87,7 @@
   "settings_behavior": "Verhalten",
   "settings_behavior_launchAtStartup": "Beim Start ausführen",
   "settings_behavior_showProgressOnNewDownload": "Fortschrittsfenster bei neuem Download anzeigen",
+  "settings_behavior_automaticDownload": "Download automatisch starten",
   "settings_behavior_appClosureBehavior": "Verhalten beim Schließen der App",
   "settings_behavior_appClosureBehavior_alwaysAsk": "Immer fragen",
   "settings_behavior_appClosureBehavior_exit": "Beenden",

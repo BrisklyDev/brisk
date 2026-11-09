@@ -29,6 +29,7 @@ class SettingsCache {
   static late bool notificationOnDownloadFailure;
   static late bool launchOnStartUp;
   static late bool openDownloadProgressWindow;
+  static late bool automaticDownload;
   static late bool enableWindowToFront;
   static late bool loggerEnabled;
   static late String locale;
@@ -111,6 +112,10 @@ class SettingsCache {
     SettingOptions.openDownloadProgressWindow.name: [
       SettingType.general.name,
       "true",
+    ],
+    SettingOptions.automaticDownload.name: [
+      SettingType.general.name,
+      "false",
     ],
     SettingOptions.temporaryPath.name: [
       SettingType.file.name,
@@ -261,6 +266,9 @@ class SettingsCache {
         case SettingOptions.openDownloadProgressWindow:
           openDownloadProgressWindow = parseBool(value);
           break;
+        case SettingOptions.automaticDownload:
+          automaticDownload = parseBool(value);
+          break;
         case SettingOptions.temporaryPath:
           temporaryDir = Directory(value);
           break;
@@ -382,6 +390,9 @@ class SettingsCache {
         case SettingOptions.openDownloadProgressWindow:
           setting.value =
               parseBoolStr(SettingsCache.openDownloadProgressWindow);
+          break;
+        case SettingOptions.automaticDownload:
+          setting.value = parseBoolStr(SettingsCache.automaticDownload);
           break;
         case SettingOptions.loggerEnabled:
           setting.value = parseBoolStr(SettingsCache.loggerEnabled);

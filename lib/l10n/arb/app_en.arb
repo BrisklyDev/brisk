@@ -90,6 +90,7 @@
   "settings_behavior": "Behavior",
   "settings_behavior_launchAtStartup": "Launch at startup",
   "settings_behavior_showProgressOnNewDownload": "Show progress window when a new download starts",
+  "settings_behavior_automaticDownload": "Start download automatically",
   "settings_behavior_appClosureBehavior": "App Closure Behavior",
   "settings_behavior_appClosureBehavior_alwaysAsk": "Always Ask",
   "settings_behavior_appClosureBehavior_exit": "Exit",

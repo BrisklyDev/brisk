@@ -289,6 +289,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Fortschrittsfenster bei neuem Download anzeigen';
 
   @override
+  String get settings_behavior_automaticDownload =>
+      'Download automatisch starten';
+
+  @override
   String get settings_behavior_appClosureBehavior =>
       'Verhalten beim Schließen der App';
 
