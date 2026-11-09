@@ -23,10 +23,6 @@ class MigrationManager {
 
     /// Intentional duplicate
     Migration(10, "Change hotkey scope to inapp for linux"),
-
-    /// Version 11 ("Add automatic download") was briefly used in development
-    /// and then removed. It is skipped so databases that already ran it still
-    /// run the migration below.
     Migration(11, "Add automatic download capture behaviour"),
   ];
 
@@ -250,5 +246,7 @@ class MigrationManager {
       settingType: SettingsCache.defaultSettings[name]![0],
     );
     await settingBox.add(captureBehaviour);
+    SettingsCache.automaticDownloadCaptureBehaviour =
+        parseAutomaticDownloadCaptureBehaviour(captureBehaviour.value);
   }
 }
