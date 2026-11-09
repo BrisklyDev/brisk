@@ -720,6 +720,10 @@ class HttpDownloadEngine {
     }
     _connectionProgresses[downloadUid] ??= {};
     _connectionProgresses[downloadUid]![progress.connectionNumber] = progress;
+    // The stored message is re-sent during validation and assembly. Refresh
+    // its snapshot so it includes this update.
+    final storedProgress = _downloadProgresses[downloadUid];
+    if (storedProgress != null) _setSegmentProgresses(storedProgress);
     final totalByteTransferRate = _calculateTotalTransferRate(downloadUid);
     final isTempWriteComplete = checkTempWriteCompletion(downloadItem);
     final totalProgress = _calculateTotalDownloadProgress(downloadUid);
@@ -757,6 +761,7 @@ class HttpDownloadEngine {
       _terminateAndRestartEngine(downloadItem);
       return;
     }
+    _setSegmentProgresses(downloadProgress);
     if (isTempWriteComplete && isAssembleEligible(downloadItem)) {
       downloadProgress.estimatedSecondsRemaining = 0;
       downloadProgress.estimatedRemaining = "";
@@ -765,15 +770,12 @@ class HttpDownloadEngine {
         progress.downloadItem,
         progressChannel: engineChannel.channel,
       );
-
-      /// TODO add proper progress indication. currently it only notifies when the assemble is complete
       _setCompletionStatuses(success, downloadProgress);
       logger
         ?..writeLogBuffer()
         ..flushTimer?.cancel();
     }
     _setConnectionProgresses(downloadProgress);
-    _setSegmentProgresses(downloadProgress);
     _downloadProgresses[downloadUid] = downloadProgress;
     engineChannel.sendMessage(downloadProgress);
   }
@@ -785,7 +787,6 @@ class HttpDownloadEngine {
     try {
       _doSetSegmentProgresses(progress);
     } catch (e) {
-      // Visualization data must never break progress handling.
       progress.segmentProgresses = [];
     }
   }
