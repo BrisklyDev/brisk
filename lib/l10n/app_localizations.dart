@@ -1759,6 +1759,18 @@ abstract class AppLocalizations {
   /// **'Speed limits are only supported by the Performance (Kasma) engine'**
   String get settings_engine_speedLimit_unsupported;
 
+  /// No description provided for @briskUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Brisk Updated'**
+  String get briskUpdated;
+
+  /// No description provided for @btn_gotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got It'**
+  String get btn_gotIt;
+
   /// No description provided for @unlimited.
   ///
   /// In en, this message translates to:

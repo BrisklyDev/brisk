@@ -304,6 +304,8 @@
   "donationPrompt_neverShowAgain": "Never show again",
   "settings_engine_speedLimit": "Speed limit per download",
   "settings_engine_speedLimit_unsupported": "Speed limits are only supported by the Performance (Kasma) engine",
+  "briskUpdated": "Brisk Updated",
+  "btn_gotIt": "Got It",
   "unlimited": "Unlimited",
   "btn_showSpeedLimit": "Speed Limit",
   "btn_removeSpeedLimit": "Remove Limit",

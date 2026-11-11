@@ -228,6 +228,7 @@ class _MyHomePageState extends State<MyHomePage>
       HotKeyUtil.registerHotkeys(context);
       BrowserExtensionServer.setup(context);
       NotificationManager.init();
+      handlePostUpdateChangeLog(context);
       handleBriskUpdateCheck(context);
       if (launchedAtStartup) {
         Future.delayed(const Duration(milliseconds: 200), () {

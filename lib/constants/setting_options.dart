@@ -41,5 +41,8 @@ enum SettingOptions {
   lastBrowserExtensionUpdateNotification,
   updateRequested,
   preUpdateVersion,
+
+  /// The version of the last launch. Used to show the release notes after any kind of update.
+  lastRunVersion,
   extensionSkipCaptureRules,
 }

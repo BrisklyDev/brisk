@@ -81,17 +81,9 @@ void handleBriskUpdateCheck(
       !parseBool(updateRequested.value)) return;
 
   final currentVersion = (await PackageInfo.fromPlatform()).version;
-  if (preUpdateVersion.value != currentVersion) {
-    String changeLog = await getLatestVersionChangeLog();
-    showDialog(
-      context: context,
-      builder: (context) => BriskChangeLogDialog(
-        updatedVersion: currentVersion,
-        changeLog: changeLog,
-      ),
-      barrierDismissible: false,
-    );
-  } else {
+  // A successful update is handled by [handlePostUpdateChangeLog], which covers every update
+  // method. Only a failed in-app update is reported here.
+  if (preUpdateVersion.value == currentVersion) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -110,6 +102,60 @@ void handleBriskUpdateCheck(
   await updateRequested
     ..value = "false"
     ..save();
+}
+
+Future<void> handlePostUpdateChangeLog(BuildContext context) async {
+  final lastRunVersion = HiveUtil.getSetting(SettingOptions.lastRunVersion);
+  final existingInstall =
+      HiveUtil.getSetting(SettingOptions.lastUpdateCheck) != null;
+  final currentVersion = (await PackageInfo.fromPlatform()).version;
+  final updated = lastRunVersion == null
+      ? existingInstall
+      : _isNewerVersion(currentVersion, lastRunVersion.value);
+  if (updated) {
+    final String changeLog;
+    try {
+      changeLog = await getLatestVersionChangeLog();
+    } catch (_) {
+      return;
+    }
+    if (!context.mounted) return;
+    showDialog(
+      context: context,
+      builder: (context) => BriskChangeLogDialog(
+        updatedVersion: currentVersion,
+        changeLog: changeLog,
+      ),
+      barrierDismissible: false,
+    );
+  }
+  if (lastRunVersion == null) {
+    await HiveUtil.instance.settingBox.add(
+      Setting(
+        name: SettingOptions.lastRunVersion.name,
+        value: currentVersion,
+        settingType: SettingType.system.name,
+      ),
+    );
+  } else if (lastRunVersion.value != currentVersion) {
+    lastRunVersion.value = currentVersion;
+    await lastRunVersion.save();
+  }
+}
+
+bool _isNewerVersion(String version, String previous) {
+  try {
+    final current = version.split(".").map(int.parse).toList();
+    final last = previous.split(".").map(int.parse).toList();
+    for (var i = 0; i < current.length || i < last.length; i++) {
+      final a = i < current.length ? current[i] : 0;
+      final b = i < last.length ? last[i] : 0;
+      if (a != b) return a > b;
+    }
+    return false;
+  } catch (_) {
+    return false;
+  }
 }
 
 void onUpdatePressed(String version) {

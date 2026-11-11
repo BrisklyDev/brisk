@@ -917,6 +917,12 @@ class AppLocalizationsDe extends AppLocalizations {
       'Speed limits are only supported by the Performance (Kasma) engine';
 
   @override
+  String get briskUpdated => 'Brisk Updated';
+
+  @override
+  String get btn_gotIt => 'Got It';
+
+  @override
   String get unlimited => 'Unlimited';
 
   @override
