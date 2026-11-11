@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <defs>
+    <path id="bolt" d="M95.92,20.25c1.73,0,2.95,1.16,2.48,2.3l-13.36,31.55c-.47,1.14.78,2.3,2.48,2.3l29.82.16c1.73,0,2.95,1.16,2.48,2.33l-19.870,47.13h26.95c1.71,0,2.51,1.42,1.32,2.22l-46.9,31.35c-.72.47-1.89.47-2.58,0l-46.93-31.32c-1.24-.8-.39-2.22,1.29-2.22h28.45s.08-.16.08-.23l13.31-31.55c.47-1.14-.78-2.3-2.48-2.3l-29.82-.16c-1.73,0-2.95-1.160-2.48-2.3l20.34-48.14c.31-.78,1.37-1.29,2.51-1.29l32.92.18Z"/>
+    <clipPath id="face"><circle cx="80" cy="77" r="77"/></clipPath>
+    <!-- fades the long shadow out toward the bottom-right -->
+    <linearGradient id="fade" x1="0.25" y1="0.25" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity="1"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <mask id="fadeMask" maskUnits="userSpaceOnUse" x="0" y="0" width="160" height="160">
+      <rect width="160" height="160" fill="url(#fade)"/>
+    </mask>
+  </defs>
+
+  <!-- Disc: darker base gives the Adwaita-style thickness -->
+  <circle cx="80" cy="80" r="80" fill="#1b1b1b"/>
+  <circle cx="80" cy="77" r="77" fill="#2b2b2b"/>
+
+  <!-- Long 45 degree shadow across the background -->
+  <g clip-path="url(#face)">
+    <g mask="url(#fadeMask)">
+      <g fill="#000" opacity="0.28">
+      <use href="#bolt" transform="translate(1 1)"/>
+      <use href="#bolt" transform="translate(2 2)"/>
+      <use href="#bolt" transform="translate(3 3)"/>
+      <use href="#bolt" transform="translate(4 4)"/>
+      <use href="#bolt" transform="translate(5 5)"/>
+      <use href="#bolt" transform="translate(6 6)"/>
+      <use href="#bolt" transform="translate(7 7)"/>
+      <use href="#bolt" transform="translate(8 8)"/>
+      <use href="#bolt" transform="translate(9 9)"/>
+      <use href="#bolt" transform="translate(10 10)"/>
+      <use href="#bolt" transform="translate(11 11)"/>
+      <use href="#bolt" transform="translate(12 12)"/>
+      <use href="#bolt" transform="translate(13 13)"/>
+      <use href="#bolt" transform="translate(14 14)"/>
+      <use href="#bolt" transform="translate(15 15)"/>
+      <use href="#bolt" transform="translate(16 16)"/>
+      <use href="#bolt" transform="translate(17 17)"/>
+      <use href="#bolt" transform="translate(18 18)"/>
+      <use href="#bolt" transform="translate(19 19)"/>
+      <use href="#bolt" transform="translate(20 20)"/>
+      <use href="#bolt" transform="translate(21 21)"/>
+      <use href="#bolt" transform="translate(22 22)"/>
+      <use href="#bolt" transform="translate(23 23)"/>
+      <use href="#bolt" transform="translate(24 24)"/>
+      <use href="#bolt" transform="translate(25 25)"/>
+      <use href="#bolt" transform="translate(26 26)"/>
+      <use href="#bolt" transform="translate(27 27)"/>
+      <use href="#bolt" transform="translate(28 28)"/>
+      <use href="#bolt" transform="translate(29 29)"/>
+      <use href="#bolt" transform="translate(30 30)"/>
+      <use href="#bolt" transform="translate(31 31)"/>
+      <use href="#bolt" transform="translate(32 32)"/>
+      <use href="#bolt" transform="translate(33 33)"/>
+      <use href="#bolt" transform="translate(34 34)"/>
+      <use href="#bolt" transform="translate(35 35)"/>
+      <use href="#bolt" transform="translate(36 36)"/>
+      <use href="#bolt" transform="translate(37 37)"/>
+      <use href="#bolt" transform="translate(38 38)"/>
+      <use href="#bolt" transform="translate(39 39)"/>
+      <use href="#bolt" transform="translate(40 40)"/>
+      <use href="#bolt" transform="translate(41 41)"/>
+      <use href="#bolt" transform="translate(42 42)"/>
+      <use href="#bolt" transform="translate(43 43)"/>
+      <use href="#bolt" transform="translate(44 44)"/>
+      <use href="#bolt" transform="translate(45 45)"/>
+      <use href="#bolt" transform="translate(46 46)"/>
+      <use href="#bolt" transform="translate(47 47)"/>
+      <use href="#bolt" transform="translate(48 48)"/>
+      <use href="#bolt" transform="translate(49 49)"/>
+      <use href="#bolt" transform="translate(50 50)"/>
+      <use href="#bolt" transform="translate(51 51)"/>
+      <use href="#bolt" transform="translate(52 52)"/>
+      <use href="#bolt" transform="translate(53 53)"/>
+      <use href="#bolt" transform="translate(54 54)"/>
+      <use href="#bolt" transform="translate(55 55)"/>
+      <use href="#bolt" transform="translate(56 56)"/>
+      <use href="#bolt" transform="translate(57 57)"/>
+      <use href="#bolt" transform="translate(58 58)"/>
+      <use href="#bolt" transform="translate(59 59)"/>
+      <use href="#bolt" transform="translate(60 60)"/>
+      <use href="#bolt" transform="translate(61 61)"/>
+      <use href="#bolt" transform="translate(62 62)"/>
+      <use href="#bolt" transform="translate(63 63)"/>
+      <use href="#bolt" transform="translate(64 64)"/>
+      <use href="#bolt" transform="translate(65 65)"/>
+      <use href="#bolt" transform="translate(66 66)"/>
+      <use href="#bolt" transform="translate(67 67)"/>
+      <use href="#bolt" transform="translate(68 68)"/>
+      <use href="#bolt" transform="translate(69 69)"/>
+      <use href="#bolt" transform="translate(70 70)"/>
+      <use href="#bolt" transform="translate(71 71)"/>
+      <use href="#bolt" transform="translate(72 72)"/>
+      <use href="#bolt" transform="translate(73 73)"/>
+      <use href="#bolt" transform="translate(74 74)"/>
+      <use href="#bolt" transform="translate(75 75)"/>
+      <use href="#bolt" transform="translate(76 76)"/>
+      <use href="#bolt" transform="translate(77 77)"/>
+      <use href="#bolt" transform="translate(78 78)"/>
+      <use href="#bolt" transform="translate(79 79)"/>
+      <use href="#bolt" transform="translate(80 80)"/>
+      <use href="#bolt" transform="translate(81 81)"/>
+      <use href="#bolt" transform="translate(82 82)"/>
+      <use href="#bolt" transform="translate(83 83)"/>
+      <use href="#bolt" transform="translate(84 84)"/>
+      <use href="#bolt" transform="translate(85 85)"/>
+      <use href="#bolt" transform="translate(86 86)"/>
+      <use href="#bolt" transform="translate(87 87)"/>
+      <use href="#bolt" transform="translate(88 88)"/>
+      <use href="#bolt" transform="translate(89 89)"/>
+      <use href="#bolt" transform="translate(90 90)"/>
+      <use href="#bolt" transform="translate(91 91)"/>
+      <use href="#bolt" transform="translate(92 92)"/>
+      <use href="#bolt" transform="translate(93 93)"/>
+      <use href="#bolt" transform="translate(94 94)"/>
+      <use href="#bolt" transform="translate(95 95)"/>
+      <use href="#bolt" transform="translate(96 96)"/>
+      <use href="#bolt" transform="translate(97 97)"/>
+      <use href="#bolt" transform="translate(98 98)"/>
+      <use href="#bolt" transform="translate(99 99)"/>
+      <use href="#bolt" transform="translate(100 100)"/>
+      <use href="#bolt" transform="translate(101 101)"/>
+      <use href="#bolt" transform="translate(102 102)"/>
+      <use href="#bolt" transform="translate(103 103)"/>
+      <use href="#bolt" transform="translate(104 104)"/>
+      <use href="#bolt" transform="translate(105 105)"/>
+      <use href="#bolt" transform="translate(106 106)"/>
+      <use href="#bolt" transform="translate(107 107)"/>
+      <use href="#bolt" transform="translate(108 108)"/>
+      <use href="#bolt" transform="translate(109 109)"/>
+      <use href="#bolt" transform="translate(110 110)"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- faint top highlight on the face edge -->
+  <circle cx="80" cy="77" r="76.5" fill="none" stroke="#ffffff" stroke-opacity="0.07" stroke-width="1"/>
+
+  <!-- Bolt thickness -->
+  <use href="#bolt" fill="#1f4d94" transform="translate(0 3)"/>
+  <!-- Bolt face -->
+  <use href="#bolt" fill="#2e6bc5"/>
+</svg>

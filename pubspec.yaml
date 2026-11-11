@@ -71,11 +71,11 @@ dev_dependencies:
 flutter_launcher_icons:
   windows:
     generate: true
-    image_path: "assets/icons/logo.png"
+    image_path: "assets/icons/logo-new.png"
     icon_size: 48
   macos:
     generate: true
-    image_path: "assets/icons/logo.png"
+    image_path: "assets/icons/logo-new.png"
 
   flutter_lints: ^4.0.0
 

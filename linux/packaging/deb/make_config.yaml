@@ -20,7 +20,7 @@ dependencies:
 
 essential: false
 
-icon: linux/assets/logo.png
+icon: linux/assets/logo-new.png
 
 postuninstall_scripts:
   - echo "Have a good time!"

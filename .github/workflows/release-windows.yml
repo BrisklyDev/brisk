@@ -30,7 +30,7 @@ jobs:
       - name: Replace iss placeholders
         run: |
           $outputDir = "${{ github.workspace }}"
-          $setupIconFile = "${{ github.workspace }}\assets\icons\logo.ico"
+          $setupIconFile = "${{ github.workspace }}\assets\icons\logo-new.ico"
           $baseDir = "${{ github.workspace }}"
           $briskVersion = "${{ needs.version.outputs.version }}"
           $outputBaseFileName = "Brisk-v${{ needs.version.outputs.version }}-windows-x86_64"
@@ -69,7 +69,7 @@ jobs:
 
       - name: Set proper icon path
         run: |
-          $iconPath = "${{ github.workspace }}\\assets\\icons\\logo.ico"
+          $iconPath = "${{ github.workspace }}\\assets\\icons\\logo-new.ico"
           (Get-Content windows/packaging/exe/make_config.yaml) -replace 'PLACEHOLDER_ICON_PATH', $iconPath | Set-Content windows/packaging/exe/make_config.yaml
 
       - name: Enable windows build

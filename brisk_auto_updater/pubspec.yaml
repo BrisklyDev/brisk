@@ -52,11 +52,11 @@ dev_dependencies:
 flutter_icons:
   windows:
     generate: true
-    image_path: "assets/icons/logo.svg"
+    image_path: "assets/icons/logo-new.png"
     icon_size: 48
   macos:
     generate: true
-    image_path: "assets/icons/logo.png"
+    image_path: "assets/icons/logo-new.png"
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -78,6 +78,8 @@ flutter:
   assets:
     - assets/icons/logo.svg
     - assets/icons/logo.png
+    - assets/icons/logo-new.svg
+    - assets/icons/logo-new.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

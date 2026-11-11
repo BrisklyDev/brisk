@@ -2,7 +2,7 @@
 Name=Brisk
 Comment=Ultra-fast, modern download manager for desktop
 Exec=brisk
-Icon=data/flutter_assets/assets/icons/logo.png
+Icon=data/flutter_assets/assets/icons/logo-new.png
 Terminal=false
 Type=Application
 Categories=Network;Utility;

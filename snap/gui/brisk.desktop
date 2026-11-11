@@ -2,7 +2,7 @@
 Name=Brisk
 Comment=Ultra-fast, modern download manager for desktop
 Exec=brisk
-Icon=${SNAP}/meta/gui/brisk.png
+Icon=${SNAP}/meta/gui/brisk-new.png
 Terminal=false
 Type=Application
 Categories=Network;Utility;

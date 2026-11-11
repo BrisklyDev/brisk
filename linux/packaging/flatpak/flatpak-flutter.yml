@@ -50,7 +50,7 @@ modules:
       - install -D $BUNDLE_PATH/brisk /app/bin/brisk
       - cp -r $BUNDLE_PATH/lib /app/bin/lib
       - cp -r $BUNDLE_PATH/data /app/bin/data
-      - install -Dm644 assets/icons/logo-128.png /app/share/icons/hicolor/128x128/apps/io.github.BrisklyDev.Brisk.png
+      - install -Dm644 assets/icons/logo-new-128.png /app/share/icons/hicolor/128x128/apps/io.github.BrisklyDev.Brisk.png
       - install -Dm644 assets/icons/tray-inactive-dark.png /app/share/icons/hicolor/128x128/apps/io.github.BrisklyDev.Brisk.trayInactiveDark.png
       - install -Dm644 assets/icons/tray-inactive-light.png /app/share/icons/hicolor/128x128/apps/io.github.BrisklyDev.Brisk.trayInactiveLight.png
       - install -Dm644 assets/icons/tray-active.png /app/share/icons/hicolor/128x128/apps/io.github.BrisklyDev.Brisk.trayActive.png
