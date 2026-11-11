@@ -7,3 +7,4 @@ Terminal=false
 Type=Application
 Categories=Network;Utility;
 StartupNotify=false
+StartupWMClass=io.github.BrisklyDev.Brisk

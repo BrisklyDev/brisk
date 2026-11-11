@@ -28,6 +28,12 @@ static void my_application_activate(GApplication* application) {
   // If running on Wayland assume the header bar will work (may need changing
   // if future cases occur).
   gboolean use_header_bar = TRUE;
+  // On Wayland the X11 check below never runs, so also check the desktop.
+  // Non-GNOME desktops (e.g. KDE) should get native server-side decorations.
+  const gchar* desktop = g_getenv("XDG_CURRENT_DESKTOP");
+  if (desktop != nullptr && g_strstr_len(desktop, -1, "GNOME") == nullptr) {
+    use_header_bar = FALSE;
+  }
 #ifdef GDK_WINDOWING_X11
   GdkScreen* screen = gtk_window_get_screen(window);
   if (GDK_IS_X11_SCREEN(screen)) {
@@ -102,6 +108,11 @@ static void my_application_class_init(MyApplicationClass* klass) {
 static void my_application_init(MyApplication* self) {}
 
 MyApplication* my_application_new() {
+  // Set the program name to the application ID. GTK uses it as the Wayland
+  // app_id (and X11 WM_CLASS), which desktops like KDE use to find the
+  // matching .desktop file and its icon.
+  g_set_prgname(APPLICATION_ID);
+
   return MY_APPLICATION(g_object_new(my_application_get_type(),
                                      "application-id", APPLICATION_ID,
                                      "flags", G_APPLICATION_NON_UNIQUE,

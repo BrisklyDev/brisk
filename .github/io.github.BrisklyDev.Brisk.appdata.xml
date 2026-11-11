@@ -44,15 +44,16 @@
   </screenshots>
 
   <releases>
-    <release version="2.4.0" date="2026-11-09">
+    <release version="2.5.0" date="2026-11-11">
       <description>
         <ul>
-          <li>Added automatic download capture with options to add or start downloads automatically</li>
-          <li>Added a progress bar showing individual segment download progress</li>
-          <li>Improved sidebar with a new expanded mode</li>
-          <li>Download engine bug fixes and improvements</li>
-          <li>Fixed file info retrieval errors on certain websites</li>
-          <li>Fixed light theme UI issues</li>
+          <li>Added Kasma, a new faster download engine written in Rust (beta), with support for regular and video stream (M3U8) downloads</li>
+          <li>Added per-download speed limits, adjustable while downloading (Kasma engine only)</li>
+          <li>Added support for fMP4 (CMAF) video streams</li>
+          <li>Fixed video downloads from CDNs that require the page's Referer or the browser's User-Agent</li>
+          <li>Redesigned the update successful dialog, now shown for all installation methods</li>
+          <li>Fixed multiple exit dialogs stacking when the close button was pressed repeatedly</li>
+          <li>Removed the rhttp client; existing installations switch back to the default HTTP client</li>
         </ul>
       </description>
     </release>

@@ -8,7 +8,7 @@ add_compile_options(-Wno-deprecated-declarations)
 set(BINARY_NAME "brisk")
 # The unique GTK application identifier for this application. See:
 # https://wiki.gnome.org/HowDoI/ChooseApplicationID
-set(APPLICATION_ID "com.aminbhst.brisk")
+set(APPLICATION_ID "io.github.BrisklyDev.Brisk")
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.

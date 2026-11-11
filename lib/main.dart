@@ -50,6 +50,7 @@ Future<void> main(List<String> args) async {
     WidgetsFlutterBinding.ensureInitialized();
     tz.initializeTimeZones();
     await SingleInstanceHandler.init();
+    migrateLinuxAppIdDataDir();
     await Logger.init();
     await migrateDatabaseLocation();
     await windowManager.ensureInitialized();
