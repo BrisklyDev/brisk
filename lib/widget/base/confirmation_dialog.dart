@@ -69,9 +69,15 @@ class ConfirmationDialog extends StatelessWidget {
         ),
       ),
       actions: [
-        RoundedOutlinedButton.fromButtonColor(
-          theme.alertDialogTheme.deleteCancelColor,
+        RoundedOutlinedButton(
           text: loc.btn_cancel,
+          backgroundColor: Colors.transparent,
+          borderColor: Colors.transparent,
+          textColor: theme.textColor,
+          hoverTextColor:
+              theme.alertDialogTheme.declineButtonColor.hoverTextColor,
+          hoverBackgroundColor:
+              theme.alertDialogTheme.declineButtonColor.hoverBackgroundColor,
           onPressed: () {
             Navigator.of(context).pop();
           },
