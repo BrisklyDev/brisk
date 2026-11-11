@@ -43,6 +43,7 @@ class HiveUtil {
     migrationBox = await Hive.openBox<Migration>("migrations");
   }
 
+  @Deprecated('development only')
   Future<void> deleteDatabase() async => await Hive.deleteFromDisk();
 
   static Setting? getSetting(SettingOptions option) {
