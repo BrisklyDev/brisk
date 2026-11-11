@@ -40,12 +40,9 @@ jobs:
           architecture: x64
 
       - name: Install required tools
-        timeout-minutes: 15
+        timeout-minutes: 60
         run: |
-           # Bypass the runner's Azure apt mirror (DNS for it fails intermittently)
-           sudo sed -i 's|mirror+file:/etc/apt/apt-mirrors.txt|http://archive.ubuntu.com/ubuntu/|g' /etc/apt/sources.list /etc/apt/sources.list.d/*.sources 2>/dev/null || true
-           sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=30 update -y
-           sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=30 install -y --no-install-recommends clang cmake ninja-build pkg-config libgtk-3-dev libkeybinder-3.0-dev libayatana-appindicator3-dev
+           bash .github/scripts/install-linux-deps.sh clang cmake ninja-build pkg-config libgtk-3-dev libkeybinder-3.0-dev libayatana-appindicator3-dev
       - name: Enable linux-desktop for flutter
         run: flutter config --enable-linux-desktop && export PATH="$PATH":"$HOME/.pub-cache/bin"
 
