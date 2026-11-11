@@ -291,7 +291,7 @@
   "btn_installAutomatically": "Installa automaticamente",
   "settings_engine": "Motore download",
   "settings_engine_engineType": "Motore",
-  "settings_engine_engineType_tooltip": "Il motore usato per i download HTTP/M3U8:\n\nPredefinito – Il motore standard di Brisk\nPrestazioni – Il motore nativo Kasma (scritto in Rust). Più veloce e leggero. I proxy non sono ancora supportati; i download tramite proxy usano il motore predefinito",
+  "settings_engine_engineType_tooltip": "Il motore usato per i download HTTP/M3U8:\n\nPredefinito – Il motore standard di Brisk\nPrestazioni – Motore Kasma più veloce, scritto in Rust",
   "settings_engine_engineType_default": "Predefinito",
   "settings_engine_engineType_performance": "Prestazioni (Beta)",
   "btn_showAdvancedOptions": "Visualizza opzioni avanzate",
@@ -300,6 +300,6 @@
   "extension_restart_success": "Server estensione riavviato correttamente!",
   "extension_restart_failed": "Impossibile riavviare il server estensione!",
   "donationPrompt_title": "Ti piace Brisk?",
-  "donationPrompt_description": "Ti piace Brisk? Il tuo supporto aiuta a finanziare lo sviluppo continuo, i miglioramenti e le nuove funzionalità.",
+  "donationPrompt_description": "Il tuo supporto aiuta a finanziare lo sviluppo continuo, i miglioramenti e le nuove funzionalità.",
   "donationPrompt_neverShowAgain": "Non visualizzare più"
 }

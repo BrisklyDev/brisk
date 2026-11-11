@@ -834,7 +834,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get settings_engine_engineType_tooltip =>
-      '用于 HTTP/M3U8 下载的引擎：\n\n默认 – Brisk 标准引擎\n性能 – 原生 Kasma 引擎（使用 Rust 编写），更快更轻量。暂不支持代理；使用代理的下载将回退到默认引擎';
+      '用于 HTTP/M3U8 下载的引擎：\n\n默认 – Brisk 标准引擎\n性能 – 更快的 Kasma 引擎，使用 Rust 编写';
 
   @override
   String get settings_engine_engineType_default => '默认';
@@ -863,8 +863,39 @@ class AppLocalizationsZh extends AppLocalizations {
   String get donationPrompt_title => '喜欢 Brisk 吗？';
 
   @override
-  String get donationPrompt_description => '喜欢 Brisk 吗？您的支持有助于持续开发、改进和推出新功能。';
+  String get donationPrompt_description => '您的支持有助于持续开发、改进和推出新功能。';
 
   @override
   String get donationPrompt_neverShowAgain => '不再显示';
+
+  @override
+  String get settings_engine_speedLimit => 'Speed limit per download';
+
+  @override
+  String get settings_engine_speedLimit_unsupported =>
+      'Speed limits are only supported by the Performance (Kasma) engine';
+
+  @override
+  String get unlimited => 'Unlimited';
+
+  @override
+  String get btn_showSpeedLimit => 'Speed Limit';
+
+  @override
+  String get btn_removeSpeedLimit => 'Remove Limit';
+
+  @override
+  String get btn_useGlobalSpeedLimit => 'Use Global Limit';
+
+  @override
+  String speedLimit_current(Object limit) {
+    return 'Current limit: $limit';
+  }
+
+  @override
+  String get speedLimit_source_global =>
+      'Following the global limit from the settings';
+
+  @override
+  String get speedLimit_source_download => 'Limit set for this download only';
 }

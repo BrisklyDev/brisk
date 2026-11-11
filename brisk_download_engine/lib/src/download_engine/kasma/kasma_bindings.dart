@@ -10,6 +10,8 @@ typedef _CommandNative = Int32 Function(Uint64 handle, Int32 command);
 typedef _CommandDart = int Function(int handle, int command);
 typedef _PollNative = Pointer<Utf8> Function(Uint64 handle);
 typedef _PollDart = Pointer<Utf8> Function(int handle);
+typedef _SetSpeedLimitNative = Int32 Function(Uint64 handle, Int64 bytesPerSec);
+typedef _SetSpeedLimitDart = int Function(int handle, int bytesPerSec);
 typedef _DisposeNative = Void Function(Uint64 handle);
 typedef _DisposeDart = void Function(int handle);
 typedef _FreeNative = Void Function(Pointer<Utf8> ptr);
@@ -20,7 +22,7 @@ typedef _ApiVersionDart = int Function();
 
 /// Low level bindings of the kasma C API (see `kasma_engine/rust/src/ffi.rs`).
 class KasmaBindings {
-  static const supportedApiVersion = 2;
+  static const supportedApiVersion = 3;
 
   static const commandPause = 0;
   static const commandResume = 1;
@@ -33,6 +35,7 @@ class KasmaBindings {
 
   final _StartDart _start;
   final _CommandDart _command;
+  final _SetSpeedLimitDart _setSpeedLimit;
   final _PollDart _poll;
   final _DisposeDart _dispose;
   final _FreeDart _free;
@@ -42,6 +45,9 @@ class KasmaBindings {
       : _start = lib.lookupFunction<_StartNative, _StartDart>('kasma_start'),
         _command =
             lib.lookupFunction<_CommandNative, _CommandDart>('kasma_command'),
+        _setSpeedLimit =
+            lib.lookupFunction<_SetSpeedLimitNative, _SetSpeedLimitDart>(
+                'kasma_set_speed_limit'),
         _poll = lib.lookupFunction<_PollNative, _PollDart>('kasma_poll'),
         _dispose =
             lib.lookupFunction<_DisposeNative, _DisposeDart>('kasma_dispose'),
@@ -115,6 +121,11 @@ class KasmaBindings {
   }
 
   int command(int handle, int command) => _command(handle, command);
+
+  /// Changes the speed limit of a running download. [bytesPerSec] <= 0 removes the limit.
+  /// Returns 0 on success, -1 if the handle is unknown, -3 if the engine has stopped.
+  int setSpeedLimit(int handle, int bytesPerSec) =>
+      _setSpeedLimit(handle, bytesPerSec);
 
   String? poll(int handle) => _takeString(_poll(handle));
 

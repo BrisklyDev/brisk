@@ -291,7 +291,7 @@
   "btn_installAutomatically": "Install Automatically",
   "settings_engine": "Download Engine",
   "settings_engine_engineType": "Engine",
-  "settings_engine_engineType_tooltip": "The engine used for HTTP/M3U8 downloads:\n\nDefault – The standard Brisk engine\nPerformance – The native Kasma engine (written in Rust). Faster and lighter. Proxies are not supported yet; downloads that use a proxy fall back to the default engine",
+  "settings_engine_engineType_tooltip": "The engine used for HTTP/M3U8 downloads:\n\nDefault – The standard Brisk engine\nPerformance – Faster Kasma engine written in Rust",
   "settings_engine_engineType_default": "Default",
   "settings_engine_engineType_performance": "Performance (Beta)",
   "btn_showAdvancedOptions": "Show Advanced Options",
@@ -300,6 +300,20 @@
   "extension_restart_success": "Extension server restarted successfully!",
   "extension_restart_failed": "Failed to restart extension server!",
   "donationPrompt_title": "Enjoying Brisk?",
-  "donationPrompt_description": "Enjoying Brisk? Your support helps fund continued development, improvements, and new features.",
-  "donationPrompt_neverShowAgain": "Never show again"
+  "donationPrompt_description": "Your support helps fund continued development, improvements, and new features.",
+  "donationPrompt_neverShowAgain": "Never show again",
+  "settings_engine_speedLimit": "Speed limit per download",
+  "settings_engine_speedLimit_unsupported": "Speed limits are only supported by the Performance (Kasma) engine",
+  "unlimited": "Unlimited",
+  "btn_showSpeedLimit": "Speed Limit",
+  "btn_removeSpeedLimit": "Remove Limit",
+  "btn_useGlobalSpeedLimit": "Use Global Limit",
+  "speedLimit_current": "Current limit: {limit}",
+  "@speedLimit_current": {
+    "placeholders": {
+      "limit": {}
+    }
+  },
+  "speedLimit_source_global": "Following the global limit from the settings",
+  "speedLimit_source_download": "Limit set for this download only"
 }

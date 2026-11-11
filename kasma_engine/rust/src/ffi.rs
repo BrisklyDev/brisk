@@ -268,18 +268,34 @@ pub extern "C" fn kasma_command(handle: u64, command: i32) -> i32 {
             COMMAND_TERMINATE => DownloadCommand::Terminate,
             _ => return -2,
         };
-        let Ok(downloads) = DOWNLOADS.lock() else {
-            return -1;
-        };
-        let Some(download) = downloads.get(&handle) else {
-            return -1;
-        };
-        match download.tx.try_send(cmd) {
-            Ok(_) => 0,
-            Err(_) => -3,
-        }
+        send_command(handle, cmd)
     })
     .unwrap_or(-1)
+}
+
+/// Changes the total speed limit of a running download, in bytes per second.
+/// Values <= 0 remove the limit. Takes effect on each worker's next received chunk.
+/// Returns 0 on success, -1 if the handle is unknown, -3 if the engine has already stopped.
+#[unsafe(no_mangle)]
+pub extern "C" fn kasma_set_speed_limit(handle: u64, bytes_per_sec: i64) -> i32 {
+    catch_unwind(|| {
+        let limit = (bytes_per_sec > 0).then_some(bytes_per_sec as u64);
+        send_command(handle, DownloadCommand::SetSpeedLimit(limit))
+    })
+    .unwrap_or(-1)
+}
+
+fn send_command(handle: u64, cmd: DownloadCommand) -> i32 {
+    let Ok(downloads) = DOWNLOADS.lock() else {
+        return -1;
+    };
+    let Some(download) = downloads.get(&handle) else {
+        return -1;
+    };
+    match download.tx.try_send(cmd) {
+        Ok(_) => 0,
+        Err(_) => -3,
+    }
 }
 
 /// Returns all pending events of the engine as a JSON array, or null if there are none.
@@ -364,8 +380,10 @@ pub extern "C" fn kasma_last_error() -> *mut c_char {
     .unwrap_or(std::ptr::null_mut())
 }
 
-/// Returns the FFI API version. Bumped on breaking changes.
+/// Returns the FFI API version. Bumped on breaking changes and when functions are added,
+/// so that bindings can rely on every function they look up being present.
+/// 3: added [`kasma_set_speed_limit`].
 #[unsafe(no_mangle)]
 pub extern "C" fn kasma_api_version() -> i32 {
-    2
+    3
 }

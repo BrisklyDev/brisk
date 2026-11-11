@@ -91,7 +91,7 @@ pub struct HttpDownloadEngine {
     from_worker_tx: Sender<WorkerToEngineMsg>,
     from_worker_rx: Receiver<WorkerToEngineMsg>,
     spawned_workers: u8,
-    rate_limiter: Option<SharedRateLimiter>,
+    rate_limiter: SharedRateLimiter,
     /// Whether the download has been paused by the user
     paused: bool,
     /// Number of times the engine has restarted itself due to unrecoverable errors
@@ -179,9 +179,7 @@ impl HttpDownloadEngine {
         };
         let (worker_to_engine_tx, worker_to_engine_rx) =
             tokio::sync::mpsc::channel::<WorkerToEngineMsg>(100);
-        let rate_limiter = setting
-            .speed_limit_bytes_per_sec
-            .map(RateLimiter::shared);
+        let rate_limiter = RateLimiter::shared(setting.speed_limit_bytes_per_sec);
         (
             HttpDownloadEngine {
                 setting,
@@ -391,6 +389,7 @@ impl HttpDownloadEngine {
                 cmd = self.from_main_rx.recv() => match cmd {
                     Some(DownloadCommand::Start) => self.handle_start().await?,
                     Some(DownloadCommand::Pause) => self.pause_workers().await?,
+                    Some(DownloadCommand::SetSpeedLimit(limit)) => self.set_speed_limit(limit),
                     Some(DownloadCommand::Terminate) | None => {
                         engine_log!(self, "Terminate command received");
                         let _ = self.send_to_assigned_workers(EngineToWorkerMsg::Stop).await;
@@ -1062,6 +1061,14 @@ impl HttpDownloadEngine {
             && self.spawned_workers < self.setting.total_connections
     }
 
+    /// Workers share `rate_limiter` by `Arc`, so they pick up the new rate on their next chunk.
+    fn set_speed_limit(&mut self, limit: Option<u64>) {
+        let limit = limit.filter(|l| *l > 0);
+        self.rate_limiter.lock().unwrap().set_rate(limit);
+        self.setting.speed_limit_bytes_per_sec = limit;
+        engine_log!(self, "Speed limit changed to {:?} bytes/sec", limit);
+    }
+
     async fn pause_workers(&mut self) -> anyhow::Result<()> {
         if self.paused || self.state != EngineState::Running {
             return Ok(());
@@ -1694,7 +1701,7 @@ impl HttpDownloadEngine {
             self.from_worker_tx.clone(),
             engine_to_worker_rx,
             handle.progress_arc.clone(),
-            self.rate_limiter.clone(),
+            Some(self.rate_limiter.clone()),
         );
 
         handle.range = range;

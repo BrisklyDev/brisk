@@ -26,6 +26,7 @@ class MigrationManager {
     Migration(11, "Add automatic download capture behaviour"),
     Migration(12, "Add download engine type"),
     Migration(13, "Remove rhttp client, revert to the default http client"),
+    Migration(14, "Add speed limit"),
   ];
 
   static runMigrations() async {
@@ -82,6 +83,9 @@ class MigrationManager {
         break;
       case 13:
         await runMigrationV13();
+        break;
+      case 14:
+        await runMigrationV14();
         break;
       default:
         break;
@@ -296,5 +300,23 @@ class MigrationManager {
       await setting.save();
     }
     SettingsCache.httpClientType = resolveClientType(defaultValue);
+  }
+
+  static Future<void> runMigrationV14() async {
+    final settingBox = HiveUtil.instance.settingBox;
+    final name = SettingOptions.speedLimit.name;
+    final existing =
+        settingBox.values.where((setting) => setting.name == name).firstOrNull;
+    if (existing != null) {
+      SettingsCache.speedLimit = int.tryParse(existing.value) ?? 0;
+      return;
+    }
+    final speedLimit = Setting(
+      name: name,
+      value: SettingsCache.defaultSettings[name]![1],
+      settingType: SettingsCache.defaultSettings[name]![0],
+    );
+    await settingBox.add(speedLimit);
+    SettingsCache.speedLimit = int.tryParse(speedLimit.value) ?? 0;
   }
 }

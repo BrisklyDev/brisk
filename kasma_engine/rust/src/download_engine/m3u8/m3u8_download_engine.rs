@@ -12,7 +12,7 @@ use crate::download_engine::http::http_download_worker::{Status, USER_AGENT};
 use crate::download_engine::http::message::{
     DownloadCommand, EngineToMainMsg, ProgressReport, WorkerReport,
 };
-use crate::download_engine::http::rate_limiter::RateLimiter;
+use crate::download_engine::http::rate_limiter::{RateLimiter, SharedRateLimiter};
 use crate::download_engine::m3u8::playlist::{MediaPlaylist, MediaSegment, Playlist};
 use crate::download_engine::m3u8::segment_worker::{
     SegmentContext, SegmentError, SegmentJob, SharedStats, WorkerStats, download_segment,
@@ -106,6 +106,7 @@ pub struct M3u8DownloadEngine {
     result_tx: Sender<SegmentResult>,
     result_rx: Receiver<SegmentResult>,
     ctx: Option<Arc<SegmentContext>>,
+    rate_limiter: SharedRateLimiter,
     paused: bool,
     last_eta_calc: Option<Instant>,
     estimated_remaining_sec: u64,
@@ -132,6 +133,7 @@ impl M3u8DownloadEngine {
         setting: DownloadSetting,
     ) -> Self {
         let (result_tx, result_rx) = mpsc::channel(100);
+        let rate_limiter = RateLimiter::shared(setting.speed_limit_bytes_per_sec);
         M3u8DownloadEngine {
             setting,
             uid: info.uid.clone().unwrap_or_default(),
@@ -146,6 +148,7 @@ impl M3u8DownloadEngine {
             result_tx,
             result_rx,
             ctx: None,
+            rate_limiter,
             paused: false,
             last_eta_calc: None,
             estimated_remaining_sec: 0,
@@ -252,7 +255,7 @@ impl M3u8DownloadEngine {
             headers: self.info.headers.clone(),
             temp_dir: self.temp_dir(),
             timeout: Duration::from_millis(self.setting.reset_timeout_millis.max(1000)),
-            rate_limiter: self.setting.speed_limit_bytes_per_sec.map(RateLimiter::shared),
+            rate_limiter: Some(self.rate_limiter.clone()),
         }));
         let worker_count = (self.setting.total_connections.max(1) as usize).min(self.units.len());
         self.workers = (0..worker_count)
@@ -359,6 +362,7 @@ impl M3u8DownloadEngine {
                 cmd = self.from_main_rx.recv() => match cmd {
                     Some(DownloadCommand::Start) => self.resume(),
                     Some(DownloadCommand::Pause) => self.pause(),
+                    Some(DownloadCommand::SetSpeedLimit(limit)) => self.set_speed_limit(limit),
                     Some(DownloadCommand::Terminate) | None => {
                         engine_log!(self, "Terminate command received");
                         return Ok(LoopExit::Terminated);
@@ -461,6 +465,14 @@ impl M3u8DownloadEngine {
                 None
             }
         }
+    }
+
+    /// Segment workers share `rate_limiter` by `Arc`, so they pick up the new rate on their next chunk.
+    fn set_speed_limit(&mut self, limit: Option<u64>) {
+        let limit = limit.filter(|l| *l > 0);
+        self.rate_limiter.lock().unwrap().set_rate(limit);
+        self.setting.speed_limit_bytes_per_sec = limit;
+        engine_log!(self, "Speed limit changed to {:?} bytes/sec", limit);
     }
 
     fn pause(&mut self) {

@@ -868,7 +868,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get settings_engine_engineType_tooltip =>
-      'موتور مورد استفاده برای دانلودهای HTTP/M3U8:\n\nپیش‌فرض – موتور استاندارد بریسک\nکارایی – موتور بومی کاسما (نوشته شده با Rust). سریع‌تر و سبک‌تر. هنوز از پروکسی پشتیبانی نمی‌کند؛ دانلودهایی که از پروکسی استفاده می‌کنند با موتور پیش‌فرض انجام می‌شوند';
+      'موتور مورد استفاده برای دانلودهای HTTP/M3U8:\n\nپیش‌فرض – موتور استاندارد بریسک\nکارایی – موتور سریع‌تر کاسما، نوشته شده با Rust';
 
   @override
   String get settings_engine_engineType_default => 'پیش‌فرض';
@@ -898,8 +898,39 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get donationPrompt_description =>
-      'از Brisk لذت می‌برید؟ حمایت شما به تأمین هزینه توسعه مداوم، بهبودها و قابلیت‌های جدید کمک می‌کند.';
+      'حمایت شما به تأمین هزینه توسعه مداوم، بهبودها و قابلیت‌های جدید کمک می‌کند.';
 
   @override
   String get donationPrompt_neverShowAgain => 'دیگر نمایش داده نشود';
+
+  @override
+  String get settings_engine_speedLimit => 'Speed limit per download';
+
+  @override
+  String get settings_engine_speedLimit_unsupported =>
+      'Speed limits are only supported by the Performance (Kasma) engine';
+
+  @override
+  String get unlimited => 'Unlimited';
+
+  @override
+  String get btn_showSpeedLimit => 'Speed Limit';
+
+  @override
+  String get btn_removeSpeedLimit => 'Remove Limit';
+
+  @override
+  String get btn_useGlobalSpeedLimit => 'Use Global Limit';
+
+  @override
+  String speedLimit_current(Object limit) {
+    return 'Current limit: $limit';
+  }
+
+  @override
+  String get speedLimit_source_global =>
+      'Following the global limit from the settings';
+
+  @override
+  String get speedLimit_source_download => 'Limit set for this download only';
 }

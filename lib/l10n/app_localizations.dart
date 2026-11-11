@@ -1684,7 +1684,7 @@ abstract class AppLocalizations {
   /// No description provided for @settings_engine_engineType_tooltip.
   ///
   /// In en, this message translates to:
-  /// **'The engine used for HTTP/M3U8 downloads:\n\nDefault – The standard Brisk engine\nPerformance – The native Kasma engine (written in Rust). Faster and lighter. Proxies are not supported yet; downloads that use a proxy fall back to the default engine'**
+  /// **'The engine used for HTTP/M3U8 downloads:\n\nDefault – The standard Brisk engine\nPerformance – Faster Kasma engine written in Rust'**
   String get settings_engine_engineType_tooltip;
 
   /// No description provided for @settings_engine_engineType_default.
@@ -1738,7 +1738,7 @@ abstract class AppLocalizations {
   /// No description provided for @donationPrompt_description.
   ///
   /// In en, this message translates to:
-  /// **'Enjoying Brisk? Your support helps fund continued development, improvements, and new features.'**
+  /// **'Your support helps fund continued development, improvements, and new features.'**
   String get donationPrompt_description;
 
   /// No description provided for @donationPrompt_neverShowAgain.
@@ -1746,6 +1746,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Never show again'**
   String get donationPrompt_neverShowAgain;
+
+  /// No description provided for @settings_engine_speedLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed limit per download'**
+  String get settings_engine_speedLimit;
+
+  /// No description provided for @settings_engine_speedLimit_unsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed limits are only supported by the Performance (Kasma) engine'**
+  String get settings_engine_speedLimit_unsupported;
+
+  /// No description provided for @unlimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited'**
+  String get unlimited;
+
+  /// No description provided for @btn_showSpeedLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed Limit'**
+  String get btn_showSpeedLimit;
+
+  /// No description provided for @btn_removeSpeedLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Limit'**
+  String get btn_removeSpeedLimit;
+
+  /// No description provided for @btn_useGlobalSpeedLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Use Global Limit'**
+  String get btn_useGlobalSpeedLimit;
+
+  /// No description provided for @speedLimit_current.
+  ///
+  /// In en, this message translates to:
+  /// **'Current limit: {limit}'**
+  String speedLimit_current(Object limit);
+
+  /// No description provided for @speedLimit_source_global.
+  ///
+  /// In en, this message translates to:
+  /// **'Following the global limit from the settings'**
+  String get speedLimit_source_global;
+
+  /// No description provided for @speedLimit_source_download.
+  ///
+  /// In en, this message translates to:
+  /// **'Limit set for this download only'**
+  String get speedLimit_source_download;
 }
 
 class _AppLocalizationsDelegate

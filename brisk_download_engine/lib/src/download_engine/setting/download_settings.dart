@@ -11,6 +11,10 @@ class DownloadSettings extends ConnectionSettings {
 
   EngineType engineType;
 
+  /// Default speed limit of each download in bytes per second. 0 means unlimited.
+  /// Only supported by the kasma engine.
+  int speedLimitBytesPerSec;
+
   DownloadSettings({
     required this.baseSaveDir,
     required this.totalConnections,
@@ -21,6 +25,7 @@ class DownloadSettings extends ConnectionSettings {
     required super.maxConnectionRetryCount,
     super.clientSettings,
     this.engineType = EngineType.standard,
+    this.speedLimitBytesPerSec = 0,
   });
 }
 

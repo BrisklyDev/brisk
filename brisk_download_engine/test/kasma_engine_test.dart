@@ -212,4 +212,76 @@ void main() {
     final downloaded = File(result.downloadItem.filePath);
     expect(md5.convert(downloaded.readAsBytesSync()), md5.convert(data));
   }, skip: skip, timeout: const Timeout(Duration(minutes: 3)));
+
+  test('speed limit can be changed while downloading', () async {
+    final saveDir = Directory(p.join(tempRoot.path, 'save3'))..createSync();
+    final item = DownloadItemModel(
+      id: 3,
+      uid: 'kasma-test-3',
+      fileName: 'test3.bin',
+      filePath: p.join(saveDir.path, 'test3.bin'),
+      downloadUrl: 'http://127.0.0.1:${server.port}/test3.bin',
+      progress: 0,
+      fileSize: fileSize,
+      supportsPause: true,
+    );
+    const globalLimit = 1000 * 1000;
+    final settings = DownloadSettings(
+      baseSaveDir: saveDir,
+      baseTempDir: Directory(p.join(tempRoot.path, 'temp')),
+      totalConnections: 4,
+      totalM3u8Connections: 1,
+      connectionRetryTimeoutMillis: 5000,
+      maxConnectionRetryCount: -1,
+      loggerEnabled: false,
+      engineType: EngineType.kasma,
+      speedLimitBytesPerSec: globalLimit,
+    );
+    var progress = 0.0;
+    final started = Completer<void>();
+    final completed = Completer<DownloadProgressMessage>();
+    DownloadEngine.start(
+      item,
+      settings,
+      item.downloadType,
+      onButtonAvailability: (_) {},
+      onDownloadProgress: (message) {
+        progress = message.downloadProgress;
+        if (progress > 0 && !started.isCompleted) started.complete();
+        if (message.status == DownloadStatus.assembleComplete ||
+            message.status == DownloadStatus.failed ||
+            message.status == DownloadStatus.networkError) {
+          if (!completed.isCompleted) completed.complete(message);
+        }
+      },
+    );
+
+    /// Average speed in bytes per second over [window].
+    Future<double> measure(Duration window) async {
+      final before = progress;
+      await Future.delayed(window);
+      return (progress - before) * fileSize / (window.inMilliseconds / 1000);
+    }
+
+    await started.future.timeout(const Duration(seconds: 30));
+    await Future.delayed(const Duration(seconds: 1));
+    expect(KasmaDownloadEngine.speedLimitOf(item.uid), globalLimit);
+    final limited = await measure(const Duration(seconds: 3));
+    expect(limited, lessThan(globalLimit * 1.5), reason: 'global limit');
+
+    // A download's own limit takes precedence over the global one and applies immediately
+    KasmaDownloadEngine.setSpeedLimit(item.uid, 0);
+    expect(KasmaDownloadEngine.hasOwnSpeedLimit(item.uid), isTrue);
+    await Future.delayed(const Duration(milliseconds: 500));
+    final unlimited = await measure(const Duration(seconds: 1));
+    expect(unlimited, greaterThan(globalLimit * 3), reason: 'limit removed');
+
+    final result = await completed.future.timeout(const Duration(seconds: 60));
+    expect(result.status, DownloadStatus.assembleComplete, reason: result.message);
+    final downloaded = File(result.downloadItem.filePath);
+    expect(md5.convert(downloaded.readAsBytesSync()), md5.convert(data));
+
+    KasmaDownloadEngine.setSpeedLimit(item.uid, null);
+    expect(KasmaDownloadEngine.hasOwnSpeedLimit(item.uid), isFalse);
+  }, skip: skip, timeout: const Timeout(Duration(minutes: 2)));
 }

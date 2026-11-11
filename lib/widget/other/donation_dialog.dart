@@ -1,3 +1,4 @@
+import 'package:brisk/constants/donation_links.dart';
 import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/provider/theme_provider.dart';
 import 'package:brisk/widget/base/rounded_outlined_button.dart';
@@ -19,9 +20,6 @@ class DonationDialog extends StatefulWidget {
 }
 
 class _DonationDialogState extends State<DonationDialog> {
-  static const _buyMeACoffeeUrl = 'https://buymeacoffee.com/aminbhst';
-  static const _githubSponsorsUrl = 'https://github.com/sponsors/AminBhst';
-
   bool neverShowAgain = false;
 
   @override
@@ -49,7 +47,7 @@ class _DonationDialogState extends State<DonationDialog> {
               width: double.infinity,
               height: 40,
               text: 'Buy Me a Coffee',
-              backgroundColor: const Color.fromRGBO(255, 221, 0, 1),
+              backgroundColor: buyMeACoffeeColor,
               textColor: Colors.black,
               hoverBackgroundColor: const Color.fromRGBO(230, 199, 0, 1),
               hoverTextColor: Colors.black,
@@ -58,7 +56,7 @@ class _DonationDialogState extends State<DonationDialog> {
                 size: 20,
                 color: Colors.black,
               ),
-              onPressed: () => launchUrlString(_buyMeACoffeeUrl),
+              onPressed: () => launchUrlString(buyMeACoffeeUrl),
             ),
             const SizedBox(height: 10),
             RoundedOutlinedButton.fromButtonColor(
@@ -75,7 +73,7 @@ class _DonationDialogState extends State<DonationDialog> {
                   BlendMode.srcIn,
                 ),
               ),
-              onPressed: () => launchUrlString(_githubSponsorsUrl),
+              onPressed: () => launchUrlString(githubSponsorsUrl),
             ),
             const SizedBox(height: 12),
             InkWell(

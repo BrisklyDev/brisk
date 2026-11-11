@@ -42,6 +42,8 @@ class KasmaDownloadEngine {
   }) {
     final bindings = KasmaBindings.instance;
     if (bindings == null) return false;
+    _globalSpeedLimit =
+        settings.speedLimitBytesPerSec < 0 ? 0 : settings.speedLimitBytesPerSec;
     final existing = _sessions[downloadItem.uid];
     if (existing != null) {
       existing.resume();
@@ -54,7 +56,8 @@ class KasmaDownloadEngine {
       onDownloadProgress: onDownloadProgress,
       onTerminated: onTerminated,
     );
-    final handle = bindings.start(jsonEncode(_buildConfig(downloadItem, settings)));
+    final handle =
+        bindings.start(jsonEncode(_buildConfig(downloadItem, settings)));
     if (handle == 0) {
       session.fail(bindings.lastError() ?? "Failed to start kasma engine");
       return true;
@@ -67,6 +70,46 @@ class KasmaDownloadEngine {
   static void pause(String uid) => _sessions[uid]?.pause();
 
   static void resume(String uid) => _sessions[uid]?.resume();
+
+  /// Speed limits set for individual downloads, in bytes per second (0 = unlimited). They take
+  /// precedence over the global limit and are kept when a download is stopped and started again.
+  static final Map<String, int> _speedLimitOverrides = {};
+
+  /// The global limit ([DownloadSettings.speedLimitBytesPerSec]) in bytes per second.
+  static int _globalSpeedLimit = 0;
+
+  static int get globalSpeedLimit => _globalSpeedLimit;
+
+  /// The speed limit currently applied to the download, in bytes per second. 0 means unlimited.
+  static int speedLimitOf(String uid) =>
+      _speedLimitOverrides[uid] ?? _globalSpeedLimit;
+
+  /// Whether the download has its own speed limit instead of following the global one.
+  static bool hasOwnSpeedLimit(String uid) =>
+      _speedLimitOverrides.containsKey(uid);
+
+  /// Sets the speed limit of a single download, in bytes per second (0 = unlimited).
+  /// Takes effect immediately if the download is running. `null` removes the download's own
+  /// limit so it follows the global limit again.
+  static void setSpeedLimit(String uid, int? bytesPerSec) {
+    if (bytesPerSec == null) {
+      _speedLimitOverrides.remove(uid);
+    } else {
+      _speedLimitOverrides[uid] = bytesPerSec < 0 ? 0 : bytesPerSec;
+    }
+    _sessions[uid]?.setSpeedLimit(speedLimitOf(uid));
+  }
+
+  /// Changes the global speed limit, in bytes per second (0 = unlimited). Running downloads
+  /// without their own limit switch to it immediately.
+  static void setGlobalSpeedLimit(int bytesPerSec) {
+    _globalSpeedLimit = bytesPerSec < 0 ? 0 : bytesPerSec;
+    for (final entry in _sessions.entries) {
+      if (!_speedLimitOverrides.containsKey(entry.key)) {
+        entry.value.setSpeedLimit(_globalSpeedLimit);
+      }
+    }
+  }
 
   /// Stops the download (temp files are kept) and completes once the engine has exited.
   static Future<void> terminate(String uid) {
@@ -91,12 +134,15 @@ class KasmaDownloadEngine {
       'url': item.downloadUrl,
       'uid': item.uid,
       'file_name': hasPath ? p.basename(item.filePath) : item.fileName,
-      'save_dir': hasPath ? p.dirname(item.filePath) : settings.baseSaveDir.path,
+      'save_dir':
+          hasPath ? p.dirname(item.filePath) : settings.baseSaveDir.path,
       'temp_dir': settings.baseTempDir.path,
       'retry_timeout_millis': settings.connectionRetryTimeoutMillis,
       'max_retries': settings.maxConnectionRetryCount,
       'logger': settings.loggerEnabled,
       'headers': headers,
+      'speed_limit':
+          _speedLimitOverrides[item.uid] ?? settings.speedLimitBytesPerSec,
     };
     if (item.downloadType == DownloadType.m3u8) {
       return config
@@ -168,6 +214,11 @@ class _KasmaSession {
     }
   }
 
+  void setSpeedLimit(int bytesPerSec) {
+    if (_closed || _handle == 0) return;
+    bindings.setSpeedLimit(_handle, bytesPerSec);
+  }
+
   Future<void> terminate() {
     if (!_finished) {
       bindings.command(_handle, KasmaBindings.commandTerminate);
@@ -227,7 +278,8 @@ class _KasmaSession {
         _onFailure(DownloadStatus.failed, event['reason'] as String? ?? "");
         break;
       case 'network_error':
-        _onFailure(DownloadStatus.networkError, event['reason'] as String? ?? "");
+        _onFailure(
+            DownloadStatus.networkError, event['reason'] as String? ?? "");
         break;
       case 'terminated':
         _paused = true;
@@ -236,7 +288,8 @@ class _KasmaSession {
         break;
       case 'closed':
         if (!_finished) {
-          _onFailure(DownloadStatus.failed, "kasma engine stopped unexpectedly");
+          _onFailure(
+              DownloadStatus.failed, "kasma engine stopped unexpectedly");
         }
         _close();
         break;
@@ -257,8 +310,9 @@ class _KasmaSession {
       progress: progress,
     )
       ..bytesTransferRate = _paused ? 0 : speed
-      ..transferRate =
-          _paused || speed <= 0 ? "" : convertByteTransferRateToReadableStr(speed)
+      ..transferRate = _paused || speed <= 0
+          ? ""
+          : convertByteTransferRateToReadableStr(speed)
       ..estimatedRemaining = _paused ? "" : (event['eta'] as String? ?? "")
       ..estimatedSecondsRemaining =
           _paused ? 0 : (event['eta_sec'] as num?)?.toInt() ?? 0
@@ -350,9 +404,10 @@ class _KasmaSession {
   void _onFailure(String status, String reason) {
     if (_finished) return;
     _finished = true;
-    final message = _baseMessage(status: status, progress: downloadItem.progress)
-      ..message = reason
-      ..buttonAvailability = const ButtonAvailability(false, true);
+    final message =
+        _baseMessage(status: status, progress: downloadItem.progress)
+          ..message = reason
+          ..buttonAvailability = const ButtonAvailability(false, true);
     _emitButtons(const ButtonAvailability(false, true));
     _send(message, emitButtons: false);
   }
@@ -378,7 +433,8 @@ class _KasmaSession {
   }
 
   void _emitStatus(String status, {double? progress}) {
-    _send(_baseMessage(status: status, progress: progress ?? downloadItem.progress));
+    _send(_baseMessage(
+        status: status, progress: progress ?? downloadItem.progress));
   }
 
   DownloadProgressMessage _baseMessage({

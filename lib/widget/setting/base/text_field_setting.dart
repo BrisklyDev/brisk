@@ -16,6 +16,8 @@ class TextFieldSetting extends StatelessWidget {
   final TextEditingController txtController;
   bool obscureText;
   final Widget? suffixIcon;
+  final bool enabled;
+  final String? hintText;
 
   TextFieldSetting({
     super.key,
@@ -29,6 +31,8 @@ class TextFieldSetting extends StatelessWidget {
     required this.txtController,
     this.obscureText = false,
     this.suffixIcon,
+    this.enabled = true,
+    this.hintText,
   });
 
   @override
@@ -50,17 +54,23 @@ class TextFieldSetting extends StatelessWidget {
         ),
         const Spacer(),
         const SizedBox(width: 10),
-        SizedBox(
-          width: width,
-          height: 50,
-          child: OutLinedTextField(
-            cursorColor: theme.widgetTheme.textFieldColor.cursorColor,
-            inputFormatters: inputFormatters,
-            obscureText: obscureText,
-            controller: txtController,
-            keyboardType: keyboardType,
-            onChanged: onChanged,
-            suffixIcon: suffixIcon,
+        // Faded when disabled so it is clearly not editable, regardless of the theme's colors
+        Opacity(
+          opacity: enabled ? 1 : 0.4,
+          child: SizedBox(
+            width: width,
+            height: 50,
+            child: OutLinedTextField(
+              cursorColor: theme.widgetTheme.textFieldColor.cursorColor,
+              inputFormatters: inputFormatters,
+              obscureText: obscureText,
+              controller: txtController,
+              enabled: enabled,
+              keyboardType: keyboardType,
+              onChanged: onChanged,
+              suffixIcon: suffixIcon,
+              hintText: hintText,
+            ),
           ),
         ),
         SizedBox(width: icon != null ? 10 : 0),

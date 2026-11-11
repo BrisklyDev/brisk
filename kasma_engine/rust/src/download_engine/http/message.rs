@@ -8,6 +8,9 @@ pub enum DownloadCommand {
     /// Stops all workers (flushing their buffers to disk) and terminates the engine.
     /// The download can be resumed later by starting a new engine for the same download.
     Terminate,
+    /// Changes the total speed limit while the download is running.
+    /// `None` or `Some(0)` removes the limit. Applies to all workers on their next chunk.
+    SetSpeedLimit(Option<u64>),
 }
 
 pub struct ButtonAvailability {

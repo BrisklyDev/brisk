@@ -1,6 +1,6 @@
 {
   "settings_engine_engineType": "موتور",
-  "settings_engine_engineType_tooltip": "موتور مورد استفاده برای دانلودهای HTTP/M3U8:\n\nپیش‌فرض – موتور استاندارد بریسک\nکارایی – موتور بومی کاسما (نوشته شده با Rust). سریع‌تر و سبک‌تر. هنوز از پروکسی پشتیبانی نمی‌کند؛ دانلودهایی که از پروکسی استفاده می‌کنند با موتور پیش‌فرض انجام می‌شوند",
+  "settings_engine_engineType_tooltip": "موتور مورد استفاده برای دانلودهای HTTP/M3U8:\n\nپیش‌فرض – موتور استاندارد بریسک\nکارایی – موتور سریع‌تر کاسما، نوشته شده با Rust",
   "settings_engine_engineType_default": "پیش‌فرض",
   "settings_engine_engineType_performance": "کارایی (بتا)",
   "@@locale": "fa",
@@ -270,6 +270,6 @@
   "tray_showWindow": "نمایش پنجره",
   "tray_exitApp": "خروج از برنامه",
   "donationPrompt_title": "از Brisk لذت می‌برید؟",
-  "donationPrompt_description": "از Brisk لذت می‌برید؟ حمایت شما به تأمین هزینه توسعه مداوم، بهبودها و قابلیت‌های جدید کمک می‌کند.",
+  "donationPrompt_description": "حمایت شما به تأمین هزینه توسعه مداوم، بهبودها و قابلیت‌های جدید کمک می‌کند.",
   "donationPrompt_neverShowAgain": "دیگر نمایش داده نشود"
 }

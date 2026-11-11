@@ -291,7 +291,7 @@
   "btn_installAutomatically": "Instalează automat",
   "settings_engine": "Motor de descărcare",
   "settings_engine_engineType": "Motor",
-  "settings_engine_engineType_tooltip": "Motorul folosit pentru descărcările HTTP/M3U8:\n\nImplicit – Motorul standard Brisk\nPerformanță – Motorul nativ Kasma (scris în Rust). Mai rapid și mai ușor. Proxy-urile nu sunt încă acceptate; descărcările prin proxy folosesc motorul implicit",
+  "settings_engine_engineType_tooltip": "Motorul folosit pentru descărcările HTTP/M3U8:\n\nImplicit – Motorul standard Brisk\nPerformanță – Motor Kasma mai rapid, scris în Rust",
   "settings_engine_engineType_default": "Implicit",
   "settings_engine_engineType_performance": "Performanță (Beta)",
   "btn_showAdvancedOptions": "Afișează opțiuni avansate",
@@ -300,6 +300,6 @@
   "extension_restart_success": "Serverul extensiei a fost repornit cu succes!",
   "extension_restart_failed": "Eșec la repornirea serverului extensiei!",
   "donationPrompt_title": "Îți place Brisk?",
-  "donationPrompt_description": "Îți place Brisk? Sprijinul tău ajută la finanțarea dezvoltării continue, a îmbunătățirilor și a funcțiilor noi.",
+  "donationPrompt_description": "Sprijinul tău ajută la finanțarea dezvoltării continue, a îmbunătățirilor și a funcțiilor noi.",
   "donationPrompt_neverShowAgain": "Nu mai afișa"
 }

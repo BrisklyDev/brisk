@@ -1,6 +1,6 @@
 {
   "settings_engine_engineType": "Motor",
-  "settings_engine_engineType_tooltip": "HTTP/M3U8 indirmeleri için kullanılan motor:\n\nVarsayılan – Standart Brisk motoru\nPerformans – Yerel Kasma motoru (Rust ile yazılmıştır). Daha hızlı ve hafif. Proxy henüz desteklenmiyor; proxy kullanan indirmeler varsayılan motoru kullanır",
+  "settings_engine_engineType_tooltip": "HTTP/M3U8 indirmeleri için kullanılan motor:\n\nVarsayılan – Standart Brisk motoru\nPerformans – Rust ile yazılmış daha hızlı Kasma motoru",
   "settings_engine_engineType_default": "Varsayılan",
   "settings_engine_engineType_performance": "Performans (Beta)",
   "@@locale": "tr",
@@ -290,6 +290,6 @@
   "btn_installLater": "Daha Sonra Yükleyeceğim",
   "btn_installAutomatically": "Otomatik Olarak Yükle",
   "donationPrompt_title": "Brisk'i beğeniyor musunuz?",
-  "donationPrompt_description": "Brisk'i beğeniyor musunuz? Desteğiniz geliştirme çalışmalarının, iyileştirmelerin ve yeni özelliklerin devam etmesine yardımcı olur.",
+  "donationPrompt_description": "Desteğiniz geliştirme çalışmalarının, iyileştirmelerin ve yeni özelliklerin devam etmesine yardımcı olur.",
   "donationPrompt_neverShowAgain": "Bir daha gösterme"
 }

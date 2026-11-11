@@ -22,6 +22,11 @@ impl DownloadHandle {
         let _ = self.tx.send(DownloadCommand::Start).await;
     }
 
+    /// Changes the total speed limit of the running download. `None` removes the limit.
+    pub async fn set_speed_limit(&self, bytes_per_sec: Option<u64>) {
+        let _ = self.tx.send(DownloadCommand::SetSpeedLimit(bytes_per_sec)).await;
+    }
+
     /// Stops the download, keeping the temp files so that it can be resumed later.
     pub async fn terminate(&self) {
         let _ = self.tx.send(DownloadCommand::Terminate).await;

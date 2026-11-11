@@ -867,7 +867,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings_engine_engineType_tooltip =>
-      'The engine used for HTTP/M3U8 downloads:\n\nDefault – The standard Brisk engine\nPerformance – The native Kasma engine (written in Rust). Faster and lighter. Proxies are not supported yet; downloads that use a proxy fall back to the default engine';
+      'The engine used for HTTP/M3U8 downloads:\n\nDefault – The standard Brisk engine\nPerformance – Faster Kasma engine written in Rust';
 
   @override
   String get settings_engine_engineType_default => 'Default';
@@ -897,8 +897,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get donationPrompt_description =>
-      'Enjoying Brisk? Your support helps fund continued development, improvements, and new features.';
+      'Your support helps fund continued development, improvements, and new features.';
 
   @override
   String get donationPrompt_neverShowAgain => 'Never show again';
+
+  @override
+  String get settings_engine_speedLimit => 'Speed limit per download';
+
+  @override
+  String get settings_engine_speedLimit_unsupported =>
+      'Speed limits are only supported by the Performance (Kasma) engine';
+
+  @override
+  String get unlimited => 'Unlimited';
+
+  @override
+  String get btn_showSpeedLimit => 'Speed Limit';
+
+  @override
+  String get btn_removeSpeedLimit => 'Remove Limit';
+
+  @override
+  String get btn_useGlobalSpeedLimit => 'Use Global Limit';
+
+  @override
+  String speedLimit_current(Object limit) {
+    return 'Current limit: $limit';
+  }
+
+  @override
+  String get speedLimit_source_global =>
+      'Following the global limit from the settings';
+
+  @override
+  String get speedLimit_source_download => 'Limit set for this download only';
 }

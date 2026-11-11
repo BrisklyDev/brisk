@@ -1,6 +1,6 @@
 {
   "settings_engine_engineType": "Engine",
-  "settings_engine_engineType_tooltip": "Die Engine für HTTP/M3U8-Downloads:\n\nStandard – Die Standard-Engine von Brisk\nLeistung – Die native Kasma-Engine (in Rust geschrieben). Schneller und ressourcenschonender. Proxys werden noch nicht unterstützt; Downloads über einen Proxy verwenden die Standard-Engine",
+  "settings_engine_engineType_tooltip": "Die Engine für HTTP/M3U8-Downloads:\n\nStandard – Die Standard-Engine von Brisk\nLeistung – Schnellere Kasma-Engine, in Rust geschrieben",
   "settings_engine_engineType_default": "Standard",
   "settings_engine_engineType_performance": "Leistung (Beta)",
   "@@locale": "de",
@@ -270,6 +270,6 @@
   "tray_showWindow": "Fenster anzeigen",
   "tray_exitApp": "App beenden",
   "donationPrompt_title": "Gefällt dir Brisk?",
-  "donationPrompt_description": "Gefällt dir Brisk? Deine Unterstützung hilft, die Weiterentwicklung, Verbesserungen und neue Funktionen zu finanzieren.",
+  "donationPrompt_description": "Deine Unterstützung hilft, die Weiterentwicklung, Verbesserungen und neue Funktionen zu finanzieren.",
   "donationPrompt_neverShowAgain": "Nicht mehr anzeigen"
 }
