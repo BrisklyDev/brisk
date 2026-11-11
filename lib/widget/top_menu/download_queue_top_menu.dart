@@ -41,7 +41,7 @@ class DownloadQueueTopMenu extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 20),
+            padding: const EdgeInsets.only(left: 10),
             child: TopMenuButton(
               onTap: () => onSchedulePressed(context),
               title: loc.btn_schedule,
