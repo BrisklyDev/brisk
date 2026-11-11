@@ -33,13 +33,21 @@
   <url type="bugtracker">https://github.com/BrisklyDev/brisk/issues</url>
 
   <screenshots>
-    <screenshot type="default" xml:lang="en">
-      <caption>Main Screen</caption>
-      <image>https://raw.githubusercontent.com/BrisklyDev/brisk/refs/heads/main/images/mainscreen.png</image>
+    <screenshot type="default">
+      <caption>Main screen (default theme)</caption>
+      <image>https://raw.githubusercontent.com/BrisklyDev/brisk/refs/heads/main/images/mainscreen-default-theme.png</image>
     </screenshot>
     <screenshot>
-      <caption>Downloading Screen</caption>
-      <image>https://raw.githubusercontent.com/BrisklyDev/brisk/refs/heads/main/images/downloading-screen.png</image>
+      <caption>Downloading a file (default theme)</caption>
+      <image>https://raw.githubusercontent.com/BrisklyDev/brisk/refs/heads/main/images/downloading-screen-default-theme.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Main screen (Tokyo Night theme)</caption>
+      <image>https://raw.githubusercontent.com/BrisklyDev/brisk/refs/heads/main/images/mainscreen-tokyo-night.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Downloading a file (Tokyo Night theme)</caption>
+      <image>https://raw.githubusercontent.com/BrisklyDev/brisk/refs/heads/main/images/downloading-screen-tokyo-night.png</image>
     </screenshot>
   </screenshots>
 
