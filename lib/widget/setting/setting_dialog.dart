@@ -1,3 +1,4 @@
+import 'package:brisk/constants/donation_links.dart';
 import 'dart:io';
 
 import 'package:brisk/l10n/app_localizations.dart';
@@ -10,6 +11,7 @@ import 'package:brisk/widget/base/error_dialog.dart';
 import 'package:brisk/widget/base/rounded_outlined_button.dart';
 import 'package:brisk/widget/setting/page/settings_page.dart';
 import 'package:brisk/widget/setting/side_menu/settings_side_menu_item.dart';
+import 'package:brisk_download_engine/brisk_download_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -118,6 +120,12 @@ class _SettingsDialogState extends State<SettingsDialog> {
                                 tabId: 5,
                                 title: loc.settings_menu_bugReport,
                                 icon: Icons.bug_report_rounded,
+                              ),
+                              SettingsSideMenuItem(
+                                tabId: 6,
+                                title: loc.settings_info_donate,
+                                icon: Icons.favorite_rounded,
+                                accentColor: donationAccentColor,
                               ),
                             ]),
                       ),
@@ -233,6 +241,8 @@ class _SettingsDialogState extends State<SettingsDialog> {
       );
     }
     SettingsCache.saveCachedSettingsToDB();
+    // Running kasma downloads without their own limit switch to the new global limit
+    KasmaDownloadEngine.setGlobalSpeedLimit(SettingsCache.speedLimit);
     ApplicationThemeHolder.setActiveTheme();
     Provider.of<LocaleProvider>(context, listen: false).setCurrentLocale();
     themeProvider?.updateActiveTheme();

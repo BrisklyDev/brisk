@@ -88,14 +88,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.1"
-  build_cli_annotations:
-    dependency: transitive
-    description:
-      name: build_cli_annotations
-      sha256: b59d2769769efd6c9ff6d4c4cede0be115a566afc591705c2040b707534b1172
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
   build_config:
     dependency: transitive
     description:
@@ -418,14 +410,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.27"
-  flutter_rust_bridge:
-    dependency: transitive
-    description:
-      name: flutter_rust_bridge
-      sha256: b416ff56002789e636244fb4cc449f587656eff995e5a7169457eb0593fcaddb
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.10.0"
   flutter_spinkit:
     dependency: "direct main"
     description:
@@ -460,14 +444,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
-  freezed_annotation:
-    dependency: transitive
-    description:
-      name: freezed_annotation
-      sha256: c87ff004c8aa6af2d531668b46a4ea379f7191dc6dfa066acd53d506da6e044b
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   frontend_server_client:
     dependency: transitive
     description:
@@ -578,14 +554,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.2"
-  http_profile:
-    dependency: transitive
-    description:
-      name: http_profile
-      sha256: "7e679e355b09aaee2ab5010915c932cce3f2d1c11c3b2dc177891687014ffa78"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.0"
   image:
     dependency: transitive
     description:
@@ -626,6 +594,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.9.0"
+  kasma_engine:
+    dependency: "direct main"
+    description:
+      path: kasma_engine
+      relative: true
+    source: path
+    version: "0.1.0"
   launch_at_startup:
     dependency: "direct main"
     description:
@@ -905,14 +880,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.0"
-  rhttp:
-    dependency: "direct main"
-    description:
-      name: rhttp
-      sha256: "9dc9608187979c98cdb9164f0ef037ec65b14584c4ef6c866744170fa508cf8e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.12.0"
   rxdart:
     dependency: transitive
     description:

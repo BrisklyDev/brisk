@@ -867,17 +867,17 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settings_engine => 'Download Engine';
 
   @override
-  String get settings_engine_clientType => 'HTTP client type';
+  String get settings_engine_engineType => 'Motor';
 
   @override
-  String get settings_engine_clientType_tooltip =>
-      'The client type used for downloads:\n\nStandard – Balanced and stable\nPerformance – Faster but uses more CPU';
+  String get settings_engine_engineType_tooltip =>
+      'HTTP/M3U8 indirmeleri için kullanılan motor:\n\nVarsayılan – Standart Brisk motoru\nPerformans – Rust ile yazılmış daha hızlı Kasma motoru';
 
   @override
-  String get settings_engine_clientType_standard => 'Standard';
+  String get settings_engine_engineType_default => 'Varsayılan';
 
   @override
-  String get settings_engine_clientType_performance => 'Performance (Beta)';
+  String get settings_engine_engineType_performance => 'Performans (Beta)';
 
   @override
   String get btn_showAdvancedOptions => 'Show Advanced Options';
@@ -901,8 +901,39 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get donationPrompt_description =>
-      'Brisk\'i beğeniyor musunuz? Desteğiniz geliştirme çalışmalarının, iyileştirmelerin ve yeni özelliklerin devam etmesine yardımcı olur.';
+      'Desteğiniz geliştirme çalışmalarının, iyileştirmelerin ve yeni özelliklerin devam etmesine yardımcı olur.';
 
   @override
   String get donationPrompt_neverShowAgain => 'Bir daha gösterme';
+
+  @override
+  String get settings_engine_speedLimit => 'Speed limit per download';
+
+  @override
+  String get settings_engine_speedLimit_unsupported =>
+      'Speed limits are only supported by the Performance (Kasma) engine';
+
+  @override
+  String get unlimited => 'Unlimited';
+
+  @override
+  String get btn_showSpeedLimit => 'Speed Limit';
+
+  @override
+  String get btn_removeSpeedLimit => 'Remove Limit';
+
+  @override
+  String get btn_useGlobalSpeedLimit => 'Use Global Limit';
+
+  @override
+  String speedLimit_current(Object limit) {
+    return 'Current limit: $limit';
+  }
+
+  @override
+  String get speedLimit_source_global =>
+      'Following the global limit from the settings';
+
+  @override
+  String get speedLimit_source_download => 'Limit set for this download only';
 }

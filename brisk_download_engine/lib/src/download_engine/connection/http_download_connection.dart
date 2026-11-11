@@ -941,11 +941,6 @@ class HttpDownloadConnection {
   }
 
   Future<void> initClient(bool connectionReset) async {
-    final clientType =
-        settings.clientSettings?.clientType ?? ClientType.dartHttp;
-    if (!connectionReset && clientType == ClientType.rHttp && client != null) {
-      return;
-    }
     client = await buildClient();
   }
 

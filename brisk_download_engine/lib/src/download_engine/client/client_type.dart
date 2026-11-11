@@ -1,1 +1,1 @@
-enum ClientType { rHttp, dartHttp }
+enum ClientType { dartHttp }

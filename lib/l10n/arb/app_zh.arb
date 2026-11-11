@@ -1,4 +1,8 @@
 {
+  "settings_engine_engineType": "引擎",
+  "settings_engine_engineType_tooltip": "用于 HTTP/M3U8 下载的引擎：\n\n默认 – Brisk 标准引擎\n性能 – 更快的 Kasma 引擎，使用 Rust 编写",
+  "settings_engine_engineType_default": "默认",
+  "settings_engine_engineType_performance": "性能（测试版）",
   "@@locale": "zh",
   "language": "语言",
   "addUrl": "添加 URL",
@@ -238,6 +242,6 @@
   "tray_showWindow": "显示窗口",
   "tray_exitApp": "退出",
   "donationPrompt_title": "喜欢 Brisk 吗？",
-  "donationPrompt_description": "喜欢 Brisk 吗？您的支持有助于持续开发、改进和推出新功能。",
+  "donationPrompt_description": "您的支持有助于持续开发、改进和推出新功能。",
   "donationPrompt_neverShowAgain": "不再显示"
 }

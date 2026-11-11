@@ -872,17 +872,17 @@ class AppLocalizationsIt extends AppLocalizations {
   String get settings_engine => 'Motore download';
 
   @override
-  String get settings_engine_clientType => 'Tipo client HTTP';
+  String get settings_engine_engineType => 'Motore';
 
   @override
-  String get settings_engine_clientType_tooltip =>
-      'Il tipo di client usato per i download:\n\nStandard: bilanciato e stabile\nPrestazioni: più veloce ma usa più CPU';
+  String get settings_engine_engineType_tooltip =>
+      'Il motore usato per i download HTTP/M3U8:\n\nPredefinito – Il motore standard di Brisk\nPrestazioni – Motore Kasma più veloce, scritto in Rust';
 
   @override
-  String get settings_engine_clientType_standard => 'Standard';
+  String get settings_engine_engineType_default => 'Predefinito';
 
   @override
-  String get settings_engine_clientType_performance => 'Prestazioni (beta)';
+  String get settings_engine_engineType_performance => 'Prestazioni (Beta)';
 
   @override
   String get btn_showAdvancedOptions => 'Visualizza opzioni avanzate';
@@ -907,8 +907,39 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get donationPrompt_description =>
-      'Ti piace Brisk? Il tuo supporto aiuta a finanziare lo sviluppo continuo, i miglioramenti e le nuove funzionalità.';
+      'Il tuo supporto aiuta a finanziare lo sviluppo continuo, i miglioramenti e le nuove funzionalità.';
 
   @override
   String get donationPrompt_neverShowAgain => 'Non visualizzare più';
+
+  @override
+  String get settings_engine_speedLimit => 'Speed limit per download';
+
+  @override
+  String get settings_engine_speedLimit_unsupported =>
+      'Speed limits are only supported by the Performance (Kasma) engine';
+
+  @override
+  String get unlimited => 'Unlimited';
+
+  @override
+  String get btn_showSpeedLimit => 'Speed Limit';
+
+  @override
+  String get btn_removeSpeedLimit => 'Remove Limit';
+
+  @override
+  String get btn_useGlobalSpeedLimit => 'Use Global Limit';
+
+  @override
+  String speedLimit_current(Object limit) {
+    return 'Current limit: $limit';
+  }
+
+  @override
+  String get speedLimit_source_global =>
+      'Following the global limit from the settings';
+
+  @override
+  String get speedLimit_source_download => 'Limit set for this download only';
 }

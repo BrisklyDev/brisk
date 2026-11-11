@@ -19,7 +19,6 @@ class _AboutPageState extends State<AboutPage> {
   bool telegramHover = false;
   bool discordHover = false;
   bool githubHover = false;
-  bool donationHover = false;
 
   @override
   Widget build(BuildContext context) {
@@ -88,32 +87,6 @@ class _AboutPageState extends State<AboutPage> {
                     "amin.bhst@gmail.com",
                     style: TextStyle(
                         color: theme.settingTheme.pageTheme.titleTextColor),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(width: 3),
-                  Icon(
-                    Icons.attach_money_rounded,
-                    color: theme.widgetTheme.iconColor,
-                    size: 35,
-                  ),
-                  const SizedBox(width: 30),
-                  InkWell(
-                    onTap: () =>
-                        launchUrlString("https://buymeacoffee.com/aminbhst"),
-                    onHover: (val) => setState(() => donationHover = val),
-                    child: Text(
-                      loc.settings_info_donate,
-                      style: TextStyle(
-                          color: donationHover
-                              ? Colors.blue
-                              : theme.settingTheme.pageTheme.titleTextColor),
-                    ),
                   ),
                 ],
               ),

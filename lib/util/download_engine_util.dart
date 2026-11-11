@@ -15,6 +15,8 @@ DownloadSettings downloadSettingsFromCache() {
       proxySetting: SettingsCache.proxySetting,
       clientType: SettingsCache.httpClientType,
     ),
+    engineType: SettingsCache.downloadEngineType,
+    speedLimitBytesPerSec: SettingsCache.speedLimit,
   );
 }
 

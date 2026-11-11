@@ -3,6 +3,7 @@ import 'package:brisk/provider/theme_provider.dart';
 import 'package:brisk/widget/setting/page/about/about_page.dart';
 import 'package:brisk/widget/setting/page/bug_report/bug_report_page.dart';
 import 'package:brisk/widget/setting/page/connection/connection_settings_page.dart';
+import 'package:brisk/widget/setting/page/donate/donate_page.dart';
 import 'package:brisk/widget/setting/page/extension/webextension_settings_page.dart';
 import 'package:brisk/widget/setting/page/file/file_settings_page.dart';
 import 'package:brisk/widget/setting/page/general/general_settings_page.dart';
@@ -36,6 +37,7 @@ class SettingsPage extends StatelessWidget {
           WebExtensionSettingsPage(),
           AboutPage(),
           BugReportPage(),
+          DonatePage(),
         ],
       ),
     );

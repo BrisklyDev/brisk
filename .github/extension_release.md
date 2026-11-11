@@ -1,1 +1,2 @@
-- Added setting option for disabling download video button
+- Redesigned UI: The extension UI has been redesigned and significantly improved.
+- Improved video download capability: Video detection and downloading have been reworked, now tested and working on Reddit, Instagram, TikTok, X and more.

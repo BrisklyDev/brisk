@@ -26,6 +26,11 @@ class DownloadEngine {
   static Isolate? fileInfoExtractorIsolate;
 
   static void pause(String uid) {
+    if (KasmaDownloadEngine.isRunning(uid)) {
+      KasmaDownloadEngine.pause(uid);
+      return;
+    }
+    if (downloadItems[uid] == null || engineChannels[uid] == null) return;
     if (checkDownloadCompletion(downloadItems[uid]!)) {
       return;
     }
@@ -33,6 +38,11 @@ class DownloadEngine {
   }
 
   static void resume(String uid) {
+    if (KasmaDownloadEngine.isRunning(uid)) {
+      KasmaDownloadEngine.resume(uid);
+      return;
+    }
+    if (downloadItems[uid] == null || engineChannels[uid] == null) return;
     if (checkDownloadCompletion(downloadItems[uid]!)) {
       return;
     }
@@ -44,6 +54,9 @@ class DownloadEngine {
   }
 
   static Future<void> terminate(String uid) async {
+    if (KasmaDownloadEngine.isRunning(uid)) {
+      return KasmaDownloadEngine.terminate(uid);
+    }
     if (engineChannels[uid] == null) {
       return Completer().complete();
     }
@@ -79,9 +92,28 @@ class DownloadEngine {
     // if (checkDownloadCompletion(downloadItem)) {
     //   return;
     // }
-    if (engineChannels[downloadItem.uid] != null) {
+    if (KasmaDownloadEngine.isRunning(downloadItem.uid) ||
+        engineChannels[downloadItem.uid] != null) {
       resume(downloadItem.uid);
       return;
+    }
+    if (_shouldUseKasma(settings, type)) {
+      _settings = settings;
+      downloadItems[downloadItem.uid] = downloadItem;
+      final started = KasmaDownloadEngine.start(
+        downloadItem,
+        settings,
+        onButtonAvailability: (message) {
+          buttonAvailabilities[downloadItem.uid] = message;
+          onButtonAvailability(message);
+        },
+        onDownloadProgress: onDownloadProgress,
+        onTerminated: () {
+          final completer = engineTerminationCompleter.remove(downloadItem.uid);
+          if (completer != null && !completer.isCompleted) completer.complete();
+        },
+      );
+      if (started) return;
     }
     final channel = await _spawnDownloadEngineIsolate(downloadItem, type);
     _settings = settings;
@@ -107,6 +139,24 @@ class DownloadEngine {
       settings: settings,
     );
     channel.sink.add(message);
+  }
+
+  /// The kasma engine is used for HTTP and M3U8 downloads when selected in the settings and the
+  /// native library is available. Proxies are not supported by kasma yet, so downloads that
+  /// require a proxy fall back to the standard engine.
+  static bool _shouldUseKasma(DownloadSettings settings, DownloadType type) {
+    if (settings.engineType != EngineType.kasma) {
+      return false;
+    }
+    if (settings.clientSettings?.proxySetting?.proxyEnabled ?? false) {
+      return false;
+    }
+    if (!KasmaDownloadEngine.isAvailable) {
+      print("Kasma engine unavailable, falling back to the standard engine: "
+          "${KasmaDownloadEngine.unavailableReason}");
+      return false;
+    }
+    return true;
   }
 
   static Future<StreamChannel> _spawnDownloadEngineIsolate(

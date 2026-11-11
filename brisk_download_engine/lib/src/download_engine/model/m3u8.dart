@@ -5,7 +5,6 @@ import 'package:brisk_download_engine/src/download_engine/client/http_client_bui
 import 'package:brisk_download_engine/src/download_engine/segment/segment_status.dart';
 import 'package:brisk_download_engine/src/download_engine/setting/proxy_setting.dart';
 import 'package:brisk_download_engine/src/download_engine/util/m3u8_util.dart';
-import 'package:rhttp/rhttp.dart';
 
 class M3U8 {
   final String url;

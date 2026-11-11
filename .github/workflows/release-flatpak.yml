@@ -42,11 +42,12 @@ jobs:
           echo "Commit for $TAG_NAME is $COMMIT_HASH"
           echo "commit_hash=$COMMIT_HASH" >> "$GITHUB_OUTPUT"
 
+      # The Rust toolchain (1.95.0) is pinned in flatpak-flutter.yml via generated/modules/rustup-1.95.0.json
       - name: Clone flatpak-flutter
         run: |
           git clone https://github.com/TheAppgineer/flatpak-flutter.git
           cd flatpak-flutter
-          git checkout de96937f47903685fcb54b17ce55c609c8496f12
+          git checkout 0.15.0
           mkdir brisk
 
       - name: Set up Python
@@ -64,7 +65,7 @@ jobs:
           cat linux/packaging/flatpak/flatpak-flutter.yml
 
       - name: Install dependencies
-        run: pip install aiohttp pyyaml toml
+        run: pip install -r flatpak-flutter/requirements.txt
 
       - name: Install flatpak
         run: |
@@ -76,11 +77,12 @@ jobs:
 
       - name: Run flatpak-flutter
         run: |
+          # foreign.json adds the kasma engine's Cargo.lock so its crates are vendored too.
           cp linux/packaging/flatpak/flatpak-flutter.yml flatpak-flutter/brisk/
-          cp linux/packaging/flatpak/run_build_tool.sh.offline.patch flatpak-flutter/brisk/
+          cp linux/packaging/flatpak/foreign.json flatpak-flutter/brisk/
           cd flatpak-flutter/brisk/
-          ../flatpak-flutter.py --extra-pubspecs=.pub-cache/hosted/pub.dev/rhttp-0.12.0/cargokit/build_tool --cargo-locks=.pub-cache/hosted/pub.dev/rhttp-0.12.0/rust flatpak-flutter.yml
-          ls -la
+          ../flatpak-flutter.py flatpak-flutter.yml
+          ls -laR generated
 
       - name: Set up Git
         run: |
@@ -96,9 +98,11 @@ jobs:
           pwd
           git checkout -B release-${{ needs.version.outputs.version }}
           find . -maxdepth 1 -type f ! -name '.gitmodules' -exec rm -rf {} +
+          rm -rf generated
           ls -ltrh ../flatpak-flutter/brisk/*
-          cat ../flatpak-flutter/brisk/flatpak-flutter.yml
+          cat ../flatpak-flutter/brisk/io.github.BrisklyDev.Brisk.yml
           find ../flatpak-flutter/brisk -maxdepth 1 -type f -exec cp {} . \;
+          cp -r ../flatpak-flutter/brisk/generated .
           ls -la
           git add .
           git commit -m "Release"

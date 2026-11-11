@@ -1,0 +1,22 @@
+name: kasma_engine
+description: Native kasma download engine (Rust) bundled for Brisk through Dart FFI.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ">=3.4.0 <=4.0.0"
+  flutter: ">=3.3.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      linux:
+        ffiPlugin: true
+      windows:
+        ffiPlugin: true
+      macos:
+        ffiPlugin: true

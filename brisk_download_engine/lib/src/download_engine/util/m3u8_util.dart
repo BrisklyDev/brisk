@@ -7,7 +7,6 @@ import 'package:brisk_download_engine/src/download_engine/util/constants.dart';
 import 'package:path/path.dart';
 
 import 'package:encrypt/encrypt.dart';
-import 'package:rhttp/rhttp.dart';
 
 /// Decrypts an AES-128 encrypted file.
 /// If chunked mode is enabled, it decrypts the file in chunks to reduce memory usage.

@@ -1,12 +1,15 @@
+import 'package:brisk/constants/speed_unit.dart';
 import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/provider/download_request_provider.dart';
 import 'package:brisk/provider/theme_provider.dart';
 import 'package:brisk/theme/application_theme.dart';
 import 'package:brisk/util/readability_util.dart';
+import 'package:brisk/widget/base/default_tooltip.dart';
 import 'package:brisk/widget/base/rounded_outlined_button.dart';
 import 'package:brisk/widget/base/scrollable_dialog.dart';
 import 'package:brisk/widget/download/queue_schedule_handler.dart';
 import 'package:brisk/widget/download/segment_progress_bar.dart';
+import 'package:brisk/widget/download/speed_limit_panel.dart';
 import 'package:brisk_download_engine/brisk_download_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,8 +23,31 @@ class DownloadProgressDialog extends StatefulWidget {
   State<DownloadProgressDialog> createState() => _DownloadProgressDialogState();
 }
 
+/// The panels that can be expanded below the download stats.
+enum _DetailsTab { connections, speedLimit }
+
 class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
-  bool showDetails = false;
+  _DetailsTab? openTab;
+
+  bool get showDetails => openTab != null;
+
+  /// The speed limit panel only has a status line and one row of controls, so it is shorter
+  /// than the connection list. The status line gets a second line when a global limit is set.
+  double get detailsPanelHeight {
+    switch (openTab) {
+      case _DetailsTab.connections:
+        return 200;
+      case _DetailsTab.speedLimit:
+        return KasmaDownloadEngine.globalSpeedLimit > 0 ? 126 : 105;
+      case null:
+        return 0;
+    }
+  }
+
+  void toggleTab(_DetailsTab tab) {
+    setState(() => openTab = openTab == tab ? null : tab);
+  }
+
   bool showDetailAvailable = true;
   late Size size;
   late ApplicationTheme theme;
@@ -39,11 +65,9 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
     loc = AppLocalizations.of(context)!;
     return ScrollableDialog(
       width: 550,
-      height: showDetails
-          ? resolveDialogHeight(size) + 200
-          : resolveDialogHeight(size),
-      scrollButtonVisible:
-          size.height < (showDetails ? 550 : 365) + (showSegmentBar ? 14 : 0),
+      height: resolveDialogHeight(size) + detailsPanelHeight,
+      scrollButtonVisible: size.height <
+          365 + detailsPanelHeight * 0.925 + (showSegmentBar ? 14 : 0),
       scrollViewWidth: 550,
       scrollviewHeight: 300,
       title: Padding(
@@ -113,32 +137,16 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
             const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
-              child: RoundedOutlinedButton(
-                onPressed: () {
-                  setState(() {
-                    showDetails = !showDetails;
-                  });
-                },
-                backgroundColor:
-                    theme.widgetTheme.showHideButtonColor.backgroundColor,
-                borderColor: Colors.transparent,
-                hoverBackgroundColor:
-                    theme.widgetTheme.showHideButtonColor.hoverBackgroundColor,
-                hoverTextColor:
-                    theme.widgetTheme.showHideButtonColor.hoverTextColor,
-                textColor: theme.widgetTheme.showHideButtonColor.textColor,
-                text: showDetails
-                    ? loc.btn_hideConnectionDetails
-                    : loc.btn_showConnectionDetails,
-                icon: showDetails
-                    ? Icons.expand_less_rounded
-                    : Icons.expand_more_rounded,
-                iconColor: theme.widgetTheme.showHideButtonColor.iconColor,
-                iconHoverColor: theme.widgetTheme.showHideButtonColor.iconColor,
+              child: Row(
+                children: [
+                  connectionDetailsButton(),
+                  const SizedBox(width: 10),
+                  speedLimitButton(downloadProgress.downloadItem.uid),
+                ],
               ),
             ),
             const SizedBox(height: 15),
-            connectionDetailsContainer(),
+            detailsPanel(downloadProgress.downloadItem.uid),
           ],
         ),
       ),
@@ -146,9 +154,89 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
     );
   }
 
+  Widget detailsPanel(String uid) {
+    switch (openTab) {
+      case _DetailsTab.connections:
+        return connectionDetailsContainer();
+      case _DetailsTab.speedLimit:
+        return speedLimitContainer(uid);
+      case null:
+        return Container();
+    }
+  }
+
+  /// The speed limit can only be changed on the fly for downloads running on the kasma engine.
+  /// The status selector re-checks it when the download stops, completes or falls back to the
+  /// standard engine.
+  Widget speedLimitButton(String uid) {
+    return Selector<DownloadRequestProvider, String>(
+      selector: (_, provider) =>
+          provider.downloads[widget.downloadId]!.downloadItem.status,
+      builder: (context, status, child) {
+        if (!KasmaDownloadEngine.isRunning(uid) || isDownloadInactive) {
+          return Container();
+        }
+        final colors = theme.widgetTheme.showHideButtonColor;
+        final open = openTab == _DetailsTab.speedLimit;
+        return RoundedOutlinedButton(
+          onPressed: () => toggleTab(_DetailsTab.speedLimit),
+          backgroundColor: colors.backgroundColor,
+          borderColor: Colors.transparent,
+          hoverBackgroundColor: colors.hoverBackgroundColor,
+          hoverTextColor: colors.hoverTextColor,
+          textColor: colors.textColor,
+          text: loc.btn_showSpeedLimit,
+          icon: open ? Icons.expand_less_rounded : Icons.speed_rounded,
+          iconColor: colors.iconColor,
+          iconHoverColor: colors.iconColor,
+        );
+      },
+    );
+  }
+
+  Widget speedLimitContainer(String uid) {
+    return Selector<DownloadRequestProvider, String>(
+      selector: (_, provider) =>
+          provider.downloads[widget.downloadId]!.downloadItem.status,
+      builder: (context, status, child) {
+        if (!KasmaDownloadEngine.isRunning(uid) || isDownloadInactive) {
+          return Container();
+        }
+        return Container(
+          width: 550,
+          height: detailsPanelHeight,
+          decoration: BoxDecoration(
+            color: theme.alertDialogTheme.surfaceColor,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: SpeedLimitPanel(uid: uid),
+        );
+      },
+    );
+  }
+
+  Widget connectionDetailsButton() {
+    final showDetails = openTab == _DetailsTab.connections;
+    return RoundedOutlinedButton(
+      onPressed: () => toggleTab(_DetailsTab.connections),
+      backgroundColor: theme.widgetTheme.showHideButtonColor.backgroundColor,
+      borderColor: Colors.transparent,
+      hoverBackgroundColor:
+          theme.widgetTheme.showHideButtonColor.hoverBackgroundColor,
+      hoverTextColor: theme.widgetTheme.showHideButtonColor.hoverTextColor,
+      textColor: theme.widgetTheme.showHideButtonColor.textColor,
+      text: showDetails
+          ? loc.btn_hideConnectionDetails
+          : loc.btn_showConnectionDetails,
+      icon: showDetails ? Icons.expand_less_rounded : Icons.expand_more_rounded,
+      iconColor: theme.widgetTheme.showHideButtonColor.iconColor,
+      iconHoverColor: theme.widgetTheme.showHideButtonColor.iconColor,
+    );
+  }
+
   Widget connectionDetailsContainer() {
     return Visibility(
-      visible: showDetails,
+      visible: openTab == _DetailsTab.connections,
       child: Container(
         width: 550,
         height: 200,
@@ -378,18 +466,49 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
     );
   }
 
+  /// Shows a slow gauge next to the title while a speed limit is applied to the download.
+  /// The limit is part of the selected value so the icon updates on the next progress update
+  /// after the limit changes.
   Widget speedTextContainer() {
-    return Selector<DownloadRequestProvider, String>(
-      selector: (_, provider) =>
-          provider.downloads[widget.downloadId]!.transferRate,
-      builder: (context, transferRate, child) => textContainer(
-        title: loc.speed,
-        value: isDownloadInactive ? "" : transferRate,
-      ),
+    return Selector<DownloadRequestProvider, (String, int)>(
+      selector: (_, provider) {
+        final request = provider.downloads[widget.downloadId]!;
+        final uid = request.downloadItem.uid;
+        final limit = KasmaDownloadEngine.isRunning(uid)
+            ? KasmaDownloadEngine.speedLimitOf(uid)
+            : 0;
+        return (request.transferRate, limit);
+      },
+      builder: (context, tuple, child) {
+        final (transferRate, limit) = tuple;
+        final limited = limit > 0 && !isDownloadInactive;
+        return textContainer(
+          title: loc.speed,
+          value: isDownloadInactive ? "" : transferRate,
+          titleIcon: limited
+              ? DefaultTooltip(
+                  message: loc.speedLimit_current(SpeedUnit.format(limit)),
+                  // Mirrored so the needle points at the low end of the gauge
+                  child: Transform.flip(
+                    flipX: true,
+                    child: Icon(
+                      Icons.speed_rounded,
+                      size: 16,
+                      color: theme.widgetTheme.iconColor,
+                    ),
+                  ),
+                )
+              : null,
+        );
+      },
     );
   }
 
-  Widget textContainer({required String title, required String value}) {
+  Widget textContainer({
+    required String title,
+    required String value,
+    Widget? titleIcon,
+  }) {
     return Container(
       height: 80,
       width: 160,
@@ -403,7 +522,16 @@ class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(title, style: TextStyle(color: theme.textColor)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(title, style: TextStyle(color: theme.textColor)),
+                if (titleIcon != null) ...[
+                  const SizedBox(width: 6),
+                  titleIcon,
+                ],
+              ],
+            ),
             const SizedBox(height: 5),
             Text(
               value,

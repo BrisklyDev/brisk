@@ -8,11 +8,16 @@ class SettingsSideMenuItem extends StatefulWidget {
   final String title;
   final IconData icon;
 
+  /// Fixed icon color, used instead of the theme's so the item is subtly recognizable in every
+  /// theme. The text and background keep the theme's colors.
+  final Color? accentColor;
+
   const SettingsSideMenuItem({
     super.key,
     required this.tabId,
     required this.title,
     required this.icon,
+    this.accentColor,
   });
 
   @override
@@ -26,11 +31,11 @@ class _SettingsSideMenuItemState extends State<SettingsSideMenuItem> {
   Widget build(BuildContext context) {
     provider = Provider.of<SettingsProvider>(context);
     final theme = Provider.of<ThemeProvider>(context).activeTheme;
+    final accent = widget.accentColor;
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
-        hoverColor:
-            theme.settingTheme.sideMenuTheme.tabHoverBackgroundColor,
+        hoverColor: theme.settingTheme.sideMenuTheme.tabHoverBackgroundColor,
         onTap: () => provider.setSelectedSettingsTab(widget.tabId),
         child: Container(
           height: 40,
@@ -46,9 +51,11 @@ class _SettingsSideMenuItemState extends State<SettingsSideMenuItem> {
               children: [
                 Icon(
                   widget.icon,
-                  color: isTabSelected
-                      ? theme.settingTheme.sideMenuTheme.activeTabIconColor
-                      : theme.settingTheme.sideMenuTheme.inactiveTabIconColor,
+                  color: accent ??
+                      (isTabSelected
+                          ? theme.settingTheme.sideMenuTheme.activeTabIconColor
+                          : theme
+                              .settingTheme.sideMenuTheme.inactiveTabIconColor),
                 ),
                 SizedBox(width: 10),
                 Text(

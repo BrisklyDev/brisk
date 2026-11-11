@@ -49,10 +49,12 @@ parts:
 
     override-build: |
       set -eux
+      # The kasma engine requires Rust 1.95 (rust-version in kasma_engine/rust/Cargo.toml)
       if ! command -v rustup >/dev/null 2>&1; then
-        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-        source $HOME/.cargo/env
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain 1.95.0
       fi
+      if [ -f "$HOME/.cargo/env" ]; then source "$HOME/.cargo/env"; fi
+      rustup default 1.95.0
       rustup --version
       rustc --version
       cargo --version
