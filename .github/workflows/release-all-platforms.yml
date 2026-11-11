@@ -308,7 +308,7 @@ jobs:
 
   Release-Binaries:
     runs-on: ubuntu-22.04
-    needs: [Build-Linux, Build-Windows, Build-macOS, Build-Snap, version]
+    needs: [Build-Linux, Build-Windows, Build-macOS, version]
     permissions:
       contents: write
     steps:
