@@ -286,24 +286,24 @@ jobs:
           path: Brisk-v${{ needs.version.outputs.version }}-macos.dmg
           retention-days: 1
 
-  Build-Snap:
-    needs: [ version ]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Update snapcraft.yaml version
-        run: |
-          cd snap
-          echo "Setting version to ${{ needs.version.outputs.version }}"
-          sed -i "s/^version: .*/version: ${{ needs.version.outputs.version }}/" snapcraft.yaml
-      - uses: snapcore/action-build@v1.3.0
-        id: build
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4.3.3
-        with:
-          name: brisk-snap
-          path: ./brisk_${{ needs.version.outputs.version }}_amd64.snap
-          retention-days: 1
+#  Build-Snap:
+#    needs: [ version ]
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Update snapcraft.yaml version
+#        run: |
+#          cd snap
+#          echo "Setting version to ${{ needs.version.outputs.version }}"
+#          sed -i "s/^version: .*/version: ${{ needs.version.outputs.version }}/" snapcraft.yaml
+#      - uses: snapcore/action-build@v1.3.0
+#        id: build
+#      - name: Upload artifact
+#        uses: actions/upload-artifact@v4.3.3
+#        with:
+#          name: brisk-snap
+#          path: ./brisk_${{ needs.version.outputs.version }}_amd64.snap
+#          retention-days: 1
 
 
   Release-Binaries:
