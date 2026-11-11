@@ -374,7 +374,7 @@ jobs:
 
 
   Release-AUR:
-    needs: [Build-Linux, Build-Windows, Build-macOS, Build-Snap, version]
+    needs: [Build-Linux, Build-Windows, Build-macOS, version]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main repo
