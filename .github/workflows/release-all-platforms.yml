@@ -476,7 +476,7 @@ jobs:
 
 
   Release-flatpak:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     # `version` must be listed: the needs context only contains direct dependencies, so without it
@@ -518,7 +518,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.13.3'
+          python-version: '3.13'
 
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
