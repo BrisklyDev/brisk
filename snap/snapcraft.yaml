@@ -30,8 +30,6 @@ parts:
     source: .
     flutter-target: lib/main.dart
     build-packages:
-      - rustc
-      - cargo
       - clang
       - cmake
       - curl
@@ -44,8 +42,6 @@ parts:
       - ninja-build
       - unzip
       - pkg-config
-      - rustc
-      - cargo
 
     override-build: |
       set -eux
@@ -58,7 +54,7 @@ parts:
       rustup --version
       rustc --version
       cargo --version
-      snapcraftctl build
+      craftctl default
 
     stage-packages:
       - libgtk-3-0
@@ -66,6 +62,8 @@ parts:
       - libayatana-appindicator3-1
 
     build-environment:
+      # rustup's toolchain (installed in override-build) must win over any system rustc/cargo
+      - PATH: "$HOME/.cargo/bin:$PATH"
       - PKG_CONFIG_PATH: /usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig
       - CMAKE_PREFIX_PATH: /usr/lib/x86_64-linux-gnu/cmake:/usr/share/cmake
       - LD_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu
