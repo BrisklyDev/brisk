@@ -177,29 +177,36 @@ class _MyHomePageState extends State<MyHomePage>
     }
   }
 
-  void showAppClosureDialog() {
-    showDialog(
-      context: context,
-      builder: (_) => AppExitDialog(
-        onExitPressed: (rememberChecked) async {
-          Navigator.of(context).pop();
-          if (rememberChecked) {
-            await saveNewAppClosureBehaviour(AppClosureBehaviour.exit);
-          }
-          windowManager.destroy().then((_) => exit(0));
-        },
-        onMinimizeToTrayPressed: (rememberChecked) {
-          if (rememberChecked) {
-            saveNewAppClosureBehaviour(AppClosureBehaviour.minimizeToTray);
-          }
-          TrayHandler.setTray(context);
-          windowManager.hide();
-          if (Platform.isMacOS) {
-            windowManager.setSkipTaskbar(true);
-          }
-        },
-      ),
-    );
+  bool _appClosureDialogOpen = false;
+
+  Future<void> showAppClosureDialog() async {
+    if (_appClosureDialogOpen) return;
+    _appClosureDialogOpen = true;
+    try {
+      await showDialog(
+        context: context,
+        builder: (_) => AppExitDialog(
+          onExitPressed: (rememberChecked) async {
+            if (rememberChecked) {
+              await saveNewAppClosureBehaviour(AppClosureBehaviour.exit);
+            }
+            windowManager.destroy().then((_) => exit(0));
+          },
+          onMinimizeToTrayPressed: (rememberChecked) {
+            if (rememberChecked) {
+              saveNewAppClosureBehaviour(AppClosureBehaviour.minimizeToTray);
+            }
+            TrayHandler.setTray(context);
+            windowManager.hide();
+            if (Platform.isMacOS) {
+              windowManager.setSkipTaskbar(true);
+            }
+          },
+        ),
+      );
+    } finally {
+      _appClosureDialogOpen = false;
+    }
   }
 
   Future<void> saveNewAppClosureBehaviour(AppClosureBehaviour behaviour) async {
