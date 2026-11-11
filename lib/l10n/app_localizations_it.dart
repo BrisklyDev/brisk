@@ -290,7 +290,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get settings_behavior_automaticDownloadCaptureBehavior =>
-      'Comportamento di acquisizione automatica dei download';
+      'Comportamento acquisizione automatica download';
 
   @override
   String
@@ -300,7 +300,7 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String
       get settings_behavior_automaticDownloadCaptureBehavior_addDownloadItem =>
-          'Aggiungi elemento di download';
+          'Aggiungi elemento download';
 
   @override
   String get settings_behavior_automaticDownloadCaptureBehavior_startDownload =>

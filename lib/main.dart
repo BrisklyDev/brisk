@@ -22,7 +22,10 @@ import 'package:brisk/util/launch_at_startup_util.dart';
 import 'package:brisk/util/notification_manager.dart';
 import 'package:brisk/util/single_instance_handler.dart';
 import 'package:brisk/util/tray_handler.dart';
+import 'package:brisk/util/downloads_access_check.dart';
+import 'package:brisk/util/platform.dart';
 import 'package:brisk/widget/base/app_exit_dialog.dart';
+import 'package:brisk/widget/base/downloads_access_required_app.dart';
 import 'package:brisk/widget/base/global_context.dart';
 import 'package:brisk/widget/download/download_grid.dart';
 import 'package:brisk/widget/loader/file_info_loader.dart';
@@ -54,6 +57,13 @@ Future<void> main(List<String> args) async {
     await Logger.init();
     await migrateDatabaseLocation();
     await windowManager.ensureInitialized();
+    if (isFlatpak) {
+      final problem = await DownloadsAccessCheck.run();
+      if (problem != null) {
+        runApp(DownloadsAccessRequiredApp(problem: problem));
+        return;
+      }
+    }
     await HiveUtil.instance.initHive();
     await setupLaunchAtStartup();
     await FileUtil.setDefaultTempDir();
