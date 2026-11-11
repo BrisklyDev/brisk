@@ -57,7 +57,7 @@ class _TopMenuState extends State<TopMenu> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 20),
+            padding: const EdgeInsets.only(left: 10),
             child: TopMenuButton(
               onTap: () => showDialog(
                 context: context,
