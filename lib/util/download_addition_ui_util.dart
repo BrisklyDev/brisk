@@ -227,8 +227,11 @@ class DownloadAdditionUiUtil {
       );
       return;
     }
+    final extension = m3u8.isFragmentedMp4 ? ".mp4" : ".ts";
+    final dotIndex = m3u8.fileName.lastIndexOf(".");
     final fileName =
-        m3u8.fileName.substring(0, m3u8.fileName.lastIndexOf(".")) + ".ts";
+        (dotIndex == -1 ? m3u8.fileName : m3u8.fileName.substring(0, dotIndex)) +
+            extension;
     final downloadItem = DownloadItem(
       uid: const Uuid().v4(),
       fileName: fileName,

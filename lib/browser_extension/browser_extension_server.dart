@@ -7,6 +7,7 @@ import 'package:brisk/constants/setting_type.dart';
 import 'package:brisk/db/hive_util.dart';
 import 'package:brisk/l10n/app_localizations.dart';
 import 'package:brisk/model/download_item.dart';
+import 'package:brisk/model/file_metadata.dart';
 import 'package:brisk/model/setting.dart';
 import 'package:brisk/util/app_logger.dart';
 import 'package:brisk/util/auto_updater_util.dart';
@@ -529,6 +530,21 @@ class BrowserExtensionServer {
     final url = jsonBody['data']['url'];
     final referer = jsonBody['data']['referer'];
     final cookie = jsonBody['data']['cookie'];
+    // Some CDNs (e.g. TikTok) reject requests that don't carry the page's Referer
+    final refererHeader = jsonBody['data']['refererHeader'] as String?;
+    // Signed CDN links may only work with the browser's own User-Agent
+    final userAgent = jsonBody['data']['userAgent'] as String?;
+    var suggestedName = jsonBody['data']['suggestedName'] as String?;
+    if (suggestedName != null &&
+        (suggestedName.isEmpty || FileUtil.isFileNameInvalid(suggestedName))) {
+      suggestedName = null;
+    }
+    final headers = <String, String>{
+      if (cookie != null) 'Cookie': cookie,
+      if (refererHeader != null && refererHeader.isNotEmpty)
+        'Referer': refererHeader,
+      if (userAgent != null && userAgent.isNotEmpty) 'User-Agent': userAgent,
+    };
     Completer<bool> completer = Completer();
     if (awaitingUpdateUrlItem != null) {
       final id = awaitingUpdateUrlItem!.key;
@@ -538,15 +554,15 @@ class BrowserExtensionServer {
         url,
         updateDialog: true,
         additionalPop: true,
-        headers: cookie != null ? {'Cookie': cookie} : {},
+        headers: headers,
       );
       completer.complete(true);
       return completer.future;
     }
     final downloadItem = DownloadItem.fromUrl(url);
     downloadItem.referer = referer;
-    if (cookie != null) {
-      downloadItem.requestHeaders = {'Cookie': cookie};
+    if (headers.isNotEmpty) {
+      downloadItem.requestHeaders = headers;
     }
     if (!isUrlValid(url)) {
       completer.complete(false);
@@ -556,6 +572,15 @@ class BrowserExtensionServer {
       headers: downloadItem.requestHeaders,
     );
     fileInfoResponse.then((fileInfo) {
+      // URLs without a file name (e.g. TikTok video links) use the name the extension suggests
+      if (suggestedName != null) {
+        fileInfo = FileInfo(
+          fileInfo.supportsPause,
+          suggestedName,
+          fileInfo.contentLength,
+          fileInfo.url,
+        );
+      }
       final satisfied = SettingsCache.extensionSkipCaptureRules.any(
         (rule) => rule.isSatisfiedByFileInfo(fileInfo),
       );

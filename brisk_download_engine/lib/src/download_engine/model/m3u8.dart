@@ -4,7 +4,6 @@ import 'package:brisk_download_engine/brisk_download_engine.dart';
 import 'package:brisk_download_engine/src/download_engine/client/http_client_builder.dart';
 import 'package:brisk_download_engine/src/download_engine/segment/segment_status.dart';
 import 'package:brisk_download_engine/src/download_engine/setting/proxy_setting.dart';
-import 'package:brisk_download_engine/src/download_engine/util/file_util.dart';
 import 'package:brisk_download_engine/src/download_engine/util/m3u8_util.dart';
 import 'package:rhttp/rhttp.dart';
 
@@ -58,7 +57,7 @@ class M3U8 {
     String? refererHeader,
     String? suggestedFileName,
   }) async {
-    final client = await HttpClientBuilder.buildClient();
+    final client = await HttpClientBuilder.buildClient(clientSettings);
     try {
       final headers = {
         "User-Agent":
@@ -73,10 +72,11 @@ class M3U8 {
         return await M3U8.fromString(
           body,
           url,
+          clientSettings: clientSettings,
           isSubPlaylist: isSubPlaylist,
+          refererHeader: refererHeader,
           suggestedFileName: suggestedFileName,
-        )
-          ?..refererHeader = refererHeader;
+        );
       } else {
         print("Failed to fetch m3u8... status code ${response.statusCode}");
         throw Exception('Failed to fetch m3u8!');
@@ -105,15 +105,17 @@ class M3U8 {
     int currStreamInfNum = -1;
     Map<int, M3U8Segment> segments = {};
     Map<int, StreamInf> streamInfos = {};
+    M3U8Segment? initSegment;
     for (int i = 0; i < lines.length; i++) {
-      final line = lines[i];
+      final line = lines[i].trim();
       if (line.startsWith("#EXT-X-STREAM-INF:")) {
         modifierStringContent.writeln(line);
         currStreamInfNum++;
-        final urlLine = lines[i + 1];
+        if (i + 1 >= lines.length) break;
+        final urlLine = lines[i + 1].trim();
         streamInfos[currStreamInfNum] = (streamInfos[currStreamInfNum] ??
             StreamInf())
-          ..url = urlLine.trim();
+          ..url = resolveUri(url, urlLine);
         final resolutionPattern = RegExp(r'RESOLUTION=(\d+x\d+)');
         final matchRes = resolutionPattern.firstMatch(line);
         if (matchRes != null) {
@@ -137,7 +139,8 @@ class M3U8 {
         modifierStringContent.writeln(line);
         final attrs = parseAttributes(line);
         final currEncryptionDetails = M3U8EncryptionDetails(
-          encryptionKeyUrl: attrs["URI"],
+          encryptionKeyUrl:
+              attrs["URI"] == null ? null : resolveUri(url, attrs["URI"]!),
           encryptionMethod: M3U8EncryptionMethodParser.fromString(
             attrs["METHOD"]!,
           ),
@@ -149,23 +152,33 @@ class M3U8 {
         } else {
           encryptionDetails = currEncryptionDetails;
         }
+      } else if (line.startsWith("#EXT-X-MAP:")) {
+        // fMP4 (CMAF) initialization segment, e.g. used by x.com videos.
+        // Only the first one is supported. It is assembled before all media segments.
+        final mapUri = parseAttributes(line)["URI"];
+        if (mapUri == null || initSegment != null) continue;
+        final completeUrl = resolveUri(url, mapUri);
+        modifierStringContent.writeln('#EXT-X-MAP:URI="$completeUrl"');
+        initSegment = M3U8Segment(
+          url: completeUrl,
+          sequenceNumber: initSegmentSequenceNumber,
+        );
       } else if (line.startsWith("#EXTINF:")) {
         modifierStringContent.writeln(line);
         currSegmentNum++;
-        final extInfValue = line.substring(8, line.length - 2);
+        final commaIndex = line.indexOf(",");
+        final extInfValue =
+            line.substring(8, commaIndex == -1 ? line.length : commaIndex);
         reachedSegments = true;
         segments[currSegmentNum] = (segments[currSegmentNum] ?? M3U8Segment())
           ..extInf = extInfValue
           ..sequenceNumber = currSegmentNum;
-      } else if (line.startsWith("http")) {
-        modifierStringContent.writeln(line);
-        segments[currSegmentNum] = (segments[currSegmentNum] ?? M3U8Segment())
-          ..url = line;
-      } else if (!line.startsWith("http") &&
-          (isSubPlaylist || line.endsWith(".ts")) &&
-          FileUtil.isFileName(line)) {
-        final completeUrl =
-            "${url.substring(0, url.lastIndexOf("/"))}/${line.trim()}";
+      } else if (line.isNotEmpty &&
+          !line.startsWith("#") &&
+          currSegmentNum >= 0 &&
+          (segments[currSegmentNum]?.url.isEmpty ?? true)) {
+        // Segment URI. Can be absolute, relative or root-relative (e.g. "/ext_tw_video/...")
+        final completeUrl = resolveUri(url, line);
         segments[currSegmentNum] = (segments[currSegmentNum] ?? M3U8Segment())
           ..url = completeUrl;
         modifierStringContent.writeln(completeUrl);
@@ -178,28 +191,29 @@ class M3U8 {
             .reduce((sum, duration) => sum + duration)
             .toInt();
     final m3u8 = M3U8(
-      segments: segments.values.toList(),
+      segments: [
+        if (initSegment != null && segments.isNotEmpty) initSegment,
+        ...segments.values,
+      ],
       mediaSequence: mediaSequence,
       encryptionDetails: encryptionDetails,
       streamInfos: streamInfos.values.toList(),
       totalDuration: totalDuration,
       stringContent: content,
       url: url,
-      fileName: suggestedFileName ??
-          (url.contains('/') ? url.substring(url.lastIndexOf('/') + 1) : url),
+      fileName: suggestedFileName ?? _fileNameFromUrl(url),
     );
     if (m3u8.isMasterPlaylist) {
       for (var streamInf in m3u8.streamInfos) {
         var streamUrl = streamInf.url;
         if (streamUrl == null) continue;
-        if (!streamUrl.contains("http")) {
-          streamUrl = "${url.substring(0, url.lastIndexOf("/"))}/$streamUrl";
-          streamInf.m3u8 = await M3U8.fromUrl(streamUrl,
-              isSubPlaylist: true,
-              clientSettings: clientSettings,
-              refererHeader: refererHeader,
-              suggestedFileName: suggestedFileName);
-        }
+        streamInf.m3u8 = await M3U8.fromUrl(
+          streamUrl,
+          isSubPlaylist: true,
+          clientSettings: clientSettings,
+          refererHeader: refererHeader,
+          suggestedFileName: suggestedFileName,
+        );
       }
     }
     m3u8.refererHeader = refererHeader;
@@ -229,6 +243,28 @@ class M3U8 {
       m3u8.stringContent = modifierStringContent.toString();
     }
     return m3u8;
+  }
+
+  /// Sequence number given to the fMP4 initialization segment (EXT-X-MAP)
+  /// so that it is sorted before all media segments during assembly.
+  static const initSegmentSequenceNumber = -1;
+
+  /// Whether this playlist uses fMP4 (CMAF) segments instead of MPEG-TS
+  bool get isFragmentedMp4 =>
+      segments.any((s) => s.sequenceNumber == initSegmentSequenceNumber);
+
+  /// Resolves [ref] against the playlist [baseUrl] per RFC 3986,
+  /// handling absolute, relative and root-relative URIs.
+  static String resolveUri(String baseUrl, String ref) {
+    return Uri.parse(baseUrl).resolve(ref.trim()).toString();
+  }
+
+  static String _fileNameFromUrl(String url) {
+    final uri = Uri.tryParse(url);
+    if (uri != null && uri.pathSegments.isNotEmpty) {
+      return uri.pathSegments.last;
+    }
+    return url.contains('/') ? url.substring(url.lastIndexOf('/') + 1) : url;
   }
 
   static Map<String, String> parseAttributes(String attributesLine) {
