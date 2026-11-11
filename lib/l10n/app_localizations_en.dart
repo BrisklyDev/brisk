@@ -863,17 +863,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings_engine => 'Download Engine';
 
   @override
-  String get settings_engine_clientType => 'HTTP client type';
+  String get settings_engine_engineType => 'Engine';
 
   @override
-  String get settings_engine_clientType_tooltip =>
-      'The client type used for downloads:\n\nStandard – Balanced and stable\nPerformance – Faster but uses more CPU';
+  String get settings_engine_engineType_tooltip =>
+      'The engine used for HTTP/M3U8 downloads:\n\nDefault – The standard Brisk engine\nPerformance – The native Kasma engine (written in Rust). Faster and lighter. Proxies are not supported yet; downloads that use a proxy fall back to the default engine';
 
   @override
-  String get settings_engine_clientType_standard => 'Standard';
+  String get settings_engine_engineType_default => 'Default';
 
   @override
-  String get settings_engine_clientType_performance => 'Performance (Beta)';
+  String get settings_engine_engineType_performance => 'Performance (Beta)';
 
   @override
   String get btn_showAdvancedOptions => 'Show Advanced Options';

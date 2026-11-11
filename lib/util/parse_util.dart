@@ -42,8 +42,20 @@ AppClosureBehaviour parseAppCloseBehaviour(String val) {
   return AppClosureBehaviour.values.where((type) => type.name == val).first;
 }
 
+/// Falls back to [ClientType.dartHttp] for unknown values, e.g. the removed `rHttp` client which
+/// may still be stored in the settings of older versions (see migration 13).
 ClientType resolveClientType(String clientType) {
-  return ClientType.values.where((type) => type.name == clientType).first;
+  return ClientType.values.firstWhere(
+    (type) => type.name == clientType,
+    orElse: () => ClientType.dartHttp,
+  );
+}
+
+EngineType resolveEngineType(String engineType) {
+  return EngineType.values.firstWhere(
+    (type) => type.name == engineType,
+    orElse: () => EngineType.standard,
+  );
 }
 
 SettingOptions parseSettingOptions(String val) {

@@ -58,6 +58,11 @@ jobs:
           cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
           architecture: x64
 
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.95.0
+
       - name: Install project dependencies
         run: |
           flutter pub get
@@ -148,6 +153,12 @@ jobs:
         run: |
            sudo apt-get update -y
            sudo apt-get install -y keybinder-3.0 clang cmake git ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev rpm patchelf libayatana-appindicator3-dev
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.95.0
+
       - name: Enable linux-desktop for flutter
         run: flutter config --enable-linux-desktop && export PATH="$PATH":"$HOME/.pub-cache/bin"
 
@@ -235,6 +246,13 @@ jobs:
           grep loader_overlay pubspec.lock | cat
           echo "--- Flutter Pub Deps --- "
           flutter pub deps
+
+      # Both targets for universal (arm64 + x86_64) builds of the kasma_engine pod
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.95.0
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
 
       - name: Enable macos desktop for flutter
         run: flutter config --enable-macos-desktop && export PATH="$PATH":"$HOME/.pub-cache/bin"
@@ -377,6 +395,11 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y keybinder-3.0 clang cmake git ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev rpm patchelf libayatana-appindicator3-dev
 
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.95.0
+
       - name: Enable linux-desktop for flutter
         run: flutter config --enable-linux-desktop && export PATH="$PATH":"$HOME/.pub-cache/bin"
 
@@ -456,34 +479,40 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    needs: [Release-Binaries]
+    # `version` must be listed: the needs context only contains direct dependencies, so without it
+    # needs.version.outputs.version is empty and the tag "v" can't be found.
+    needs: [Release-Binaries, version]
     steps:
-
-      - name: Wait
-        run: sleep 10
 
       - name: Checkout the code
         uses: actions/checkout@v4.1.5
         with:
           fetch-depth: 0
-          fetch-tags: true
-
-      - name: Force fetch tags from origin
-        run: git fetch origin "+refs/tags/*:refs/tags/*"
 
       - name: Get commit of tag
         id: get_commit
         run: |
           TAG_NAME="v${{ needs.version.outputs.version }}"
-          COMMIT_HASH=$(git rev-list -n 1 "$TAG_NAME")
+          if [ "$TAG_NAME" = "v" ]; then
+            echo "::error::Version output is empty"
+            exit 1
+          fi
+          # The tag was created by Release-Binaries, after this workflow started. Fetch it explicitly.
+          git fetch --force origin "refs/tags/$TAG_NAME:refs/tags/$TAG_NAME"
+          COMMIT_HASH=$(git rev-list -n 1 "refs/tags/$TAG_NAME")
+          if [ -z "$COMMIT_HASH" ]; then
+            echo "::error::Tag $TAG_NAME not found"
+            exit 1
+          fi
           echo "Commit for $TAG_NAME is $COMMIT_HASH"
           echo "commit_hash=$COMMIT_HASH" >> "$GITHUB_OUTPUT"
 
+      # The Rust toolchain (1.95.0) is pinned in flatpak-flutter.yml via generated/modules/rustup-1.95.0.json
       - name: Clone flatpak-flutter
         run: |
           git clone https://github.com/TheAppgineer/flatpak-flutter.git
           cd flatpak-flutter
-          git checkout de96937f47903685fcb54b17ce55c609c8496f12
+          git checkout 0.15.0
           mkdir brisk
 
       - name: Set up Python
@@ -501,7 +530,7 @@ jobs:
           cat linux/packaging/flatpak/flatpak-flutter.yml
 
       - name: Install dependencies
-        run: pip install aiohttp pyyaml toml
+        run: pip install -r flatpak-flutter/requirements.txt
 
       - name: Install flatpak
         run: |
@@ -513,10 +542,12 @@ jobs:
 
       - name: Run flatpak-flutter
         run: |
+          # foreign.json adds the kasma engine's Cargo.lock so its crates are vendored too.
           cp linux/packaging/flatpak/flatpak-flutter.yml flatpak-flutter/brisk/
+          cp linux/packaging/flatpak/foreign.json flatpak-flutter/brisk/
           cd flatpak-flutter/brisk/
           ../flatpak-flutter.py flatpak-flutter.yml
-          ls -la
+          ls -laR generated
 
       - name: Set up Git
         run: |
@@ -532,9 +563,11 @@ jobs:
           pwd
           git checkout -B release-${{ needs.version.outputs.version }}
           find . -maxdepth 1 -type f ! -name '.gitmodules' -exec rm -rf {} +
+          rm -rf generated
           ls -ltrh ../flatpak-flutter/brisk/*
-          cat ../flatpak-flutter/brisk/flatpak-flutter.yml
+          cat ../flatpak-flutter/brisk/io.github.BrisklyDev.Brisk.yml
           find ../flatpak-flutter/brisk -maxdepth 1 -type f -exec cp {} . \;
+          cp -r ../flatpak-flutter/brisk/generated .
           ls -la
           git add .
           git commit -m "Release"

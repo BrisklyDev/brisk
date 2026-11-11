@@ -1,13 +1,15 @@
 import 'dart:io';
 
 import 'package:brisk_download_engine/src/download_engine/client/http_client_settings.dart';
+import 'package:brisk_download_engine/src/download_engine/engine_type.dart';
 import 'package:brisk_download_engine/src/download_engine/setting/proxy_setting.dart';
-import 'package:rhttp/rhttp.dart';
 
 class DownloadSettings extends ConnectionSettings {
   final Directory baseSaveDir;
   int totalConnections;
   int totalM3u8Connections;
+
+  EngineType engineType;
 
   DownloadSettings({
     required this.baseSaveDir,
@@ -18,6 +20,7 @@ class DownloadSettings extends ConnectionSettings {
     required super.connectionRetryTimeoutMillis,
     required super.maxConnectionRetryCount,
     super.clientSettings,
+    this.engineType = EngineType.standard,
   });
 }
 

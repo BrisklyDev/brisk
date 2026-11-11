@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 
-/// Callback function to set in setFilter.
+/// Callack function to set in setFilter.
 typedef FilteredListFilter<E> = bool Function(E element);
 
 /// Properties and methods extended to [List].

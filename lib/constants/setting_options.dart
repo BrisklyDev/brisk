@@ -30,6 +30,7 @@ enum SettingOptions {
   connectionRetryCount,
   connectionRetryTimeout,
   httpClientType,
+  downloadEngineType,
   proxyEnabled,
   proxyPort,
   proxyAddress,

@@ -1675,29 +1675,29 @@ abstract class AppLocalizations {
   /// **'Download Engine'**
   String get settings_engine;
 
-  /// No description provided for @settings_engine_clientType.
+  /// No description provided for @settings_engine_engineType.
   ///
   /// In en, this message translates to:
-  /// **'HTTP client type'**
-  String get settings_engine_clientType;
+  /// **'Engine'**
+  String get settings_engine_engineType;
 
-  /// No description provided for @settings_engine_clientType_tooltip.
+  /// No description provided for @settings_engine_engineType_tooltip.
   ///
   /// In en, this message translates to:
-  /// **'The client type used for downloads:\n\nStandard – Balanced and stable\nPerformance – Faster but uses more CPU'**
-  String get settings_engine_clientType_tooltip;
+  /// **'The engine used for HTTP/M3U8 downloads:\n\nDefault – The standard Brisk engine\nPerformance – The native Kasma engine (written in Rust). Faster and lighter. Proxies are not supported yet; downloads that use a proxy fall back to the default engine'**
+  String get settings_engine_engineType_tooltip;
 
-  /// No description provided for @settings_engine_clientType_standard.
+  /// No description provided for @settings_engine_engineType_default.
   ///
   /// In en, this message translates to:
-  /// **'Standard'**
-  String get settings_engine_clientType_standard;
+  /// **'Default'**
+  String get settings_engine_engineType_default;
 
-  /// No description provided for @settings_engine_clientType_performance.
+  /// No description provided for @settings_engine_engineType_performance.
   ///
   /// In en, this message translates to:
   /// **'Performance (Beta)'**
-  String get settings_engine_clientType_performance;
+  String get settings_engine_engineType_performance;
 
   /// No description provided for @btn_showAdvancedOptions.
   ///

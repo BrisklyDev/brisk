@@ -864,17 +864,17 @@ class AppLocalizationsFa extends AppLocalizations {
   String get settings_engine => 'Download Engine';
 
   @override
-  String get settings_engine_clientType => 'HTTP client type';
+  String get settings_engine_engineType => 'موتور';
 
   @override
-  String get settings_engine_clientType_tooltip =>
-      'The client type used for downloads:\n\nStandard – Balanced and stable\nPerformance – Faster but uses more CPU';
+  String get settings_engine_engineType_tooltip =>
+      'موتور مورد استفاده برای دانلودهای HTTP/M3U8:\n\nپیش‌فرض – موتور استاندارد بریسک\nکارایی – موتور بومی کاسما (نوشته شده با Rust). سریع‌تر و سبک‌تر. هنوز از پروکسی پشتیبانی نمی‌کند؛ دانلودهایی که از پروکسی استفاده می‌کنند با موتور پیش‌فرض انجام می‌شوند';
 
   @override
-  String get settings_engine_clientType_standard => 'Standard';
+  String get settings_engine_engineType_default => 'پیش‌فرض';
 
   @override
-  String get settings_engine_clientType_performance => 'Performance (Beta)';
+  String get settings_engine_engineType_performance => 'کارایی (بتا)';
 
   @override
   String get btn_showAdvancedOptions => 'Show Advanced Options';

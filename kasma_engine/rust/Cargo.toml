@@ -1,0 +1,36 @@
+[package]
+name = "kasma"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.95"
+
+[lib]
+name = "kasma"
+path = "src/lib.rs"
+# rlib: used by the CLI, cdylib: loaded through FFI (Linux/Windows), staticlib: linked on macOS
+crate-type = ["rlib", "cdylib", "staticlib"]
+
+[[bin]]
+name = "kasma"
+path = "src/main.rs"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+hyper = { version = "1", features = ["full"] }
+tokio = { version = "1", features = ["full"] }
+http-body-util = "0.1"
+hyper-util = { version = "0.1", features = ["full"] }
+hyper-rustls = "0.27"
+uuid = { version = "1.18.0", features = ["v4"] }
+anyhow = "1.0.99"
+strum = "0.27.2"
+strum_macros = "0.27.2"
+regex = "1.11.1"
+once_cell = "1.21.3"
+thiserror = "2.0.16"
+indicatif = "0.18"
+crossterm = "0.29"
+url = "2"
+aes = "0.8"
+cbc = "0.1"

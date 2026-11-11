@@ -24,6 +24,8 @@ class MigrationManager {
     /// Intentional duplicate
     Migration(10, "Change hotkey scope to inapp for linux"),
     Migration(11, "Add automatic download capture behaviour"),
+    Migration(12, "Add download engine type"),
+    Migration(13, "Remove rhttp client, revert to the default http client"),
   ];
 
   static runMigrations() async {
@@ -74,6 +76,12 @@ class MigrationManager {
         break;
       case 11:
         await runMigrationV11();
+        break;
+      case 12:
+        await runMigrationV12();
+        break;
+      case 13:
+        await runMigrationV13();
         break;
       default:
         break;
@@ -248,5 +256,45 @@ class MigrationManager {
     await settingBox.add(captureBehaviour);
     SettingsCache.automaticDownloadCaptureBehaviour =
         parseAutomaticDownloadCaptureBehaviour(captureBehaviour.value);
+  }
+
+  static Future<void> runMigrationV12() async {
+    final settingBox = HiveUtil.instance.settingBox;
+    final name = SettingOptions.downloadEngineType.name;
+    final existing =
+        settingBox.values.where((setting) => setting.name == name).firstOrNull;
+    if (existing != null) {
+      SettingsCache.downloadEngineType = resolveEngineType(existing.value);
+      return;
+    }
+    final engineType = Setting(
+      name: name,
+      value: SettingsCache.defaultSettings[name]![1],
+      settingType: SettingsCache.defaultSettings[name]![0],
+    );
+    await settingBox.add(engineType);
+    SettingsCache.downloadEngineType = resolveEngineType(engineType.value);
+  }
+
+  static Future<void> runMigrationV13() async {
+    final settingBox = HiveUtil.instance.settingBox;
+    final name = SettingOptions.httpClientType.name;
+    final defaultValue = SettingsCache.defaultSettings[name]![1];
+    final existing =
+        settingBox.values.where((setting) => setting.name == name).toList();
+    if (existing.isEmpty) {
+      await settingBox.add(
+        Setting(
+          name: name,
+          value: defaultValue,
+          settingType: SettingsCache.defaultSettings[name]![0],
+        ),
+      );
+    }
+    for (final setting in existing) {
+      setting.value = defaultValue;
+      await setting.save();
+    }
+    SettingsCache.httpClientType = resolveClientType(defaultValue);
   }
 }

@@ -872,17 +872,17 @@ class AppLocalizationsIt extends AppLocalizations {
   String get settings_engine => 'Motore download';
 
   @override
-  String get settings_engine_clientType => 'Tipo client HTTP';
+  String get settings_engine_engineType => 'Motore';
 
   @override
-  String get settings_engine_clientType_tooltip =>
-      'Il tipo di client usato per i download:\n\nStandard: bilanciato e stabile\nPrestazioni: più veloce ma usa più CPU';
+  String get settings_engine_engineType_tooltip =>
+      'Il motore usato per i download HTTP/M3U8:\n\nPredefinito – Il motore standard di Brisk\nPrestazioni – Il motore nativo Kasma (scritto in Rust). Più veloce e leggero. I proxy non sono ancora supportati; i download tramite proxy usano il motore predefinito';
 
   @override
-  String get settings_engine_clientType_standard => 'Standard';
+  String get settings_engine_engineType_default => 'Predefinito';
 
   @override
-  String get settings_engine_clientType_performance => 'Prestazioni (beta)';
+  String get settings_engine_engineType_performance => 'Prestazioni (Beta)';
 
   @override
   String get btn_showAdvancedOptions => 'Visualizza opzioni avanzate';

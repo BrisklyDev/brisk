@@ -1,4 +1,8 @@
 {
+  "settings_engine_engineType": "Engine",
+  "settings_engine_engineType_tooltip": "Die Engine für HTTP/M3U8-Downloads:\n\nStandard – Die Standard-Engine von Brisk\nLeistung – Die native Kasma-Engine (in Rust geschrieben). Schneller und ressourcenschonender. Proxys werden noch nicht unterstützt; Downloads über einen Proxy verwenden die Standard-Engine",
+  "settings_engine_engineType_default": "Standard",
+  "settings_engine_engineType_performance": "Leistung (Beta)",
   "@@locale": "de",
   "language": "Sprache",
   "noUpdateAvailable": "Kein neues Update verfügbar",

@@ -60,6 +60,7 @@ class SettingsCache {
   static late int connectionRetryCount;
   static late int connectionRetryTimeout;
   static late ClientType httpClientType;
+  static EngineType downloadEngineType = EngineType.standard;
   static late bool proxyEnabled = false;
   static late String proxyAddress = "";
   static late String proxyPort = "";
@@ -186,6 +187,10 @@ class SettingsCache {
     SettingOptions.httpClientType.name: [
       SettingType.connection.name,
       ClientType.dartHttp.name,
+    ],
+    SettingOptions.downloadEngineType.name: [
+      SettingType.connection.name,
+      EngineType.standard.name,
     ],
     SettingOptions.proxyEnabled.name: [
       SettingType.connection.name,
@@ -326,6 +331,9 @@ class SettingsCache {
         case SettingOptions.httpClientType:
           httpClientType = resolveClientType(value);
           break;
+        case SettingOptions.downloadEngineType:
+          downloadEngineType = resolveEngineType(value);
+          break;
         case SettingOptions.proxyEnabled:
           proxyEnabled = bool.parse(value);
           break;
@@ -450,6 +458,9 @@ class SettingsCache {
           break;
         case SettingOptions.httpClientType:
           setting.value = SettingsCache.httpClientType.name;
+          break;
+        case SettingOptions.downloadEngineType:
+          setting.value = SettingsCache.downloadEngineType.name;
           break;
         case SettingOptions.proxyEnabled:
           setting.value = SettingsCache.proxyEnabled.toString();

@@ -876,17 +876,17 @@ class AppLocalizationsRo extends AppLocalizations {
   String get settings_engine => 'Motor de descărcare';
 
   @override
-  String get settings_engine_clientType => 'Tip client HTTP';
+  String get settings_engine_engineType => 'Motor';
 
   @override
-  String get settings_engine_clientType_tooltip =>
-      'Tipul de client utilizat pentru descărcări:\n\nStandard – Echilibrat și stabil\nPerformanță – Mai rapid, dar utilizează mai mult procesor (CPU)';
+  String get settings_engine_engineType_tooltip =>
+      'Motorul folosit pentru descărcările HTTP/M3U8:\n\nImplicit – Motorul standard Brisk\nPerformanță – Motorul nativ Kasma (scris în Rust). Mai rapid și mai ușor. Proxy-urile nu sunt încă acceptate; descărcările prin proxy folosesc motorul implicit';
 
   @override
-  String get settings_engine_clientType_standard => 'Standard';
+  String get settings_engine_engineType_default => 'Implicit';
 
   @override
-  String get settings_engine_clientType_performance => 'Performanță (Beta)';
+  String get settings_engine_engineType_performance => 'Performanță (Beta)';
 
   @override
   String get btn_showAdvancedOptions => 'Afișează opțiuni avansate';

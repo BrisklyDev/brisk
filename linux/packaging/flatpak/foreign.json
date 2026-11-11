@@ -1,0 +1,7 @@
+{
+    "kasma_engine": {
+        "cargo_locks": [
+            "kasma_engine/rust"
+        ]
+    }
+}

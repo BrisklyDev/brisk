@@ -872,18 +872,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get settings_engine => 'Движок загрузок';
 
   @override
-  String get settings_engine_clientType => 'Тип HTTP-клиента';
+  String get settings_engine_engineType => 'Движок';
 
   @override
-  String get settings_engine_clientType_tooltip =>
-      'Тип клиента для загрузок:\n\nСтандартный – сбалансированный и стабильный\nПроизводительный – быстрее, но использует больше CPU';
+  String get settings_engine_engineType_tooltip =>
+      'Движок для HTTP/M3U8-загрузок:\n\nПо умолчанию – стандартный движок Brisk\nПроизводительность – нативный движок Kasma (написан на Rust). Быстрее и легче. Прокси пока не поддерживаются; загрузки через прокси используют движок по умолчанию';
 
   @override
-  String get settings_engine_clientType_standard => 'Стандартный';
+  String get settings_engine_engineType_default => 'По умолчанию';
 
   @override
-  String get settings_engine_clientType_performance =>
-      'Производительный (Beta)';
+  String get settings_engine_engineType_performance =>
+      'Производительность (бета)';
 
   @override
   String get btn_showAdvancedOptions => 'Показать расширенные опции';

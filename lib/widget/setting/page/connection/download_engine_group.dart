@@ -23,15 +23,15 @@ class _DownloadEngineGroupState extends State<DownloadEngineGroup> {
       title: loc.settings_engine,
       children: [
         DropDownSetting(
-          tooltipMessage: loc.settings_engine_clientType_tooltip,
-            items: [
-              loc.settings_engine_clientType_standard,
-              loc.settings_engine_clientType_performance,
-            ],
-            text: loc.settings_engine_clientType,
-            textWidth: 120,
-            value: resolveClientTypeTitle(),
-            onChanged: onClientTypeChanged,
+          tooltipMessage: loc.settings_engine_engineType_tooltip,
+          items: [
+            loc.settings_engine_engineType_default,
+            loc.settings_engine_engineType_performance,
+          ],
+          text: loc.settings_engine_engineType,
+          textWidth: 120,
+          value: resolveEngineTypeTitle(),
+          onChanged: onEngineTypeChanged,
         ),
         DropDownSetting(
           onChanged: (value) {
@@ -61,25 +61,17 @@ class _DownloadEngineGroupState extends State<DownloadEngineGroup> {
     );
   }
 
-  void onClientTypeChanged(val) {
-    if (val == loc.settings_engine_clientType_performance) {
-      setState(() => SettingsCache.httpClientType = ClientType.rHttp);
+  void onEngineTypeChanged(String? val) {
+    if (val == loc.settings_engine_engineType_performance) {
+      setState(() => SettingsCache.downloadEngineType = EngineType.kasma);
       return;
     }
-    if (val == loc.settings_engine_clientType_standard) {
-      setState(() => SettingsCache.httpClientType = ClientType.dartHttp);
-      return;
-    }
-    setState(() => SettingsCache.httpClientType = ClientType.dartHttp);
+    setState(() => SettingsCache.downloadEngineType = EngineType.standard);
   }
 
-  String resolveClientTypeTitle() {
-    if (SettingsCache.httpClientType == ClientType.rHttp) {
-      return loc.settings_engine_clientType_performance;
-    }
-    if (SettingsCache.httpClientType == ClientType.dartHttp) {
-      return loc.settings_engine_clientType_standard;
-    }
-    return loc.settings_engine_clientType_standard;
+  String resolveEngineTypeTitle() {
+    return SettingsCache.downloadEngineType == EngineType.kasma
+        ? loc.settings_engine_engineType_performance
+        : loc.settings_engine_engineType_default;
   }
 }

@@ -1,4 +1,8 @@
 {
+  "settings_engine_engineType": "Motor",
+  "settings_engine_engineType_tooltip": "HTTP/M3U8 indirmeleri için kullanılan motor:\n\nVarsayılan – Standart Brisk motoru\nPerformans – Yerel Kasma motoru (Rust ile yazılmıştır). Daha hızlı ve hafif. Proxy henüz desteklenmiyor; proxy kullanan indirmeler varsayılan motoru kullanır",
+  "settings_engine_engineType_default": "Varsayılan",
+  "settings_engine_engineType_performance": "Performans (Beta)",
   "@@locale": "tr",
   "application": "Uygulama",
   "language": "Dil",

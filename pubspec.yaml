@@ -23,6 +23,8 @@ dependencies:
     path: ./pluto_grid
   brisk_download_engine:
     path: ./brisk_download_engine
+  kasma_engine:
+    path: ./kasma_engine
   stream_channel: ^2.1.4
   csv: ^6.0.0
   flutter_local_notifications: ^19.0.0
@@ -47,7 +49,6 @@ dependencies:
   windows_single_instance: ^1.0.1
   xdg_desktop_portal: ^0.1.13
   archive: ^3.6.1
-  rhttp: ^0.12.0
   convert: ^3.1.2
   dropdown_button2: ^2.3.9
 

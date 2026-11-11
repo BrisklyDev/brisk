@@ -1,4 +1,8 @@
 {
+  "settings_engine_engineType": "موتور",
+  "settings_engine_engineType_tooltip": "موتور مورد استفاده برای دانلودهای HTTP/M3U8:\n\nپیش‌فرض – موتور استاندارد بریسک\nکارایی – موتور بومی کاسما (نوشته شده با Rust). سریع‌تر و سبک‌تر. هنوز از پروکسی پشتیبانی نمی‌کند؛ دانلودهایی که از پروکسی استفاده می‌کنند با موتور پیش‌فرض انجام می‌شوند",
+  "settings_engine_engineType_default": "پیش‌فرض",
+  "settings_engine_engineType_performance": "کارایی (بتا)",
   "@@locale": "fa",
   "language": "زبان",
   "noUpdateAvailable": "هنوز نسخه جدیدی منتشر نشده است",

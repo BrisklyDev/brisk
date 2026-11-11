@@ -830,17 +830,17 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings_engine => 'Download Engine';
 
   @override
-  String get settings_engine_clientType => 'HTTP client type';
+  String get settings_engine_engineType => '引擎';
 
   @override
-  String get settings_engine_clientType_tooltip =>
-      'The client type used for downloads:\n\nStandard – Balanced and stable\nPerformance – Faster but uses more CPU';
+  String get settings_engine_engineType_tooltip =>
+      '用于 HTTP/M3U8 下载的引擎：\n\n默认 – Brisk 标准引擎\n性能 – 原生 Kasma 引擎（使用 Rust 编写），更快更轻量。暂不支持代理；使用代理的下载将回退到默认引擎';
 
   @override
-  String get settings_engine_clientType_standard => 'Standard';
+  String get settings_engine_engineType_default => '默认';
 
   @override
-  String get settings_engine_clientType_performance => 'Performance (Beta)';
+  String get settings_engine_engineType_performance => '性能（测试版）';
 
   @override
   String get btn_showAdvancedOptions => 'Show Advanced Options';

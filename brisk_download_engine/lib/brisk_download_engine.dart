@@ -14,3 +14,5 @@ export 'src/download_engine/model/m3u8.dart';
 export 'src/download_engine/client/http_client_builder.dart';
 export 'src/download_engine/client/client_type.dart';
 export 'src/download_engine/client/http_client_settings.dart';
+export 'src/download_engine/engine_type.dart';
+export 'src/download_engine/kasma/kasma_download_engine.dart' show KasmaDownloadEngine;
