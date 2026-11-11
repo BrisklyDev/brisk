@@ -349,28 +349,28 @@ jobs:
             ./Brisk-v${{ needs.version.outputs.version }}-windows-x86_64.exe
             ./Brisk-v${{ needs.version.outputs.version }}-macos.dmg
 
-  Release-Snap:
-    runs-on: ubuntu-22.04
-    needs: [Build-Linux, Build-Windows, Build-macOS, Build-Snap, version]
-    permissions:
-      contents: write
-    steps:
+#  Release-Snap:
+#    runs-on: ubuntu-22.04
+#    needs: [Build-Linux, Build-Windows, Build-macOS, Build-Snap, version]
+#    permissions:
+#      contents: write
+#    steps:
 
-      - name: Checkout the code
-        uses: actions/checkout@v4.1.5
+#      - name: Checkout the code
+#        uses: actions/checkout@v4.1.5
 
-      - name: Download snap package
-        uses: actions/download-artifact@v4.1.0
-        with:
-          name: brisk-snap
+#      - name: Download snap package
+#        uses: actions/download-artifact@v4.1.0
+#        with:
+#          name: brisk-snap
 
-      - name: Install Snapcraft
-        run: sudo snap install snapcraft --classic
+#      - name: Install Snapcraft
+#        run: sudo snap install snapcraft --classic
 
-      - name: Upload to Snap Store
-        env:
-          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_CREDENTIALS }}
-        run: snapcraft upload brisk_${{ needs.version.outputs.version }}_amd64.snap --release=stable
+#      - name: Upload to Snap Store
+#        env:
+#          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_CREDENTIALS }}
+#        run: snapcraft upload brisk_${{ needs.version.outputs.version }}_amd64.snap --release=stable
 
 
   Release-AUR:
