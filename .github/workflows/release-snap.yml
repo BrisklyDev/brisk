@@ -33,6 +33,22 @@ jobs:
           echo "Setting version to ${{ needs.version.outputs.version }}"
           sed -i "s/^version: .*/version: ${{ needs.version.outputs.version }}/" snapcraft.yaml
 
+      - name: Check Snap Store and install LXD
+        run: |
+          sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
+          sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
+          env | grep -i proxy || true
+          snap debug connectivity || true
+          curl -sSv -o /dev/null https://api.snapcraft.io 2>&1 | tail -20
+          snap version
+          sudo systemctl restart snapd
+          for i in 1 2 3 4 5; do
+            sudo snap install lxd && break
+            echo "Snap Store unreachable, retry $i in 30s"; sleep 30
+          done
+          sudo lxd init --auto
+          sudo usermod --append --groups lxd runner
+
       - uses: snapcore/action-build@v1.3.0
         id: build
 
