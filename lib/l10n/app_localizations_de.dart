@@ -945,4 +945,16 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get speedLimit_source_download => 'Limit set for this download only';
+
+  @override
+  String get openUrlFailed_title => 'Couldn\'t Open Link';
+
+  @override
+  String openUrlFailed_description(String url) {
+    return 'Failed to open $url';
+  }
+
+  @override
+  String get openUrlFailed_descriptionHint =>
+      'Your system\'s desktop portal couldn\'t handle the request. Make sure xdg-desktop-portal and a backend for your desktop (e.g. xdg-desktop-portal-kde or xdg-desktop-portal-gnome) are installed and running.';
 }

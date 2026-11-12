@@ -5,7 +5,7 @@ import 'package:brisk/widget/base/rounded_outlined_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:brisk/util/url_launcher_util.dart';
 
 enum DonationDialogAction {
   remindLater,
@@ -56,7 +56,7 @@ class _DonationDialogState extends State<DonationDialog> {
                 size: 20,
                 color: Colors.black,
               ),
-              onPressed: () => launchUrlString(buyMeACoffeeUrl),
+              onPressed: () => openUrl(buyMeACoffeeUrl),
             ),
             const SizedBox(height: 10),
             RoundedOutlinedButton.fromButtonColor(
@@ -73,7 +73,7 @@ class _DonationDialogState extends State<DonationDialog> {
                   BlendMode.srcIn,
                 ),
               ),
-              onPressed: () => launchUrlString(githubSponsorsUrl),
+              onPressed: () => openUrl(githubSponsorsUrl),
             ),
             const SizedBox(height: 12),
             InkWell(

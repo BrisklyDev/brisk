@@ -18,7 +18,7 @@ import 'package:brisk_download_engine/brisk_download_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:brisk/util/url_launcher_util.dart';
 import 'package:brisk/db/hive_util.dart';
 
 class DownloadGrid extends StatefulWidget {
@@ -428,7 +428,7 @@ class _DownloadGridState extends State<DownloadGrid> {
         );
         break;
       case "Open File":
-        launchUrlString("file:${downloadItem.filePath}");
+        openUrl("file:${downloadItem.filePath}");
         break;
       case "Open File Location":
         openFileLocation(downloadItem);
@@ -441,7 +441,7 @@ class _DownloadGridState extends State<DownloadGrid> {
         );
         break;
       case "Automatic URL Update":
-        launchUrlString(downloadItem.referer!);
+        openUrl(downloadItem.referer!);
         BrowserExtensionServer.awaitingUpdateUrlItem = downloadItem;
         showDialog(
           context: context,

@@ -7,7 +7,7 @@ import 'package:brisk/widget/base/scrollable_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:brisk/util/url_launcher_util.dart';
 
 class BrowserExtensionInstallationGuideDialog extends StatefulWidget {
   final String browserName;
@@ -83,7 +83,7 @@ class _BrowserExtensionInstallationGuideDialogState
                 const SizedBox(height: 5),
                 RoundedOutlinedButton(
                   height: 30,
-                  onPressed: () => launchUrlString(
+                  onPressed: () => openUrl(
                     widget.downloadUrl ??
                         "https://github.com/BrisklyDev/brisk-browser-extension/releases/tag/v1.2.2",
                   ),

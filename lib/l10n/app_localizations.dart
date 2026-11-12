@@ -1812,6 +1812,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Limit set for this download only'**
   String get speedLimit_source_download;
+
+  /// No description provided for @openUrlFailed_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t Open Link'**
+  String get openUrlFailed_title;
+
+  /// No description provided for @openUrlFailed_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to open {url}'**
+  String openUrlFailed_description(String url);
+
+  /// No description provided for @openUrlFailed_descriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your system\'s desktop portal couldn\'t handle the request. Make sure xdg-desktop-portal and a backend for your desktop (e.g. xdg-desktop-portal-kde or xdg-desktop-portal-gnome) are installed and running.'**
+  String get openUrlFailed_descriptionHint;
 }
 
 class _AppLocalizationsDelegate

@@ -6,7 +6,7 @@ import 'package:brisk/widget/setting/base/settings_group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:brisk/util/url_launcher_util.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({Key? key}) : super(key: key);
@@ -108,7 +108,7 @@ class _AboutPageState extends State<AboutPage> {
                   const SizedBox(width: 30),
                   InkWell(
                     onTap: () =>
-                        launchUrlString("https://github.com/BrisklyDev/Brisk"),
+                        openUrl("https://github.com/BrisklyDev/Brisk"),
                     onHover: (val) => setState(() => githubHover = val),
                     child: Text(
                       "BrisklyDev/Brisk",
@@ -139,7 +139,7 @@ class _AboutPageState extends State<AboutPage> {
                   const SizedBox(width: 30),
                   InkWell(
                     onTap: () =>
-                        launchUrlString("https://discord.gg/hGBDWNDHG3"),
+                        openUrl("https://discord.gg/hGBDWNDHG3"),
                     onHover: (val) => setState(() => discordHover = val),
                     child: Text(
                       loc.settings_info_discordServer,
@@ -168,7 +168,7 @@ class _AboutPageState extends State<AboutPage> {
                   ),
                   const SizedBox(width: 30),
                   InkWell(
-                    onTap: () => launchUrlString("https://t.me/ryedev"),
+                    onTap: () => openUrl("https://t.me/ryedev"),
                     onHover: (val) => setState(() => telegramHover = val),
                     child: Text(
                       loc.settings_info_telegramChannel,

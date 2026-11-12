@@ -13,6 +13,7 @@ finish-args:
   - --device=dri
   - --filesystem=xdg-download
   - --talk-name=org.freedesktop.Notifications
+  - --talk-name=org.freedesktop.FileManager1
   - --talk-name=org.kde.StatusNotifierWatcher
 cleanup:
   - /var/lib

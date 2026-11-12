@@ -21,7 +21,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:brisk/util/url_launcher_util.dart';
 import 'package:brisk/model/download_item.dart';
 import 'package:path/path.dart' as path;
 
@@ -360,7 +360,7 @@ class _DownloadInfoDialogState extends State<DownloadInfoDialog>
                   theme.alertDialogTheme.primaryMiscButtonColor,
                   text: loc.btn_openFile,
                   onPressed: () {
-                    launchUrlString("file:${widget.downloadItem.filePath}");
+                    openUrl("file:${widget.downloadItem.filePath}");
                     Navigator.of(context).pop();
                   },
                 )

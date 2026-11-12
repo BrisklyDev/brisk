@@ -2,12 +2,12 @@ import 'package:brisk/widget/download/download_progress_dialog.dart';
 import 'package:brisk_download_engine/brisk_download_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:brisk/util/url_launcher_util.dart';
+import 'package:brisk/util/file_util.dart';
 import 'package:brisk/db/hive_util.dart';
 import 'package:brisk/provider/download_request_provider.dart';
 import 'add_url_dialog.dart';
 import 'download_info_dialog.dart';
-import 'dart:io';
 
 class DownloadRowPopUpMenuButton extends StatelessWidget {
   final String status;
@@ -113,12 +113,10 @@ class DownloadRowPopUpMenuButton extends StatelessWidget {
         );
         break;
       case 4:
-        launchUrlString("file:${dl.filePath}");
+        openUrl("file:${dl.filePath}");
         break;
       case 5:
-        final folder = dl.filePath
-            .substring(0, dl.filePath.lastIndexOf(Platform.pathSeparator));
-        launchUrlString("file:$folder");
+        openFileLocation(dl);
         break;
     }
   }

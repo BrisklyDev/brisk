@@ -25,7 +25,7 @@ import 'package:brisk_download_engine/brisk_download_engine.dart';
 import 'package:brisk_download_engine/src/download_engine/client/custom_base_client.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:brisk/util/url_launcher_util.dart';
 import 'package:window_to_front/window_to_front.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:brisk/widget/download/multi_download_addition_dialog.dart';
@@ -276,7 +276,7 @@ class BrowserExtensionServer {
         isBrowserExtension: true,
         newVersion: extensionVersion,
         changeLog: changeLog,
-        onUpdatePressed: () => launchUrlString(
+        onUpdatePressed: () => openUrl(
           "https://github.com/AminBhst/brisk-browser-extension",
         ),
         onLaterPressed: () {

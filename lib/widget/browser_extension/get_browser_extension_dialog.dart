@@ -7,7 +7,7 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:brisk/util/url_launcher_util.dart';
 
 import 'browser_extension_installation_guide_dialog.dart';
 
@@ -72,7 +72,7 @@ class GetBrowserExtensionDialog extends StatelessWidget {
               children: [
                 browserIconButton(
                   "firefox",
-                  () => launchUrlString(
+                  () => openUrl(
                       "https://addons.mozilla.org/en-US/firefox/addon/brisk/"),
                 ),
                 const SizedBox(width: 25),

@@ -6,7 +6,7 @@ import 'package:brisk/widget/base/scrollable_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:brisk/util/url_launcher_util.dart';
 
 class GithubStarDialog extends StatelessWidget {
   const GithubStarDialog({super.key});
@@ -90,7 +90,7 @@ class GithubStarDialog extends StatelessWidget {
         RoundedOutlinedButton.fromButtonColor(
           theme.alertDialogTheme.acceptButtonColor,
           onPressed: () =>
-              launchUrlString("https://github.com/BrisklyDev/brisk"),
+              openUrl("https://github.com/BrisklyDev/brisk"),
           text: "Take me there",
         ),
       ],

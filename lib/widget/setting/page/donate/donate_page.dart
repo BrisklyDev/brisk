@@ -4,7 +4,7 @@ import 'package:brisk/provider/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:brisk/util/url_launcher_util.dart';
 
 /// Settings tab with the donation options. Colors are tints of fixed brand colors over the
 /// theme's group background, so the page looks right in every theme.
@@ -188,7 +188,7 @@ class _DonationOptionState extends State<_DonationOption> {
       type: MaterialType.transparency,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () => launchUrlString(widget.url),
+        onTap: () => openUrl(widget.url),
         onHover: (value) => setState(() => hovered = value),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 150),

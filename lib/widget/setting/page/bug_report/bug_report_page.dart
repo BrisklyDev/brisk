@@ -3,7 +3,7 @@ import 'package:brisk/provider/theme_provider.dart';
 import 'package:brisk/widget/setting/base/settings_group.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:brisk/util/url_launcher_util.dart';
 
 class BugReportPage extends StatelessWidget {
   const BugReportPage({Key? key}) : super(key: key);
@@ -38,7 +38,7 @@ class BugReportPage extends StatelessWidget {
                     style: TextStyle(color: Colors.blue),
                   ),
                 ),
-                onTap: () => launchUrlString(
+                onTap: () => openUrl(
                     "https://github.com/AminBhst/brisk/issues/new"),
               )
             ],

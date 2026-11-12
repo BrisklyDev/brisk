@@ -7,10 +7,11 @@ import 'package:brisk/db/hive_util.dart';
 import 'package:brisk/model/download_item.dart';
 import 'package:brisk/model/isolate/isolate_args.dart';
 import 'package:brisk/util/file_extensions.dart';
+import 'package:brisk/util/platform.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:brisk/util/url_launcher_util.dart';
 
 import '../constants/file_type.dart';
 import '../setting/settings_cache.dart';
@@ -267,7 +268,35 @@ void openFileLocation(DownloadItem downloadItem) {
   );
   if (Platform.isWindows) {
     Process.run('explorer.exe', ['/select,', downloadItem.filePath]);
+  } else if (isFlatpak) {
+    _showItemInFileManager(downloadItem.filePath, folder);
   } else {
-    launchUrlString("file:$folder");
+    openUrl("file:$folder");
   }
+}
+
+/// Asks the host file manager to reveal [filePath] via the
+/// org.freedesktop.FileManager1 D-Bus interface. Unlike xdg-open, this doesn't
+/// depend on the OpenURI portal, which may be missing on the host. Falls back
+/// to opening [folder] through [openUrl], which reports failures to the user.
+Future<void> _showItemInFileManager(String filePath, String folder) async {
+  final uri = File(filePath).existsSync()
+      ? Uri.file(filePath).toString()
+      : Uri.directory(folder).toString();
+  try {
+    final result = await Process.run('gdbus', [
+      'call',
+      '--session',
+      '--dest',
+      'org.freedesktop.FileManager1',
+      '--object-path',
+      '/org/freedesktop/FileManager1',
+      '--method',
+      'org.freedesktop.FileManager1.ShowItems',
+      '["$uri"]',
+      '',
+    ]);
+    if (result.exitCode == 0) return;
+  } catch (_) {}
+  openUrl("file:$folder");
 }

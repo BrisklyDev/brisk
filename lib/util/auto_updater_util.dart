@@ -17,7 +17,7 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:brisk/util/url_launcher_util.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:http/http.dart';
 
@@ -94,7 +94,7 @@ void handleBriskUpdateCheck(
             "Failed to automatically update brisk to the latest version!\nWould you like to manually download the latest version?",
         confirmButtonText: "Yes, Take me there",
         confirmButtonWidth: 150,
-        onConfirmPressed: () => launchUrlString(
+        onConfirmPressed: () => openUrl(
             "https://github.com/AminBhst/brisk/releases/latest"),
       ),
     );
@@ -166,7 +166,7 @@ void onUpdatePressed(String version) {
   if (buildMethod == "basic" || buildMethod == "exe" || buildMethod == "tar") {
     launchAutoUpdater();
   } else if (buildMethod == "dmg") {
-    launchUrlString(
+    openUrl(
         "https://github.com/AminBhst/brisk/releases/download/v$version/Brisk-v$version-macos.dmg");
   } else if (buildMethod == "flatpak") {
   } else if (buildMethod == "snap") {}
@@ -260,7 +260,7 @@ void launchAutoUpdater() async {
       windowManager.destroy().then((value) => exit(0));
     });
   } else {
-    launchUrlString(
+    openUrl(
       "https://github.com/AminBhst/brisk/releases/latest",
     );
   }
