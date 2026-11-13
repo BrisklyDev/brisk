@@ -15,6 +15,7 @@ class LocaleProvider with ChangeNotifier {
     "es": "Español",
     "de": "Deutsch",
     "it": "Italiano",
+    "ms": "Bahasa Melayu",
     "pt": "Português (Brasil)",
     "fa": "فارسی",
     "zh": "中文",
