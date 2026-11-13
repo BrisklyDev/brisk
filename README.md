@@ -65,6 +65,21 @@ To install the browser extension, please refer to the [brisk-browser-extension r
   </tr>
 </table>
 
+### :zap: Linux 1-Liner Quick Install
+
+Install or update Brisk on Linux (x86_64) automatically with a single command:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/BrisklyDev/brisk/main/scripts/install.sh | bash
+```
+
+> The installer automatically fetches the latest release, installs it to `~/.local/share/brisk`, creates a symlink in `~/.local/bin`, and registers the desktop launcher and icon.
+>
+> To uninstall at any time:
+> ```bash
+> curl -fsSL https://raw.githubusercontent.com/BrisklyDev/brisk/main/scripts/install.sh | bash -s -- --uninstall
+> ```
+
 > [!IMPORTANT]
 > For Linux, make sure to check the [Linux Prerequisites](#key-linux-prerequisites) (for tarball only)
 > 

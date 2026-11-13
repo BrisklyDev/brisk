@@ -252,7 +252,7 @@ class AppLocalizationsMs extends AppLocalizations {
   String get settings_menu_connection => 'Sambungan';
 
   @override
-  String get settings_menu_extension => 'Ekstensi';
+  String get settings_menu_extension => 'Sambungan Pelayar';
 
   @override
   String get settings_menu_about => 'Perihal';
