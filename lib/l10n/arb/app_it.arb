@@ -302,4 +302,30 @@
   "donationPrompt_title": "Ti piace Brisk?",
   "donationPrompt_description": "Il tuo supporto aiuta a finanziare lo sviluppo continuo, i miglioramenti e le nuove funzionalità.",
   "donationPrompt_neverShowAgain": "Non visualizzare più"
+  "settings_engine_speedLimit": "Limite velocità per download",
+  "settings_engine_speedLimit_unsupported": "I limiti di velocità sono supportati solo dal motore Performance (Kasma).",
+  "briskUpdated": "Brisk aggiornato",
+  "btn_gotIt": "Fatto",
+  "unlimited": "Illimitato",
+  "btn_showSpeedLimit": "Limite velocità",
+  "btn_removeSpeedLimit": "Rimuovi limite",
+  "btn_useGlobalSpeedLimit": "Usa limite globale",
+  "speedLimit_current": "Limite attuale: {limit}",
+  "@speedLimit_current": {
+    "placeholders": {
+      "limit": {}
+    }
+  },
+  "speedLimit_source_global": "Segui il limite globale dalle impostazioni",
+  "speedLimit_source_download": "Limite impostato solo per questo download",
+  "openUrlFailed_title": "Impossibile aprire il collegamento",
+  "openUrlFailed_description": "Impossibile aprire {url}",
+  "@openUrlFailed_description": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "openUrlFailed_descriptionHint": "Il portale desktop del sistema non è riuscito a gestire la richiesta. Assicurati che xdg-desktop-portal e un backend per il desktop (ad esempio xdg-desktop-portal-kde o xdg-desktop-portal-gnome) siano installati e in esecuzione."
 }
