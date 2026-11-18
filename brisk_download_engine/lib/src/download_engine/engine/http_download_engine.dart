@@ -17,6 +17,7 @@ import 'package:brisk_download_engine/src/download_engine/message/terminated_mes
 import 'package:brisk_download_engine/src/download_engine/segment/download_segment_tree.dart';
 import 'package:brisk_download_engine/src/download_engine/segment/segment.dart';
 import 'package:brisk_download_engine/src/download_engine/segment/segment_status.dart';
+import 'package:brisk_download_engine/src/download_engine/util/constants.dart';
 import 'package:brisk_download_engine/src/download_engine/util/file_util.dart';
 import 'package:brisk_download_engine/src/download_engine/util/isolate_args.dart';
 import 'package:brisk_download_engine/src/download_engine/util/readability_util.dart';
@@ -148,19 +149,21 @@ class HttpDownloadEngine {
           )
           .toList();
 
-      final connectionsToReset = activeConns
-          .where(
-            (conn) =>
-                (conn.resetCount < downloadSettings!.maxConnectionRetryCount ||
-                    downloadSettings!.maxConnectionRetryCount == -1) &&
-                conn.lastResponseTime +
-                        _backoffDelayMillis(
-                          conn.resetCount,
-                          downloadSettings!.connectionRetryTimeoutMillis,
-                        ) <
-                    _nowMillis,
-          )
-          .toList();
+      final connectionsToReset = activeConns.where((conn) {
+        final maxRetries = downloadSettings!.maxConnectionRetryCount;
+        if (maxRetries != -1 && conn.resetCount >= maxRetries) {
+          return false;
+        }
+        final retryDelay = _backoffDelayMillis(
+          conn.resetCount,
+          downloadSettings!.connectionRetryTimeoutMillis,
+        );
+        // An active connection may have received data since its last report.
+        final reportingGrace = conn.status == DownloadStatus.downloading
+            ? httpChunkProgressInterval.inMilliseconds
+            : 0;
+        return conn.lastResponseTime + retryDelay + reportingGrace < _nowMillis;
+      }).toList();
 
       for (final connection in connectionsToReset) {
         final message = HttpDownloadIsolateMessage(

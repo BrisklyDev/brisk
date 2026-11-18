@@ -176,6 +176,70 @@ void main() {
       }
     });
 
+    test('fast chunks report bounded progress without delaying completion',
+        () async {
+      final tempDir = Directory.systemTemp.createTempSync('brisk_progress_');
+      addTearDown(() => tempDir.deleteSync(recursive: true));
+      final connection = _connection(
+        1025,
+        Segment(0, 1024),
+        tempDir: tempDir,
+        uid: 'progress-test',
+      );
+      final messages = <DownloadProgressMessage>[];
+      connection.progressCallback =
+          (message) => messages.add(message as DownloadProgressMessage);
+      connection.tempDirectory.createSync(recursive: true);
+
+      for (var i = 0; i < 1024; i++) {
+        await connection.doProcessChunk([1]);
+      }
+
+      expect(connection.totalRequestReceivedBytes, 1024);
+      expect(messages, isNotEmpty);
+      expect(messages.length, lessThan(32));
+      expect(messages.every((message) => !message.completionSignal), isTrue);
+
+      final messagesBeforeCompletion = messages.length;
+      await connection.doProcessChunk([2]);
+
+      expect(messages, hasLength(messagesBeforeCompletion + 1));
+      expect(messages.last.completionSignal, isTrue);
+      expect(messages.last.totalReceivedBytes, 1025);
+      final output = connection.tempDirectory.listSync().whereType<File>();
+      expect(output.single.readAsBytesSync(), [...List.filled(1024, 1), 2]);
+    });
+
+    test('a later chunk reports accumulated bytes and pause reports at once',
+        () async {
+      final tempDir = Directory.systemTemp.createTempSync('brisk_pause_');
+      addTearDown(() => tempDir.deleteSync(recursive: true));
+      final connection = _connection(
+        10,
+        Segment(0, 9),
+        tempDir: tempDir,
+        uid: 'pause-test',
+      );
+      final messages = <DownloadProgressMessage>[];
+      connection.progressCallback =
+          (message) => messages.add(message as DownloadProgressMessage);
+      connection.tempDirectory.createSync(recursive: true);
+
+      await connection.doProcessChunk([1]);
+      expect(messages.single.totalReceivedBytes, 1);
+      await connection.doProcessChunk([2]);
+      final messagesBeforeInterval = messages.length;
+      await Future<void>.delayed(const Duration(milliseconds: 150));
+      await connection.doProcessChunk([3]);
+      expect(messages, hasLength(messagesBeforeInterval + 1));
+      expect(messages.last.totalReceivedBytes, 3);
+
+      await connection.pause(null);
+      expect(messages, hasLength(messagesBeforeInterval + 2));
+      expect(messages.last.status, DownloadStatus.paused);
+      expect(messages.last.totalReceivedBytes, 3);
+    });
+
     test('total progress uses byte counts instead of summed fractions', () {
       const fileSize = 28;
       final item = DownloadItemModel(
