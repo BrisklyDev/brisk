@@ -86,6 +86,8 @@ class HttpDownloadConnection {
   /// calculate and update transfer rate every 0.7 seconds
   static const int _transferRateCalculationWindowMillis = 700;
 
+  final _chunkProgressClock = Stopwatch();
+
   /// The client used to make http requests
   CustomBaseClient? client;
 
@@ -221,6 +223,7 @@ class HttpDownloadConnection {
     terminatedOnError = false;
     _ignoreIncomingChunks = false;
     totalRequestReceivedBytes = 0;
+    _chunkProgressClock.stop();
   }
 
   http.Request buildDownloadRequest(bool reuseConnection) {
@@ -439,7 +442,15 @@ class HttpDownloadConnection {
     if (tempReceivedBytes > dynamicFlushThreshold) {
       flushBuffer();
     }
-    notifyProgress();
+    // Send a snapshot at UI speed, not at the speed of incoming HTTP chunks.
+    // Explicit status and completion reports still call notifyProgress directly.
+    if (!_chunkProgressClock.isRunning ||
+        _chunkProgressClock.elapsed >= httpChunkProgressInterval) {
+      _chunkProgressClock
+        ..reset()
+        ..start();
+      notifyProgress();
+    }
   }
 
   Future<void> _onByteExactMatch() async {
